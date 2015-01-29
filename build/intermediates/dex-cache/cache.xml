@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/wojang/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-controllers/1.5.0/6ff91f0cbb70779dc0acdea3f3dc29a2e176bac9/gdx-controllers-1.5.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="6ff91f0cbb70779dc0acdea3f3dc29a2e176bac9">
+        <dex dex="/Users/wojang/Desktop/Android/libgdxTest1/android/build/intermediates/pre-dexed/debug/gdx-controllers-1.5.0-08068fe5d14415da36770c90f3e9f074b66c49b1.jar" />
+    </item>
+    <item
+        jar="/Users/wojang/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-android/1.5.0/97ad3f9d65b8b9ecac57547bda2fb2f7626fb8f1/gdx-backend-android-1.5.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="97ad3f9d65b8b9ecac57547bda2fb2f7626fb8f1">
+        <dex dex="/Users/wojang/Desktop/Android/libgdxTest1/android/build/intermediates/pre-dexed/debug/gdx-backend-android-1.5.0-7c848d7ff68bbf7f78e3001d00ad192dc1300d63.jar" />
+    </item>
+    <item
+        jar="/Users/wojang/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-box2d/1.5.0/190fcbf9111e2b2ea798ecc5dd8995b861193828/gdx-box2d-1.5.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="190fcbf9111e2b2ea798ecc5dd8995b861193828">
+        <dex dex="/Users/wojang/Desktop/Android/libgdxTest1/android/build/intermediates/pre-dexed/debug/gdx-box2d-1.5.0-98b2beca5a5040d186df5c1d320ae1e65509f093.jar" />
+    </item>
+    <item
+        jar="/Users/wojang/.gradle/caches/modules-2/files-2.1/com.badlogicgames.ashley/ashley/1.3.1/43aed4ac92b8cce24e92a3836eb5ac916026b49f/ashley-1.3.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="43aed4ac92b8cce24e92a3836eb5ac916026b49f">
+        <dex dex="/Users/wojang/Desktop/Android/libgdxTest1/android/build/intermediates/pre-dexed/debug/ashley-1.3.1-3cece62b75e8d5c8903d7f8651dd60d58bf7edd3.jar" />
+    </item>
+    <item
+        jar="/Users/wojang/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-freetype/1.5.0/69b7592d64aeccb21cad51f89544df8770a81f7c/gdx-freetype-1.5.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="69b7592d64aeccb21cad51f89544df8770a81f7c">
+        <dex dex="/Users/wojang/Desktop/Android/libgdxTest1/android/build/intermediates/pre-dexed/debug/gdx-freetype-1.5.0-a75f1dd356626d40d8ad39e9724b1f002e39d4ec.jar" />
+    </item>
+    <item
+        jar="/Users/wojang/Desktop/Android/libgdxTest1/core/build/libs/core-1.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="93328264b2304d0f21fdfe856017f3326f9923c8">
+        <dex dex="/Users/wojang/Desktop/Android/libgdxTest1/android/build/intermediates/pre-dexed/debug/core-1.0-66b4b98c9917c3123c4de621d1c05c753426ffab.jar" />
+    </item>
+    <item
+        jar="/Users/wojang/.gradle/caches/modules-2/files-2.1/com.badlogicgames.box2dlights/box2dlights/1.3/e829c3543ab5a6b3ff818615a8620024f6a14fe0/box2dlights-1.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e829c3543ab5a6b3ff818615a8620024f6a14fe0">
+        <dex dex="/Users/wojang/Desktop/Android/libgdxTest1/android/build/intermediates/pre-dexed/debug/box2dlights-1.3-b68401023930cdec56bbe2176978a629a0c2f8b5.jar" />
+    </item>
+    <item
+        jar="/Users/wojang/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-controllers-android/1.5.0/29fc4a1b20d089670a28c78e8e90ad8903e8822f/gdx-controllers-android-1.5.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="29fc4a1b20d089670a28c78e8e90ad8903e8822f">
+        <dex dex="/Users/wojang/Desktop/Android/libgdxTest1/android/build/intermediates/pre-dexed/debug/gdx-controllers-android-1.5.0-10c5e46d1629b471c1636f6170357bb691c901f1.jar" />
+    </item>
+    <item
+        jar="/Users/wojang/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.5.0/e4272f711228f3cd214802949f18124e2eef1cbc/gdx-1.5.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e4272f711228f3cd214802949f18124e2eef1cbc">
+        <dex dex="/Users/wojang/Desktop/Android/libgdxTest1/android/build/intermediates/pre-dexed/debug/gdx-1.5.0-751074c6e2ee04e5898bf1548b9d5adae7e104a7.jar" />
+    </item>
+    <item
+        jar="/Users/wojang/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-ai/1.4.0/f7532801d6c1526df4a609341fa145acb9e8eb3a/gdx-ai-1.4.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="f7532801d6c1526df4a609341fa145acb9e8eb3a">
+        <dex dex="/Users/wojang/Desktop/Android/libgdxTest1/android/build/intermediates/pre-dexed/debug/gdx-ai-1.4.0-5f95a35f15bb83ad5190d1b66b9fd4f0641f1dec.jar" />
+    </item>
+    <item
+        jar="/Users/wojang/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-bullet/1.5.0/f50221d6205e7d3dcf0f25c2e6494e18dd340d95/gdx-bullet-1.5.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="f50221d6205e7d3dcf0f25c2e6494e18dd340d95">
+        <dex dex="/Users/wojang/Desktop/Android/libgdxTest1/android/build/intermediates/pre-dexed/debug/gdx-bullet-1.5.0-e8b4b1d1274bf358109ab020623b74ff5f31a28a.jar" />
+    </item>
+
+</items>

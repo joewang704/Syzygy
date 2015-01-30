@@ -84,10 +84,7 @@ public class GameScreen implements Screen {
         }
 
         //WASD moves user
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) user.x -= 200 * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) user.x += 200 * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) user.y -= 180 * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) user.y += 180 * Gdx.graphics.getDeltaTime();
+        user.move();
 
         //keep user from moving off the screen
         if (user.x < 0) user.x = 0;

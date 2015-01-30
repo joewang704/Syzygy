@@ -21,19 +21,15 @@ public class GameScreen implements Screen {
     final static int WIDTH = 800;
     final static int HEIGHT = 480;
 
-    //Variables
-    int atkSpeed = 100000000;
-
     //Camera
     OrthographicCamera camera;
 
     //Shapes
     public User user;
     Array<Enemy> enemies;
-    Array<Bullet> uBullets;
 
     //Utility
-    private long lastShotTime, lastSpawnTime;
+    private long lastSpawnTime;
 
     //Sprites
     SpriteBatch batch;
@@ -49,7 +45,6 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, WIDTH, HEIGHT);
         createUser(WIDTH / 2 - 64 / 2, 0, 64, 64);
 
-        uBullets = new Array<Bullet>();
         enemies = new Array<Enemy>();
     }
 
@@ -68,7 +63,7 @@ public class GameScreen implements Screen {
         game.batch.draw(img, user.x, user.y);
 
         //draw all bullets and enemies from their respective arrays
-        for (Rectangle bullet: uBullets) {
+        for (Rectangle bullet: user.getBullets()) {
             game.batch.draw(bImg, bullet.x, bullet.y);
         }
 
@@ -78,7 +73,7 @@ public class GameScreen implements Screen {
         game.batch.end();
 
         //on screen touch, store bullet in uBullet array with proper direction
-        if (Gdx.input.isTouched() && TimeUtils.nanoTime() - lastShotTime > atkSpeed) {
+        if (Gdx.input.isTouched() && TimeUtils.nanoTime() - user.getLastShotTime() > user.getAtkSpeed()) {
             //grab touched position
             Vector2 touchPos = new Vector2();
             touchPos.set(Gdx.input.getX() - 32 / 2, HEIGHT - Gdx.input.getY() - 32 / 2);
@@ -86,7 +81,7 @@ public class GameScreen implements Screen {
             Vector2 userPos = new Vector2();
             userPos.set(user.x + 64 / 2, user.y + 64 / 2);
             //creates bullet using two positions
-            spawnUserBullet(userPos, touchPos);
+            user.fireBullet(userPos, touchPos);
         }
 
         //WASD moves user
@@ -95,10 +90,11 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.S)) user.y -= 180 * Gdx.graphics.getDeltaTime();
         if (Gdx.input.isKeyPressed(Input.Keys.W)) user.y += 180 * Gdx.graphics.getDeltaTime();
 
-        //keep from user moving off the screen
+        //keep user from moving off the screen
         if (user.x < 0) user.x = 0;
-        if (user.x > 800 - 64) user.x = 800 - 64;
-
+        if (user.x > WIDTH - 64) user.x = 800 - 64;
+        if (user.y < 0) user.y = 0;
+        if (user.y > HEIGHT - 64) user.y = HEIGHT - 64;
         //spawn bullets
         //if (TimeUtils.nanoTime() - lastShotTime > 1000000000) spawnBullet();
 
@@ -119,7 +115,7 @@ public class GameScreen implements Screen {
         }*/
 
         //moves bullets, removes bullets off screen
-        Iterator<Bullet> uIter = uBullets.iterator();
+        Iterator<Bullet> uIter = user.getBullets().iterator();
         while (uIter.hasNext()) {
             Bullet bullet = uIter.next();
             bullet.y += 200 * bullet.velocity.y * Gdx.graphics.getDeltaTime();
@@ -130,12 +126,12 @@ public class GameScreen implements Screen {
         }
 
         //iterate through bullets and check if they collide with an enemy.
-        for (Bullet bullet: uBullets) {
+        for (Bullet bullet: user.getBullets()) {
             Iterator<Enemy> eIter = enemies.iterator();
             while (eIter.hasNext()) {
                 if (bullet.overlaps(eIter.next())) {
                     eIter.remove();
-                    uBullets.removeValue(bullet, true);
+                    user.getBullets().removeValue(bullet, true);
                 }
             }
         }
@@ -179,18 +175,6 @@ public class GameScreen implements Screen {
         user.y = y;
         user.width = width;
         user.height = height;
-    }
-
-    private void spawnUserBullet(Vector2 beginVector, Vector2 endVector) {
-        Vector2 v = new Vector2();
-        v.set(endVector).sub(beginVector).nor();
-        Bullet bullet = new Bullet(v, false);
-        bullet.x = user.x + 32 / 2;
-        bullet.y = user.y + 32 / 2;
-        bullet.width = 32;
-        bullet.height = 32;
-        uBullets.add(bullet);
-        lastShotTime = TimeUtils.nanoTime();
     }
 
     private void spawnSlime() {

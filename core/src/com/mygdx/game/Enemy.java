@@ -8,6 +8,11 @@ public class Enemy extends Rectangle {
     int movePattern;
 
     public Enemy() {
+        movePattern = MathUtils.random(2);
+    }
+
+    public void move() {
+
     }
 
 }

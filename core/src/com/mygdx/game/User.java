@@ -7,12 +7,11 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class User extends Rectangle {
 
-    private Array<Bullet> uBullets;
+    public static Array<Bullet> userBullets = new Array<Bullet>();
     private long lastShotTime;
     private int atkSpeed = 100000000;
 
     public User() {
-        uBullets = new Array<Bullet>();
     }
 
     public void move() {
@@ -27,12 +26,8 @@ public class User extends Rectangle {
         bullet.y = y + Constants.USER_HEIGHT / 4;
         bullet.width = Constants.BULLET_WIDTH;
         bullet.height = Constants.BULLET_HEIGHT;
-        uBullets.add(bullet);
+        userBullets.add(bullet);
         lastShotTime = TimeUtils.nanoTime();
-    }
-
-    public Array<Bullet> getBullets() {
-        return uBullets;
     }
 
     public long getLastShotTime() {

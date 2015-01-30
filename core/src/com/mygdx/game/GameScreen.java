@@ -61,7 +61,7 @@ public class GameScreen implements Screen {
         game.batch.draw(img, user.x, user.y);
 
         //draw all bullets and enemies from their respective arrays
-        for (Rectangle bullet: user.getBullets()) {
+        for (Rectangle bullet: User.userBullets) {
             game.batch.draw(bImg, bullet.x, bullet.y);
         }
 
@@ -100,21 +100,8 @@ public class GameScreen implements Screen {
         //spawn slimes
         if (TimeUtils.nanoTime() - lastSpawnTime > 1000000000) spawnSlime();
 
-        //moves bullets, does collisions
-        /*Iterator<Rectangle> iter = bullets.iterator();
-        while (iter.hasNext()) {
-            Rectangle bullet = iter.next();
-            bullet.y -= 200 * Gdx.graphics.getDeltaTime();
-            if (bullet.y + 64 < 0) {
-                iter.remove();
-            }
-            if (bullet.overlaps(user)) {
-                iter.remove();
-            }
-        }*/
-
         //moves bullets, removes bullets off screen
-        Iterator<Bullet> uIter = user.getBullets().iterator();
+        Iterator<Bullet> uIter = User.userBullets.iterator();
         while (uIter.hasNext()) {
             Bullet bullet = uIter.next();
             bullet.y += 200 * bullet.velocity.y * Gdx.graphics.getDeltaTime();
@@ -125,12 +112,12 @@ public class GameScreen implements Screen {
         }
 
         //iterate through bullets and check if they collide with an enemy.
-        for (Bullet bullet: user.getBullets()) {
+        for (Bullet bullet: User.userBullets) {
             Iterator<Enemy> eIter = enemies.iterator();
             while (eIter.hasNext()) {
                 if (bullet.overlaps(eIter.next())) {
                     eIter.remove();
-                    user.getBullets().removeValue(bullet, true);
+                    User.userBullets.removeValue(bullet, true);
                 }
             }
         }

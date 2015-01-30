@@ -135,6 +135,11 @@ public class GameScreen implements Screen {
                 }
             }
         }
+
+        //move all enemies
+        for (Enemy enemy: enemies) {
+            enemy.move();
+        }
     }
 
     @Override

@@ -29,9 +29,10 @@ public class MainMenuScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Welcome to Name! ", GameScreen.WIDTH / 2, GameScreen.HEIGHT / 2);
-        game.font.draw(game.batch, "Tap anywhere to begin!", GameScreen.WIDTH / 2,
-                GameScreen.HEIGHT / 2 + 100);
+        game.font.draw(game.batch, "Welcome to Name! ", Constants.GAMESCREEN_WIDTH / 2,
+                Constants.GAMESCREEN_HEIGHT / 2);
+        game.font.draw(game.batch, "Tap anywhere to begin!", Constants.GAMESCREEN_WIDTH / 2,
+                Constants.GAMESCREEN_HEIGHT / 2 + 100);
         game.batch.end();
 
         if (Gdx.input.isTouched()) {

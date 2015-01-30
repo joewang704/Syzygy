@@ -23,10 +23,10 @@ public class User extends Rectangle {
         Vector2 v = new Vector2();
         v.set(endVector).sub(beginVector).nor();
         Bullet bullet = new Bullet(v, false);
-        bullet.x = x + 32 / 2;
-        bullet.y = y + 32 / 2;
-        bullet.width = 32;
-        bullet.height = 32;
+        bullet.x = x + Constants.USER_WIDTH / 4;
+        bullet.y = y + Constants.USER_HEIGHT / 4;
+        bullet.width = Constants.BULLET_WIDTH;
+        bullet.height = Constants.BULLET_HEIGHT;
         uBullets.add(bullet);
         lastShotTime = TimeUtils.nanoTime();
     }

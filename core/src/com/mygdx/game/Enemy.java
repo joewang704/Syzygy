@@ -21,15 +21,15 @@ public class Enemy extends Rectangle {
             moveCtr++;
             x += 200 * Gdx.graphics.getDeltaTime() * moveDirection.x;
             y += 200 * Gdx.graphics.getDeltaTime() * moveDirection.y;
-            if (x >= GameScreen.WIDTH - 64) {
-                x = GameScreen.HEIGHT - 64;
+            if (x >= Constants.GAMESCREEN_WIDTH - 64) {
+                x = Constants.GAMESCREEN_HEIGHT - 64;
                 changeDirectionX();
             } else if (x < 0) {
                 x = 0;
                 changeDirectionX();
             }
-            if (y >= GameScreen.HEIGHT - 64) {
-                y = GameScreen.HEIGHT - 64;
+            if (y >= Constants.GAMESCREEN_HEIGHT - 64) {
+                y = Constants.GAMESCREEN_HEIGHT - 64;
                 changeDirectionY();
             } else if (y < 0) {
                 y = 0;

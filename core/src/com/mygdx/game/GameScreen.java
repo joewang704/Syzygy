@@ -17,9 +17,6 @@ import java.util.Iterator;
 
 public class GameScreen implements Screen {
     final Name game;
-    //Constants
-    final static int WIDTH = 800;
-    final static int HEIGHT = 480;
 
     //Camera
     OrthographicCamera camera;
@@ -42,8 +39,9 @@ public class GameScreen implements Screen {
         bImg = new Texture(Gdx.files.internal("soccer.png"));
         slimeImg = new Texture(Gdx.files.internal("cuteSlime64.png"));
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, WIDTH, HEIGHT);
-        createUser(WIDTH / 2 - 64 / 2, 0, 64, 64);
+        camera.setToOrtho(false, Constants.GAMESCREEN_WIDTH, Constants.GAMESCREEN_HEIGHT);
+        createUser(Constants.GAMESCREEN_WIDTH / 2 - Constants.USER_WIDTH / 2,
+                0, Constants.USER_WIDTH, Constants.USER_HEIGHT);
 
         enemies = new Array<Enemy>();
     }
@@ -76,10 +74,11 @@ public class GameScreen implements Screen {
         if (Gdx.input.isTouched() && TimeUtils.nanoTime() - user.getLastShotTime() > user.getAtkSpeed()) {
             //grab touched position
             Vector2 touchPos = new Vector2();
-            touchPos.set(Gdx.input.getX() - 32 / 2, HEIGHT - Gdx.input.getY() - 32 / 2);
+            touchPos.set(Gdx.input.getX() - Constants.BULLET_WIDTH / 2,
+                Constants.GAMESCREEN_HEIGHT - Gdx.input.getY() - Constants.BULLET_HEIGHT / 2);
             //grab user position
             Vector2 userPos = new Vector2();
-            userPos.set(user.x + 64 / 2, user.y + 64 / 2);
+            userPos.set(user.x + Constants.USER_WIDTH / 2, user.y + Constants.USER_HEIGHT / 2);
             //creates bullet using two positions
             user.fireBullet(userPos, touchPos);
         }
@@ -92,9 +91,9 @@ public class GameScreen implements Screen {
 
         //keep user from moving off the screen
         if (user.x < 0) user.x = 0;
-        if (user.x > WIDTH - 64) user.x = 800 - 64;
+        if (user.x > Constants.GAMESCREEN_WIDTH - 64) user.x = 800 - 64;
         if (user.y < 0) user.y = 0;
-        if (user.y > HEIGHT - 64) user.y = HEIGHT - 64;
+        if (user.y > Constants.GAMESCREEN_HEIGHT - 64) user.y = Constants.GAMESCREEN_HEIGHT - 64;
         //spawn bullets
         //if (TimeUtils.nanoTime() - lastShotTime > 1000000000) spawnBullet();
 
@@ -184,8 +183,10 @@ public class GameScreen implements Screen {
 
     private void spawnSlime() {
         Enemy e = new Enemy();
-        e.x = MathUtils.random(WIDTH / 3, 2 * WIDTH / 3);
-        e.y = MathUtils.random(HEIGHT / 3, 2 * HEIGHT / 3);
+        e.x = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
+                2 * Constants.GAMESCREEN_WIDTH / 3);
+        e.y = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
+                2 * Constants.GAMESCREEN_HEIGHT / 3);
         e.width = 64;
         e.height = 64;
         enemies.add(e);

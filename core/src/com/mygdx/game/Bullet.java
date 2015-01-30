@@ -9,11 +9,11 @@ import com.badlogic.gdx.math.Vector2;
 public class Bullet extends Rectangle {
 
     public float angle;
-    public Vector2 v;
+    public Vector2 velocity;
     public boolean isEnemy;
 
-    public Bullet(Vector2 v, boolean isEnemy) {
-        this.v = v;
+    public Bullet(Vector2 velocity, boolean isEnemy) {
+        this.velocity = velocity;
         this.isEnemy = isEnemy;
     }
 }

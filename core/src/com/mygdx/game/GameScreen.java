@@ -44,7 +44,7 @@ public class GameScreen implements Screen {
         this.game = gam;
         img = new Texture(Gdx.files.internal("wizard.png"));
         bImg = new Texture(Gdx.files.internal("soccer.png"));
-        slimeImg = new Texture(Gdx.files.internal("slime.gif"));
+        slimeImg = new Texture(Gdx.files.internal("cuteSlime64.png"));
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WIDTH, HEIGHT);
         createUser(WIDTH / 2 - 64 / 2, 0, 64, 64);
@@ -67,7 +67,7 @@ public class GameScreen implements Screen {
         game.batch.begin();
         game.batch.draw(img, user.x, user.y);
 
-        //draw all bullets in array
+        //draw all bullets and enemies from their respective arrays
         for (Rectangle bullet: uBullets) {
             game.batch.draw(bImg, bullet.x, bullet.y);
         }
@@ -118,22 +118,24 @@ public class GameScreen implements Screen {
             }
         }*/
 
-        //moves bullets, does collisions
+        //moves bullets, removes bullets off screen
         Iterator<Bullet> uIter = uBullets.iterator();
         while (uIter.hasNext()) {
-            Bullet b = uIter.next();
-            b.y += 200 * b.v.y * Gdx.graphics.getDeltaTime();
-            b.x += 200 * b.v.x * Gdx.graphics.getDeltaTime();
-            if (b.y + 64 < 0 || b.y > 480) {
+            Bullet bullet = uIter.next();
+            bullet.y += 200 * bullet.velocity.y * Gdx.graphics.getDeltaTime();
+            bullet.x += 200 * bullet.velocity.x * Gdx.graphics.getDeltaTime();
+            if (bullet.y + 64 < 0 || bullet.y > 480) {
                 uIter.remove();
             }
         }
 
-        Iterator<Enemy> eIter = enemies.iterator();
-        for (Bullet b : uBullets) {
+        //iterate through bullets and check if they collide with an enemy.
+        for (Bullet bullet: uBullets) {
+            Iterator<Enemy> eIter = enemies.iterator();
             while (eIter.hasNext()) {
-                if (b.overlaps(eIter.next())) {
+                if (bullet.overlaps(eIter.next())) {
                     eIter.remove();
+                    uBullets.removeValue(bullet, true);
                 }
             }
         }
@@ -183,10 +185,10 @@ public class GameScreen implements Screen {
         Vector2 v = new Vector2();
         v.set(endVector).sub(beginVector).nor();
         Bullet bullet = new Bullet(v, false);
-        bullet.x = user.x + 64 / 2;
-        bullet.y = user.y + 64 / 2;
-        bullet.width = 64;
-        bullet.height = 64;
+        bullet.x = user.x + 32 / 2;
+        bullet.y = user.y + 32 / 2;
+        bullet.width = 32;
+        bullet.height = 32;
         uBullets.add(bullet);
         lastShotTime = TimeUtils.nanoTime();
     }

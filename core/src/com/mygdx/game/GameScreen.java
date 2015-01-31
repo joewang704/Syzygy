@@ -31,6 +31,9 @@ public class GameScreen implements Screen {
     SpriteBatch batch;
     Texture img, bImg, slimeImg;
 
+    float xScalingFactor;
+    float yScalingFactor;
+
 
     public GameScreen(final Name gam) {
         this.game = gam;
@@ -41,7 +44,6 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, Constants.GAMESCREEN_WIDTH, Constants.GAMESCREEN_HEIGHT);
         createUser(Constants.GAMESCREEN_WIDTH / 2 - Constants.USER_WIDTH / 2,
                 0, Constants.USER_WIDTH, Constants.USER_HEIGHT);
-
         enemies = new Array<Enemy>();
     }
 
@@ -77,7 +79,9 @@ public class GameScreen implements Screen {
                 Constants.GAMESCREEN_HEIGHT - Gdx.input.getY() - Constants.BULLET_HEIGHT / 2);
             //grab user position
             Vector2 userPos = new Vector2();
-            userPos.set(user.x + Constants.USER_WIDTH / 2, user.y + Constants.USER_HEIGHT / 2);
+            userPos.set(user.x, user.y);
+            System.out.println(""+touchPos.x+" "+touchPos.y);
+            // + Constants.USER_WIDTH / 2
             //creates bullet using two positions
             user.fireBullet(userPos, touchPos);
         }
@@ -102,7 +106,7 @@ public class GameScreen implements Screen {
             Bullet bullet = uIter.next();
             bullet.y += 200 * bullet.velocity.y * Gdx.graphics.getDeltaTime();
             bullet.x += 200 * bullet.velocity.x * Gdx.graphics.getDeltaTime();
-            if (bullet.y + 64 < 0 || bullet.y > 480) {
+            if (bullet.y + Constants.BULLET_HEIGHT < 0 || bullet.y > Constants.GAMESCREEN_HEIGHT) {
                 uIter.remove();
             }
         }
@@ -126,6 +130,24 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        xScalingFactor = width / Constants.GAMESCREEN_WIDTH;
+        yScalingFactor = height / Constants.GAMESCREEN_HEIGHT;
+        user.x *= xScalingFactor;
+        user.y *= xScalingFactor;
+        user.width *= xScalingFactor;
+        user.height *= xScalingFactor;
+        for(Bullet bullet:User.userBullets) {
+            bullet.width *= xScalingFactor;
+            bullet.height *= yScalingFactor;
+        }
+        for(Enemy enemy:enemies) {
+            enemy.width *= xScalingFactor;
+            enemy.height *= yScalingFactor;
+        }
+
+        Constants.GAMESCREEN_WIDTH = width;
+        Constants.GAMESCREEN_HEIGHT = height;
+
     }
 
     @Override

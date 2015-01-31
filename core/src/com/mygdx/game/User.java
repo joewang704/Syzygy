@@ -29,8 +29,9 @@ public class User extends Rectangle {
         Vector2 v = new Vector2();
         v.set(endVector).sub(beginVector).nor();
         Bullet bullet = new Bullet(v, false);
-        bullet.x = x + Constants.USER_WIDTH / 4;
-        bullet.y = y + Constants.USER_HEIGHT / 4;
+        bullet.x = x;
+        bullet.y = y;
+        // + Constants.USER_WIDTH / 4
         bullet.width = Constants.BULLET_WIDTH;
         bullet.height = Constants.BULLET_HEIGHT;
         userBullets.add(bullet);

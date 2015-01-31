@@ -25,8 +25,8 @@ public class User extends Rectangle {
     }
 
     public void move(Vector2 direction) {
-        x += 200 * direction.x;
-        y += 180 * direction.y;
+        x += direction.x;
+        y += direction.y;
     }
 
     public void fireBullet(Vector2 beginVector, Vector2 endVector) {

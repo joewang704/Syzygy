@@ -28,20 +28,25 @@ public class ControlPad extends Circle implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         screenY = (int) (Constants.GAMESCREEN_HEIGHT - screenY);
         if (this.contains(screenX, screenY)) {
+            //would prefer to use .scl() but its not working
             directionVector.set(screenX, screenY).sub(center);
-            directionVector.scl(1/64);
+            directionVector.scl(1/8f);
             return true;
         }
         return false;
     }
 
+    //TODO speed INCREASES EXTRA when to top right of controller pad
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         screenY = (int) (Constants.GAMESCREEN_HEIGHT - screenY);
         if (this.contains(screenX, screenY)) {
+            //would prefer to use .scl() but its not working
             directionVector.set(screenX, screenY).sub(center);
+            directionVector.scl(1/8f);
         } else {
+            directionVector.set(screenX, screenY).sub(center);
             directionVector.nor();
-            directionVector.scl(radius/64);
+            directionVector.scl(radius/8f);
         }
         return true;
     }

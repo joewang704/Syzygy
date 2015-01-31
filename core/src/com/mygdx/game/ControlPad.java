@@ -14,6 +14,7 @@ public class ControlPad extends Circle implements InputProcessor {
     private Texture ctrlImg;
     private Vector2 center;
     private Vector2 directionVector;
+    private boolean touchDownOnPad;
 
     public ControlPad(String textureName, float x, float y, float radius) {
         ctrlImg = new Texture(Gdx.files.internal(textureName));
@@ -22,31 +23,31 @@ public class ControlPad extends Circle implements InputProcessor {
         this.radius = radius;
         center = new Vector2(x + radius/2, y + radius/2);
         directionVector = new Vector2(0, 0);
+        touchDownOnPad = false;
     }
 
     //screenX & Y are the touchPos
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         screenY = (int) (Constants.GAMESCREEN_HEIGHT - screenY);
+        float magnitude;
         if (this.contains(screenX, screenY)) {
-            //would prefer to use .scl() but its not working
             directionVector.set(screenX, screenY).sub(center);
             directionVector.scl(1/8f);
-            return true;
+            touchDownOnPad = true;
         }
-        return false;
+        return touchDownOnPad;
     }
 
     //TODO speed INCREASES EXTRA when to top right of controller pad
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         screenY = (int) (Constants.GAMESCREEN_HEIGHT - screenY);
-        if (this.contains(screenX, screenY)) {
-            //would prefer to use .scl() but its not working
+        if (this.contains(screenX, screenY) && touchDownOnPad) {
+            directionVector.set(screenX, screenY).sub(center).scl(1/8f);
+        } else if (touchDownOnPad) {
             directionVector.set(screenX, screenY).sub(center);
-            directionVector.scl(1/8f);
+            directionVector.nor().scl(radius/8f);
         } else {
-            directionVector.set(screenX, screenY).sub(center);
-            directionVector.nor();
-            directionVector.scl(radius/8f);
+            return false;
         }
         return true;
     }
@@ -54,6 +55,7 @@ public class ControlPad extends Circle implements InputProcessor {
     //TODO should this always return true?
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         directionVector.set(0, 0);
+        touchDownOnPad = false;
         return true;
     }
 
@@ -67,4 +69,5 @@ public class ControlPad extends Circle implements InputProcessor {
         return ctrlImg;
     }
     public Vector2 getDirectionVector() { return directionVector; }
+    public boolean getTouchDownOnPad() { return touchDownOnPad; }
 }

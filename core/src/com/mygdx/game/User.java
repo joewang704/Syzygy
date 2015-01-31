@@ -29,17 +29,17 @@ public class User extends Rectangle {
         y += direction.y;
     }
 
-    public void fireBullet(Vector2 beginVector, Vector2 endVector) {
-        Vector2 v = new Vector2();
-        v.set(endVector).sub(beginVector).nor();
-        Bullet bullet = new Bullet(v, false);
+    public void fireBullet(Vector2 direction, float speed) {
+        Bullet bullet = new Bullet(direction, speed, false);
         bullet.x = x;
         bullet.y = y;
         // + Constants.USER_WIDTH / 4
-        bullet.width = Constants.BULLET_WIDTH;
-        bullet.height = Constants.BULLET_HEIGHT;
-        userBullets.add(bullet);
-        lastShotTime = TimeUtils.nanoTime();
+        if (!bullet.getVelocity().equals(new Vector2 (0, 0))) {
+            bullet.width=Constants.BULLET_WIDTH;
+            bullet.height=Constants.BULLET_HEIGHT;
+            userBullets.add(bullet);
+            lastShotTime=TimeUtils.nanoTime();
+        }
     }
 
     public long getLastShotTime() {

@@ -1,9 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -104,8 +102,16 @@ public class GameScreen implements Screen {
 
         //WASD moves user
         user.move();
-        //ControlPad moves user
+        //ControlPad moves user, new Vector passed to fireBullet to avoid
+        //continuously pointing to direction vector and thus being able to change
+        //bullet direction in midair
+        //SPEED IS ARBITRARY
         user.move(ctrlPadMove.getDirectionVector());
+        if (TimeUtils.nanoTime() - user.getLastShotTime() > user.getAtkSpeed()) {
+            if (ctrlPadShoot.getTouchDownOnPad()) {
+                user.fireBullet(new Vector2(ctrlPadShoot.getDirectionVector()), 0.8f);
+            }
+        }
 
         //keep user from moving off the screen
         if (user.x < 0) user.x = 0;

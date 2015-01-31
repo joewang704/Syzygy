@@ -1,6 +1,9 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -17,8 +20,9 @@ import java.util.Iterator;
 public class GameScreen implements Screen {
     final Name game;
 
-    //Camera
+    //technical stuff: Camera, Input Processor
     OrthographicCamera camera;
+    InputMultiplexer inputMultiplexer;
 
     //Shapes
     public User user;
@@ -43,9 +47,13 @@ public class GameScreen implements Screen {
         slimeImg = new Texture(Gdx.files.internal("cuteSlime64.png"));
         ctrlPadMove = new ControlPad("controllerpad.png.jpg", 0, 0, 128);
         ctrlPadShoot = new ControlPad("controllerpad.png.jpg", Constants.GAMESCREEN_WIDTH - 128, 0, 128);
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Constants.GAMESCREEN_WIDTH, Constants.GAMESCREEN_HEIGHT);
-        createUser(Constants.GAMESCREEN_WIDTH / 2 - Constants.USER_WIDTH / 2,
+        inputMultiplexer = new InputMultiplexer(ctrlPadMove, ctrlPadShoot);
+        Gdx.input.setInputProcessor(inputMultiplexer);
+
+        spawnUser(Constants.GAMESCREEN_WIDTH / 2 - Constants.USER_WIDTH / 2,
                 0, Constants.USER_WIDTH, Constants.USER_HEIGHT);
         enemies = new Array<Enemy>();
     }
@@ -78,7 +86,7 @@ public class GameScreen implements Screen {
 
         game.batch.end();
 
-        //on screen touch, store bullet in uBullet array with proper direction
+       /* //on screen touch, store bullet in uBullet array with proper direction
         if (Gdx.input.isTouched() && TimeUtils.nanoTime() - user.getLastShotTime() > user.getAtkSpeed()) {
             //grab touched position
             Vector2 touchPos = new Vector2();
@@ -92,11 +100,12 @@ public class GameScreen implements Screen {
             //creates bullet using two positions
             user.fireBullet(userPos, touchPos);
         }
+        */
 
         //WASD moves user
         user.move();
         //ControlPad moves user
-        user.move(ctrlPadMove.checkForInput());
+        user.move(ctrlPadMove.getDirectionVector());
 
         //keep user from moving off the screen
         if (user.x < 0) user.x = 0;
@@ -187,7 +196,7 @@ public class GameScreen implements Screen {
     }
 
     //helper methods
-    private void createUser(float x, float y, float width, float height) {
+    private void spawnUser(float x, float y, float width, float height) {
         user = new User();
         user.x = x;
         user.y = y;

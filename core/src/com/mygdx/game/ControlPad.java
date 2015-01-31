@@ -21,6 +21,7 @@ public class ControlPad extends Circle {
     }
 
     //TODO Fix two fingers on a single control pad problem
+    //Takes touchPos and compares it to center of circle to create a movement vector
     public Vector2 checkForInput() {
         for (int i = 0; i < 2; i++) {
             Vector2 usageVector = new Vector2();
@@ -30,7 +31,7 @@ public class ControlPad extends Circle {
                 return usageVector;
             }
         }
-        return null;
+        return new Vector2(0, 0);
     }
 
     public Texture getTexture() {

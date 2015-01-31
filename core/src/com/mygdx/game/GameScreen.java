@@ -30,6 +30,7 @@ public class GameScreen implements Screen {
     //Sprites
     SpriteBatch batch;
     Texture img, bImg, slimeImg;
+    ControlPad ctrlPadMove, ctrlPadShoot;
 
     float xScalingFactor;
     float yScalingFactor;
@@ -40,6 +41,8 @@ public class GameScreen implements Screen {
         img = new Texture(Gdx.files.internal("wizard.png"));
         bImg = new Texture(Gdx.files.internal("soccer.png"));
         slimeImg = new Texture(Gdx.files.internal("cuteSlime64.png"));
+        ctrlPadMove = new ControlPad("controllerpad.png.jpg", 0, 0, 128);
+        ctrlPadShoot = new ControlPad("controllerpad.png.jpg", Constants.GAMESCREEN_WIDTH - 128, 0, 128);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Constants.GAMESCREEN_WIDTH, Constants.GAMESCREEN_HEIGHT);
         createUser(Constants.GAMESCREEN_WIDTH / 2 - Constants.USER_WIDTH / 2,
@@ -69,6 +72,10 @@ public class GameScreen implements Screen {
         for (Enemy enemy: enemies) {
             game.batch.draw(slimeImg, enemy.x, enemy.y);
         }
+
+        game.batch.draw(ctrlPadMove.getTexture(), 0, 0);
+        game.batch.draw(ctrlPadShoot.getTexture(), Constants.GAMESCREEN_WIDTH - 128, 0);
+
         game.batch.end();
 
         //on screen touch, store bullet in uBullet array with proper direction
@@ -88,6 +95,8 @@ public class GameScreen implements Screen {
 
         //WASD moves user
         user.move();
+        //ControlPad moves user
+        user.move(ctrlPadMove.checkForInput());
 
         //keep user from moving off the screen
         if (user.x < 0) user.x = 0;

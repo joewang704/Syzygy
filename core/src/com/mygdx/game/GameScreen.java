@@ -109,7 +109,7 @@ public class GameScreen implements Screen {
         user.move(ctrlPadMove.getDirectionVector());
         if (TimeUtils.nanoTime() - user.getLastShotTime() > user.getAtkSpeed()) {
             if (ctrlPadShoot.getTouchDownOnPad()) {
-                user.fireBullet(new Vector2(ctrlPadShoot.getDirectionVector()), 0.8f);
+                user.fireBullet(new Vector2(ctrlPadShoot.getDirectionVector()), 2);
             }
         }
 

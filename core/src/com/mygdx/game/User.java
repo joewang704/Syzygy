@@ -14,7 +14,7 @@ public class User extends Rectangle {
     private int atkSpeed;
 
     public User() {
-        atkSpeed = 100000000;
+        atkSpeed = 300000000;
     }
 
     public void move() {
@@ -30,21 +30,19 @@ public class User extends Rectangle {
     }
 
     public void fireBullet(Vector2 direction, float speed) {
-        Bullet bullet = new Bullet(direction, speed, false);
+        Bullet bullet = new Bullet(direction.nor(), speed, false);
         bullet.x = x;
         bullet.y = y;
         // + Constants.USER_WIDTH / 4
         if (!bullet.getVelocity().equals(new Vector2 (0, 0))) {
-            bullet.width=Constants.BULLET_WIDTH;
-            bullet.height=Constants.BULLET_HEIGHT;
+            bullet.width = Constants.BULLET_WIDTH;
+            bullet.height = Constants.BULLET_HEIGHT;
             userBullets.add(bullet);
-            lastShotTime=TimeUtils.nanoTime();
+            lastShotTime = TimeUtils.nanoTime();
         }
     }
 
-    public long getLastShotTime() {
-        return lastShotTime;
-    }
+    public long getLastShotTime() { return lastShotTime; }
 
     public int getAtkSpeed() {
         return atkSpeed;

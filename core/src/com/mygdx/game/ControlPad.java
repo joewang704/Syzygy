@@ -56,7 +56,7 @@ public class ControlPad extends Circle implements InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         directionVector.set(0, 0);
         touchDownOnPad = false;
-        return true;
+        return touchDownOnPad;
     }
 
     public boolean keyUp(int keyCode) { return false; }

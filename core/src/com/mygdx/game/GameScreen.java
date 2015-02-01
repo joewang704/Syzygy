@@ -11,7 +11,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import sun.security.pkcs11.wrapper.CK_PBE_PARAMS;
 
@@ -22,7 +24,8 @@ public class GameScreen implements Screen {
     final Name game;
 
     //technical stuff: Input Processor
-    InputMultiplexer inputMultiplexer;
+    private InputMultiplexer inputMultiplexer;
+    public static Map<Integer, TouchInfo> touchMap;
 
     //Shapes
     public User user;
@@ -41,12 +44,19 @@ public class GameScreen implements Screen {
         img = new Texture(Gdx.files.internal("wizard.png"));
         bImg = new Texture(Gdx.files.internal("soccer.png"));
         slimeImg = new Texture(Gdx.files.internal("cuteSlime64.png"));
+
         ctrlPadMove = new ControlPad("controllerpad1.png",
                 90 + Constants.CP_PADDING, 90 + Constants.CP_PADDING, 90);
         ctrlPadShoot = new ControlPad("controllerpad1.png",
                 Constants.GAMESCREEN_WIDTH - 90 - Constants.CP_PADDING, 90 + Constants.CP_PADDING, 90);
+
         inputMultiplexer = new InputMultiplexer(ctrlPadMove, ctrlPadShoot);
         Gdx.input.setInputProcessor(inputMultiplexer);
+
+        touchMap = new HashMap<Integer, TouchInfo>();
+        for (int i = 0; i < 3; i++) {
+            touchMap.put(i, new TouchInfo());
+        }
 
         spawnUser(Constants.GAMESCREEN_WIDTH / 2 - Constants.USER_WIDTH / 2,
                 0, Constants.USER_WIDTH, Constants.USER_HEIGHT);
@@ -90,12 +100,15 @@ public class GameScreen implements Screen {
         //WASD moves user
         user.move();
         //ControlPad moves user, new Vector passed to fireBullet to avoid
-        //continuously pointing to direction vector and thus being able to change
-        //bullet direction in midair
-        //SPEED IS ARBITRARY
-        user.move(ctrlPadMove.getDirectionVector());
+        //continuously pointing to direction vector
+        //SPEED PARAM IS ARBITRARY
+        if (GameScreen.touchMap.get(ctrlPadMove.getInputPointer()).touched) {
+            user.move(ctrlPadMove.getDirectionVector());
+        }
+       //block of code to fire bullets is stretching the controlPads...
         if (TimeUtils.nanoTime() - user.getLastShotTime() > user.getAtkSpeed()) {
-            if (ctrlPadShoot.getTouchDownOnPad()) {
+            //checks to see if ctrlPadShoot is depressed
+            if (GameScreen.touchMap.get(ctrlPadShoot.getInputPointer()).touched) {
                 user.fireBullet(new Vector2(ctrlPadShoot.getDirectionVector()), 2);
             }
         }

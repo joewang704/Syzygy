@@ -4,25 +4,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.Iterator;
 
 public class GameScreen implements Screen {
     final Name game;
 
-    //technical stuff: Camera, Input Processor
-    OrthographicCamera camera;
+    //technical stuff: Input Processor
     InputMultiplexer inputMultiplexer;
 
     //Shapes
@@ -33,14 +27,8 @@ public class GameScreen implements Screen {
     private long lastSpawnTime;
 
     //Sprites
-    SpriteBatch batch;
     Texture img, bImg, slimeImg;
     ControlPad ctrlPadMove, ctrlPadShoot;
-
-    //float xScalingFactor;
-    //float yScalingFactor;
-    private Stage stage;
-    private Viewport viewport;
 
 
     public GameScreen(final Name gam) {
@@ -48,23 +36,15 @@ public class GameScreen implements Screen {
         img = new Texture(Gdx.files.internal("wizard.png"));
         bImg = new Texture(Gdx.files.internal("soccer.png"));
         slimeImg = new Texture(Gdx.files.internal("cuteSlime64.png"));
-        ctrlPadMove = new ControlPad("controllerpad.png.jpg", 0, 0, 64);
+        ctrlPadMove = new ControlPad("controllerpad.png.jpg", 0, 0, 128);
         ctrlPadShoot = new ControlPad("controllerpad.png.jpg",
-                Constants.GAMESCREEN_WIDTH - 128, 0, 64);
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Constants.GAMESCREEN_WIDTH, Constants.GAMESCREEN_HEIGHT);
+                Constants.GAMESCREEN_WIDTH - 128, 0, 128);
         inputMultiplexer = new InputMultiplexer(ctrlPadMove, ctrlPadShoot);
         Gdx.input.setInputProcessor(inputMultiplexer);
 
         spawnUser(Constants.GAMESCREEN_WIDTH / 2 - Constants.USER_WIDTH / 2,
                 0, Constants.USER_WIDTH, Constants.USER_HEIGHT);
         enemies = new Array<Enemy>();
-
-        //make stage and viewport
-        viewport = new StretchViewport(Constants.GAMESCREEN_WIDTH,
-                Constants.GAMESCREEN_HEIGHT);
-        stage = new Stage(viewport);
     }
 
     @Override
@@ -74,26 +54,28 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //update camera (should be done after each change in camera)
-        camera.update();
+        game.stage.getViewport().getCamera().update();
 
         //render elements
-        game.batch.setProjectionMatrix(camera.combined);
-        game.batch.begin();
-        game.batch.draw(img, user.x, user.y);
+        game.stage.getBatch().setProjectionMatrix(game.stage.getViewport().getCamera().combined);
+        game.stage.getBatch().begin();
+        game.stage.getBatch().draw(img, user.x, user.y);
 
         //draw all bullets and enemies from their respective arrays
         for (Rectangle bullet: User.userBullets) {
-            game.batch.draw(bImg, bullet.x, bullet.y);
+            game.stage.getBatch().draw(bImg, bullet.x, bullet.y);
         }
 
         for (Enemy enemy: enemies) {
-            game.batch.draw(slimeImg, enemy.x, enemy.y);
+            game.stage.getBatch().draw(slimeImg, enemy.x, enemy.y);
         }
 
-        game.batch.draw(ctrlPadMove.getTexture(), 0, 0);
-        game.batch.draw(ctrlPadShoot.getTexture(), Constants.GAMESCREEN_WIDTH - 128, 0);
+        game.stage.getBatch().draw(ctrlPadMove.getTexture(), 0, 0);
+        game.stage.getBatch().draw(ctrlPadShoot.getTexture(), Constants.GAMESCREEN_WIDTH - 128, 0);
 
-        game.batch.end();
+        game.stage.getBatch().end();
+
+        //game.stage.draw();
 
         //WASD moves user
         user.move();
@@ -147,25 +129,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        /*xScalingFactor = width / Constants.GAMESCREEN_WIDTH;
-        yScalingFactor = height / Constants.GAMESCREEN_HEIGHT;
-        user.x *= xScalingFactor;
-        user.y *= xScalingFactor;
-        user.width *= xScalingFactor;
-        user.height *= xScalingFactor;
-        for(Bullet bullet:User.userBullets) {
-            bullet.width *= xScalingFactor;
-            bullet.height *= yScalingFactor;
-        }
-        for(Enemy enemy:enemies) {
-            enemy.width *= xScalingFactor;
-            enemy.height *= yScalingFactor;
-        }
-
-        Constants.GAMESCREEN_WIDTH = width;
-        Constants.GAMESCREEN_HEIGHT = height;*/
-        stage.getViewport().update(width, height, false);
-
+        game.stage.getViewport().update(width, height, true);
+        Constants.BULLET_HEIGHT = height / 40;
+        Constants.BULLET_WIDTH = width / 40;
+        Constants.USER_HEIGHT = height / 80;
+        Constants.USER_WIDTH = width / 80;
     }
 
     @Override
@@ -192,7 +160,6 @@ public class GameScreen implements Screen {
         //dispose of all native resources
         img.dispose();
         bImg.dispose();
-        batch.dispose();
     }
 
     //helper methods

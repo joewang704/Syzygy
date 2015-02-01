@@ -10,8 +10,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.Iterator;
 
@@ -34,8 +37,10 @@ public class GameScreen implements Screen {
     Texture img, bImg, slimeImg;
     ControlPad ctrlPadMove, ctrlPadShoot;
 
-    float xScalingFactor;
-    float yScalingFactor;
+    //float xScalingFactor;
+    //float yScalingFactor;
+    private Stage stage;
+    private Viewport viewport;
 
 
     public GameScreen(final Name gam) {
@@ -43,8 +48,9 @@ public class GameScreen implements Screen {
         img = new Texture(Gdx.files.internal("wizard.png"));
         bImg = new Texture(Gdx.files.internal("soccer.png"));
         slimeImg = new Texture(Gdx.files.internal("cuteSlime64.png"));
-        ctrlPadMove = new ControlPad("controllerpad.png.jpg", 0, 0, 128);
-        ctrlPadShoot = new ControlPad("controllerpad.png.jpg", Constants.GAMESCREEN_WIDTH - 128, 0, 128);
+        ctrlPadMove = new ControlPad("controllerpad.png.jpg", 0, 0, 64);
+        ctrlPadShoot = new ControlPad("controllerpad.png.jpg",
+                Constants.GAMESCREEN_WIDTH - 128, 0, 64);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Constants.GAMESCREEN_WIDTH, Constants.GAMESCREEN_HEIGHT);
@@ -54,6 +60,11 @@ public class GameScreen implements Screen {
         spawnUser(Constants.GAMESCREEN_WIDTH / 2 - Constants.USER_WIDTH / 2,
                 0, Constants.USER_WIDTH, Constants.USER_HEIGHT);
         enemies = new Array<Enemy>();
+
+        //make stage and viewport
+        viewport = new StretchViewport(Constants.GAMESCREEN_WIDTH,
+                Constants.GAMESCREEN_HEIGHT);
+        stage = new Stage(viewport);
     }
 
     @Override
@@ -84,22 +95,6 @@ public class GameScreen implements Screen {
 
         game.batch.end();
 
-       /* //on screen touch, store bullet in uBullet array with proper direction
-        if (Gdx.input.isTouched() && TimeUtils.nanoTime() - user.getLastShotTime() > user.getAtkSpeed()) {
-            //grab touched position
-            Vector2 touchPos = new Vector2();
-            touchPos.set(Gdx.input.getX() - Constants.BULLET_WIDTH / 2,
-                Constants.GAMESCREEN_HEIGHT - Gdx.input.getY() - Constants.BULLET_HEIGHT / 2);
-            //grab user position
-            Vector2 userPos = new Vector2();
-            userPos.set(user.x, user.y);
-            System.out.println(""+touchPos.x+" "+touchPos.y);
-            // + Constants.USER_WIDTH / 2
-            //creates bullet using two positions
-            user.fireBullet(userPos, touchPos);
-        }
-        */
-
         //WASD moves user
         user.move();
         //ControlPad moves user, new Vector passed to fireBullet to avoid
@@ -118,8 +113,6 @@ public class GameScreen implements Screen {
         if (user.x > Constants.GAMESCREEN_WIDTH - 64) user.x = 800 - 64;
         if (user.y < 0) user.y = 0;
         if (user.y > Constants.GAMESCREEN_HEIGHT - 64) user.y = Constants.GAMESCREEN_HEIGHT - 64;
-        //spawn bullets
-        //if (TimeUtils.nanoTime() - lastShotTime > 1000000000) spawnBullet();
 
         //spawn slimes
         if (TimeUtils.nanoTime() - lastSpawnTime > 1000000000) spawnSlime();
@@ -154,7 +147,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        xScalingFactor = width / Constants.GAMESCREEN_WIDTH;
+        /*xScalingFactor = width / Constants.GAMESCREEN_WIDTH;
         yScalingFactor = height / Constants.GAMESCREEN_HEIGHT;
         user.x *= xScalingFactor;
         user.y *= xScalingFactor;
@@ -170,7 +163,8 @@ public class GameScreen implements Screen {
         }
 
         Constants.GAMESCREEN_WIDTH = width;
-        Constants.GAMESCREEN_HEIGHT = height;
+        Constants.GAMESCREEN_HEIGHT = height;*/
+        stage.getViewport().update(width, height, false);
 
     }
 

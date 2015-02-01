@@ -35,7 +35,7 @@ public class ControlPad extends Circle implements InputProcessor {
             directionVector.scl(1/8f);
             touchDownOnPad = true;
         }
-        return touchDownOnPad;
+        return false;
     }
 
     //TODO speed INCREASES EXTRA when to top right of controller pad
@@ -46,17 +46,15 @@ public class ControlPad extends Circle implements InputProcessor {
         } else if (touchDownOnPad) {
             directionVector.set(screenX, screenY).sub(center);
             directionVector.nor().scl(radius/8f);
-        } else {
-            return false;
         }
-        return true;
+        return false;
     }
 
     //TODO should this always return true?
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         directionVector.set(0, 0);
         touchDownOnPad = false;
-        return touchDownOnPad;
+        return false;
     }
 
     public boolean keyUp(int keyCode) { return false; }

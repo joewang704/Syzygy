@@ -13,7 +13,12 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.Iterator;
 
+import sun.security.pkcs11.wrapper.CK_PBE_PARAMS;
+
 public class GameScreen implements Screen {
+    //why does Name extend Game? We should change it its not very logical
+    //does Name need to be passed to GameScreen at all? looks like we don't really use it.
+    //should Name be final?
     final Name game;
 
     //technical stuff: Input Processor
@@ -36,9 +41,10 @@ public class GameScreen implements Screen {
         img = new Texture(Gdx.files.internal("wizard.png"));
         bImg = new Texture(Gdx.files.internal("soccer.png"));
         slimeImg = new Texture(Gdx.files.internal("cuteSlime64.png"));
-        ctrlPadMove = new ControlPad("controllerpad.png.jpg", 0, 0, 128);
-        ctrlPadShoot = new ControlPad("controllerpad.png.jpg",
-                Constants.GAMESCREEN_WIDTH - 128, 0, 128);
+        ctrlPadMove = new ControlPad("controllerpad1.png",
+                90 + Constants.CP_PADDING, 90 + Constants.CP_PADDING, 90);
+        ctrlPadShoot = new ControlPad("controllerpad1.png",
+                Constants.GAMESCREEN_WIDTH - 90 - Constants.CP_PADDING, 90 + Constants.CP_PADDING, 90);
         inputMultiplexer = new InputMultiplexer(ctrlPadMove, ctrlPadShoot);
         Gdx.input.setInputProcessor(inputMultiplexer);
 
@@ -71,9 +77,12 @@ public class GameScreen implements Screen {
             game.stage.getBatch().draw(slimeImg, enemy.x, enemy.y, enemy.width, enemy.height);
         }
 
-        game.stage.getBatch().draw(ctrlPadMove.getTexture(), 0, 0);
-        game.stage.getBatch().draw(ctrlPadShoot.getTexture(), Constants.GAMESCREEN_WIDTH - 128, 0);
-
+        //draw ControlPads with padding equal to 1/8 of GS Height & Width
+        //---->When using GS Height & Width to draw padding it stretches textures.
+        game.stage.getBatch().draw(ctrlPadMove.getTexture(),
+                Constants.CP_PADDING, Constants.CP_PADDING);
+        game.stage.getBatch().draw(ctrlPadShoot.getTexture(),
+                Constants.GAMESCREEN_WIDTH - 180 - Constants.CP_PADDING, Constants.CP_PADDING);
         game.stage.getBatch().end();
 
         //game.stage.draw();
@@ -90,14 +99,6 @@ public class GameScreen implements Screen {
                 user.fireBullet(new Vector2(ctrlPadShoot.getDirectionVector()), 2);
             }
         }
-
-        //keep user from moving off the screen
-        if (user.x < 0) user.x = 0;
-        if (user.x > Constants.GAMESCREEN_WIDTH - Constants.USER_WIDTH)
-            user.x = 800 - Constants.USER_WIDTH;
-        if (user.y < 0) user.y = 0;
-        if (user.y > Constants.GAMESCREEN_HEIGHT - Constants.USER_HEIGHT)
-            user.y = Constants.GAMESCREEN_HEIGHT - Constants.USER_HEIGHT;
 
         //spawn slimes
         if (TimeUtils.nanoTime() - lastSpawnTime > 1000000000) spawnSlime();

@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Lucas on 1/31/2015.
  */
@@ -15,6 +18,7 @@ public class ControlPad extends Circle implements InputProcessor {
     private Vector2 center;
     private Vector2 directionVector;
     private boolean touchDownOnPad;
+    private Map<Integer, TouchInfo> touchMap = new HashMap<Integer, TouchInfo>();
 
     public ControlPad(String textureName, float x, float y, float radius) {
         ctrlImg = new Texture(Gdx.files.internal(textureName));
@@ -24,15 +28,19 @@ public class ControlPad extends Circle implements InputProcessor {
         center = new Vector2(x + radius/2, y + radius/2);
         directionVector = new Vector2(0, 0);
         touchDownOnPad = false;
+
+        for (int i = 0; i < 5; i++) {
+            touchMap.put(i, new TouchInfo());
+        }
     }
 
     //screenX & Y are the touchPos
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         screenY = (int) (Constants.GAMESCREEN_HEIGHT - screenY);
-        float magnitude;
+
         if (this.contains(screenX, screenY)) {
             directionVector.set(screenX, screenY).sub(center);
-            directionVector.scl(1/8f);
+            directionVector.scl(1/16f);
             touchDownOnPad = true;
         }
         return false;

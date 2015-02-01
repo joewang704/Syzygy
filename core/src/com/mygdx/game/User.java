@@ -27,6 +27,17 @@ public class User extends Rectangle {
     public void move(Vector2 direction) {
         x += direction.x;
         y += direction.y;
+
+        //keep user from moving off the screen
+        if (x < 0) x = 0;
+        if (y < 0) y = 0;
+        if (x > Constants.GAMESCREEN_WIDTH - Constants.USER_WIDTH) {
+            x = Constants.GAMESCREEN_WIDTH - Constants.USER_WIDTH;
+        }
+        if (y > Constants.GAMESCREEN_HEIGHT - Constants.USER_HEIGHT){
+            y = Constants.GAMESCREEN_HEIGHT - Constants.USER_HEIGHT;
+        }
+
     }
 
     public void fireBullet(Vector2 direction, float speed) {

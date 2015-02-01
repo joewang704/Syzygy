@@ -59,15 +59,16 @@ public class GameScreen implements Screen {
         //render elements
         game.stage.getBatch().setProjectionMatrix(game.stage.getViewport().getCamera().combined);
         game.stage.getBatch().begin();
-        game.stage.getBatch().draw(img, user.x, user.y);
+        //game.stage.getBatch().draw(img, user.x, user.y);
+        game.stage.getBatch().draw(img, user.x, user.y, user.width, user.height);
 
         //draw all bullets and enemies from their respective arrays
         for (Rectangle bullet: User.userBullets) {
-            game.stage.getBatch().draw(bImg, bullet.x, bullet.y);
+            game.stage.getBatch().draw(bImg, bullet.x, bullet.y, bullet.width, bullet.height);
         }
 
         for (Enemy enemy: enemies) {
-            game.stage.getBatch().draw(slimeImg, enemy.x, enemy.y);
+            game.stage.getBatch().draw(slimeImg, enemy.x, enemy.y, enemy.width, enemy.height);
         }
 
         game.stage.getBatch().draw(ctrlPadMove.getTexture(), 0, 0);
@@ -92,9 +93,11 @@ public class GameScreen implements Screen {
 
         //keep user from moving off the screen
         if (user.x < 0) user.x = 0;
-        if (user.x > Constants.GAMESCREEN_WIDTH - 64) user.x = 800 - 64;
+        if (user.x > Constants.GAMESCREEN_WIDTH - Constants.USER_WIDTH)
+            user.x = 800 - Constants.USER_WIDTH;
         if (user.y < 0) user.y = 0;
-        if (user.y > Constants.GAMESCREEN_HEIGHT - 64) user.y = Constants.GAMESCREEN_HEIGHT - 64;
+        if (user.y > Constants.GAMESCREEN_HEIGHT - Constants.USER_HEIGHT)
+            user.y = Constants.GAMESCREEN_HEIGHT - Constants.USER_HEIGHT;
 
         //spawn slimes
         if (TimeUtils.nanoTime() - lastSpawnTime > 1000000000) spawnSlime();
@@ -130,10 +133,11 @@ public class GameScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         game.stage.getViewport().update(width, height, true);
-        Constants.BULLET_HEIGHT = height / 40;
-        Constants.BULLET_WIDTH = width / 40;
-        Constants.USER_HEIGHT = height / 80;
-        Constants.USER_WIDTH = width / 80;
+        //Constants.BULLET_HEIGHT = height / 40;
+        //Constants.BULLET_WIDTH = width / 40;
+        //Constants.USER_HEIGHT = height / 80;
+        //Constants.USER_WIDTH = width / 80;
+        //System.out.println(Constants.BULLET_HEIGHT+" "+Constants.BULLET_WIDTH);
     }
 
     @Override
@@ -177,8 +181,8 @@ public class GameScreen implements Screen {
                 2 * Constants.GAMESCREEN_WIDTH / 3);
         e.y = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
                 2 * Constants.GAMESCREEN_HEIGHT / 3);
-        e.width = 64;
-        e.height = 64;
+        e.width = Constants.SLIME_ENEMY_WIDTH;
+        e.height = Constants.SLIME_ENEMY_HEIGHT;
         enemies.add(e);
         lastSpawnTime = TimeUtils.nanoTime();
     }

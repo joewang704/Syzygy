@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Created by wojang on 1/26/15.
  */
-public class Name extends Game {
+public class Syzygy extends Game {
 
     public SpriteBatch batch;
     public BitmapFont font;

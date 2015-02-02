@@ -9,12 +9,12 @@ import com.badlogic.gdx.Screen;
  * Created by wojang on 1/26/15.
  */
 public class MainMenuScreen implements Screen {
-    final Name game;
+    final Syzygy game;
 
     OrthographicCamera camera;
 
-    public MainMenuScreen(final Name gam) {
-        game = gam;
+    public MainMenuScreen(final Syzygy game) {
+        this.game = game;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);

@@ -21,7 +21,7 @@ public class GameScreen implements Screen {
     //why does Name extend Game? We should change it its not very logical
     //does Name need to be passed to GameScreen at all? looks like we don't really use it.
     //should Name be final?
-    final Name game;
+    final Syzygy game;
 
     //technical stuff: Input Processor
     private InputMultiplexer inputMultiplexer;
@@ -39,8 +39,8 @@ public class GameScreen implements Screen {
     ControlPad ctrlPadMove, ctrlPadShoot;
 
 
-    public GameScreen(final Name gam) {
-        this.game = gam;
+    public GameScreen(final Syzygy game) {
+        this.game = game;
         img = new Texture(Gdx.files.internal("wizard.png"));
         bImg = new Texture(Gdx.files.internal("soccer.png"));
         slimeImg = new Texture(Gdx.files.internal("cuteSlime64.png"));

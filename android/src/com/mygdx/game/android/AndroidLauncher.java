@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.mygdx.game.Name;
+import com.mygdx.game.Syzygy;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
@@ -13,6 +13,6 @@ public class AndroidLauncher extends AndroidApplication {
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         config.useAccelerometer = false;
         config.useCompass = false;
-		initialize(new Name(), config);
+		initialize(new Syzygy(), config);
 	}
 }

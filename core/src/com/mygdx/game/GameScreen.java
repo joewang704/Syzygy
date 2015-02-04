@@ -29,7 +29,7 @@ public class GameScreen implements Screen {
 
     //Shapes
     public User user;
-    Array<Enemy> enemies;
+    public Array<Enemy> enemies;
 
     //Utility
     private long lastSpawnTime;
@@ -117,7 +117,7 @@ public class GameScreen implements Screen {
         if (TimeUtils.nanoTime() - lastSpawnTime > 1000000000) spawnSlime();
 
         //moves bullets, removes bullets off screen
-        Iterator<Bullet> uIter = User.userBullets.iterator();
+        /*Iterator<Bullet> uIter = User.userBullets.iterator();
         while (uIter.hasNext()) {
             Bullet bullet = uIter.next();
             bullet.y += 200 * bullet.velocity.y * Gdx.graphics.getDeltaTime();
@@ -125,10 +125,11 @@ public class GameScreen implements Screen {
             if (bullet.y + Constants.BULLET_HEIGHT < 0 || bullet.y > Constants.GAMESCREEN_HEIGHT) {
                 uIter.remove();
             }
-        }
-
+        }*/
+        Collisions.removeBullets(); //removes bullets that have flown off the screen
+        Collisions.enemyHits(enemies); //removes enemies that have been hit by bullets
         //iterate through bullets and check if they collide with an enemy.
-        for (Bullet bullet: User.userBullets) {
+        /*for (Bullet bullet: User.userBullets) {
             Iterator<Enemy> eIter = enemies.iterator();
             while (eIter.hasNext()) {
                 if (bullet.overlaps(eIter.next())) {
@@ -136,7 +137,7 @@ public class GameScreen implements Screen {
                     User.userBullets.removeValue(bullet, true);
                 }
             }
-        }
+        }*/
 
         //move all enemies
         for (Enemy enemy: enemies) {

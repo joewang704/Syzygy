@@ -15,9 +15,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import sun.security.pkcs11.wrapper.CK_PBE_PARAMS;
-
-public class GameScreen implements Screen {
+public class RoomScreen implements Screen {
     //why does Name extend Game? We should change it its not very logical
     //does Name need to be passed to GameScreen at all? looks like we don't really use it.
     //should Name be final?
@@ -39,7 +37,7 @@ public class GameScreen implements Screen {
     ControlPad ctrlPadMove, ctrlPadShoot;
 
 
-    public GameScreen(final Syzygy game) {
+    public RoomScreen(final Syzygy game) {
         this.game = game;
         img = new Texture(Gdx.files.internal("wizard.png"));
         bImg = new Texture(Gdx.files.internal("soccer.png"));
@@ -102,13 +100,13 @@ public class GameScreen implements Screen {
         //ControlPad moves user, new Vector passed to fireBullet to avoid
         //continuously pointing to direction vector
         //SPEED PARAM IS ARBITRARY
-        if (GameScreen.touchMap.get(ctrlPadMove.getInputPointer()).touched) {
+        if (RoomScreen.touchMap.get(ctrlPadMove.getInputPointer()).touched) {
             user.move(ctrlPadMove.getDirectionVector());
         }
        //block of code to fire bullets is stretching the controlPads...
         if (TimeUtils.nanoTime() - user.getLastShotTime() > user.getAtkSpeed()) {
             //checks to see if ctrlPadShoot is depressed
-            if (GameScreen.touchMap.get(ctrlPadShoot.getInputPointer()).touched) {
+            if (RoomScreen.touchMap.get(ctrlPadShoot.getInputPointer()).touched) {
                 user.fireBullet(new Vector2(ctrlPadShoot.getDirectionVector()), 2);
             }
         }

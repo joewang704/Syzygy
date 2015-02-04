@@ -28,7 +28,7 @@ public class Syzygy extends Game {
         stage = new Stage(viewport, batch);
         //Use default arial font
         font = new BitmapFont();
-        this.setScreen(new MainMenuScreen(this));
+        this.setScreen(new StartScreen(this));
     }
 
     public void render() {

@@ -8,12 +8,11 @@ import com.badlogic.gdx.Screen;
 /**
  * Created by wojang on 1/26/15.
  */
-public class MainMenuScreen implements Screen {
+public class StartScreen implements Screen {
     final Syzygy game;
-
     OrthographicCamera camera;
 
-    public MainMenuScreen(final Syzygy game) {
+    public StartScreen(final Syzygy game) {
         this.game = game;
 
         camera = new OrthographicCamera();
@@ -36,7 +35,7 @@ public class MainMenuScreen implements Screen {
         game.batch.end();
 
         if (Gdx.input.isTouched()) {
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new NewMainMenuScreen(game));
             dispose();
         }
     }

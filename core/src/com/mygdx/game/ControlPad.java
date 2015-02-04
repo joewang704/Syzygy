@@ -1,14 +1,10 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Lucas on 1/31/2015.
@@ -32,10 +28,10 @@ public class ControlPad extends Circle implements InputProcessor {
         screenY = (int) (Constants.GAMESCREEN_HEIGHT - screenY);
         if (pointer < 3 && this.contains(screenX, screenY)) {
             inputPointer = pointer;
-            GameScreen.touchMap.get(pointer).x = screenX;
-            GameScreen.touchMap.get(pointer).y = screenY;
-            GameScreen.touchMap.get(pointer).touched = true;
-            setDirectionVector(GameScreen.touchMap.get(pointer));
+            RoomScreen.touchMap.get(pointer).x = screenX;
+            RoomScreen.touchMap.get(pointer).y = screenY;
+            RoomScreen.touchMap.get(pointer).touched = true;
+            setDirectionVector(RoomScreen.touchMap.get(pointer));
         }
         return false;
         /*if (this.contains(screenX, screenY)) {
@@ -49,14 +45,14 @@ public class ControlPad extends Circle implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         screenY = (int) (Constants.GAMESCREEN_HEIGHT - screenY);
         if (pointer == inputPointer) {
-            GameScreen.touchMap.get(pointer).x = screenX;
-            GameScreen.touchMap.get(pointer).y = screenY;
-            GameScreen.touchMap.get(pointer).touched = true;
+            RoomScreen.touchMap.get(pointer).x = screenX;
+            RoomScreen.touchMap.get(pointer).y = screenY;
+            RoomScreen.touchMap.get(pointer).touched = true;
             if (this.contains(screenX, screenY)) {
-                setDirectionVector(GameScreen.touchMap.get(pointer));
+                setDirectionVector(RoomScreen.touchMap.get(pointer));
                 directionVector.scl(1/8f);
             } else {
-                setDirectionVector(GameScreen.touchMap.get(pointer));
+                setDirectionVector(RoomScreen.touchMap.get(pointer));
                 directionVector.nor().scl(radius/8f);
             }
         }
@@ -73,10 +69,10 @@ public class ControlPad extends Circle implements InputProcessor {
     //TODO should this always return true?
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if (pointer == inputPointer) {
-            GameScreen.touchMap.get(pointer).x = 0;
-            GameScreen.touchMap.get(pointer).y = 0;
-            GameScreen.touchMap.get(pointer).touched = false;
-            setDirectionVector(GameScreen.touchMap.get(pointer));
+            RoomScreen.touchMap.get(pointer).x = 0;
+            RoomScreen.touchMap.get(pointer).y = 0;
+            RoomScreen.touchMap.get(pointer).touched = false;
+            setDirectionVector(RoomScreen.touchMap.get(pointer));
         }
         return false;
         /*directionVector.set(0, 0);
@@ -85,8 +81,8 @@ public class ControlPad extends Circle implements InputProcessor {
     }
 
     public void setDirectionVector(TouchInfo info) {
-        directionVector.set(GameScreen.touchMap.get(inputPointer).x,
-                GameScreen.touchMap.get(inputPointer).y);
+        directionVector.set(RoomScreen.touchMap.get(inputPointer).x,
+                RoomScreen.touchMap.get(inputPointer).y);
         directionVector.sub(x, y);
     }
     public boolean keyUp(int keyCode) { return false; }

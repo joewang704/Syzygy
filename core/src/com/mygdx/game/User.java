@@ -2,7 +2,8 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
@@ -11,50 +12,60 @@ import com.badlogic.gdx.utils.TimeUtils;
 public class User extends Actor {
 
     public static Array<Bullet> userBullets = new Array<Bullet>();
-    private Rectangle bounds;
+    private Texture userImg;
     private long lastShotTime;
     private int atkSpeed;
 
-    public User(int x,int y, int width, int height) {
-        bounds = new Rectangle(x, y, width, height);
+    public User(float x, float y, float width, float height) {
+        this();
+        setBounds(x, y, width, height);
+    }
+
+    public User() {
         atkSpeed = 300000000;
+        userImg = new Texture(Gdx.files.internal("wizard.png"));
     }
 
     @Override
-    //act() calls act(float delta) with delta = getDeltaTime
     public void act(float delta) {
+        super.act(delta);
         move();
-        move();
+        checkScreenBoundsCollision();
+    }
 
+    @Override
+    public void draw(Batch batch, float alpha){
+        batch.draw(userImg, getX(), getY());
     }
 
     public void move() {
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) bounds.x -= 200 * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) bounds.x += 200 * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) bounds.y -= 180 * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) bounds.y += 180 * Gdx.graphics.getDeltaTime();
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) setX(getX() - 200 * Gdx.graphics.getDeltaTime());
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) setX(getX() + 200 * Gdx.graphics.getDeltaTime());
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) setY(getY() - 180 * Gdx.graphics.getDeltaTime());
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) setY(getY() + 180 * Gdx.graphics.getDeltaTime());
     }
 
     public void move(Vector2 direction) {
-        bounds.x += direction.x;
-        bounds.y += direction.y;
+        setX(direction.x);
+        setY(direction.y);
 
         //keep user from moving off the screen
-        if (bounds.x < 0) bounds.x = 0;
-        if (bounds.y < 0) bounds.y = 0;
-        if (bounds.x > Constants.GAMESCREEN_WIDTH - Constants.USER_WIDTH) {
-            bounds.x = Constants.GAMESCREEN_WIDTH - Constants.USER_WIDTH;
-        }
-        if (bounds.y > Constants.GAMESCREEN_HEIGHT - Constants.USER_HEIGHT){
-            bounds.y = Constants.GAMESCREEN_HEIGHT - Constants.USER_HEIGHT;
         }
 
+    public void checkScreenBoundsCollision() {
+        if (getX() < 0) setX(0);
+        if (getY() < 0) setY(0);
+        if (getX() > Constants.GAMESCREEN_WIDTH - Constants.USER_WIDTH) {
+            setX(Constants.GAMESCREEN_WIDTH - Constants.USER_WIDTH);
+        }
+        if (getY() > Constants.GAMESCREEN_HEIGHT - Constants.USER_HEIGHT){
+            setY(Constants.GAMESCREEN_HEIGHT - Constants.USER_HEIGHT);
+        }
     }
-
-    public void fireBullet(Vector2 direction, float speed) {
+    public Bullet fireBullet(Vector2 direction, float speed) {
         Bullet bullet = new Bullet(direction.nor(), speed, false);
-        bullet.setX(bounds.x);
-        bullet.setY(bounds.y);
+        bullet.setX(getX());
+        bullet.setY(getY());
         // + Constants.USER_WIDTH / 4
         if (!bullet.getVelocity().equals(new Vector2 (0, 0))) {
             bullet.setWidth(Constants.BULLET_WIDTH);
@@ -62,21 +73,10 @@ public class User extends Actor {
             userBullets.add(bullet);
             lastShotTime = TimeUtils.nanoTime();
         }
+        return bullet;
     }
 
 
     public long getLastShotTime() { return lastShotTime; }
-    public int getAtkSpeed() {
-        return atkSpeed;
-    }
-
-    public float getX() { return bounds.x; }
-    public float getY() { return bounds.y; }
-    public float getWidth() { return bounds.width; }
-    public float getHeight() { return bounds.height; }
-
-    public void setX(float x) { bounds.x = x; }
-    public void setY(float y) { bounds.y = y; }
-    public void setWidth(float x) { bounds.width = x; }
-    public void setHeight(float x) { bounds.height = x; }
+    public int getAtkSpeed() { return atkSpeed; }
 }

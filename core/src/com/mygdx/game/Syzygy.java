@@ -13,19 +13,15 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  */
 public class Syzygy extends Game {
 
-    public SpriteBatch batch;
-    public BitmapFont font;
-    public Stage stage;
-    public Viewport viewport;
-    public OrthographicCamera camera;
+    private BitmapFont font;
+    private Stage stage;
+    private OrthographicCamera camera;
 
     public void create() {
-        batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Constants.GAMESCREEN_WIDTH, Constants.GAMESCREEN_HEIGHT);
-        viewport = new StretchViewport(Constants.GAMESCREEN_WIDTH,
-            Constants.GAMESCREEN_HEIGHT, camera);
-        stage = new Stage(viewport, batch);
+        stage = new Stage(new StretchViewport(Constants.GAMESCREEN_WIDTH,
+                Constants.GAMESCREEN_HEIGHT, camera), new SpriteBatch() );
         //Use default arial font
         font = new BitmapFont();
         this.setScreen(new StartScreen(this));
@@ -37,7 +33,11 @@ public class Syzygy extends Game {
 
     public void dispose() {
         stage.dispose();
-        batch.dispose();
+        stage.getBatch().dispose();
         font.dispose();
     }
+
+    public Stage getStage() { return stage; }
+    public BitmapFont getFont() { return font; }
+    public OrthographicCamera getCamera() { return camera; }
 }

@@ -24,10 +24,10 @@ public class NewMainMenuScreen implements Screen {
 
         camera.update();
 
-        game.batch.begin();
-        game.font.draw(game.batch, "Tap to enter dungeon.", Constants.GAMESCREEN_WIDTH / 2 - 100,
+        game.getStage().getBatch().begin();
+        game.getFont().draw(game.getStage().getBatch(), "Tap to enter dungeon.", Constants.GAMESCREEN_WIDTH / 2 - 100,
                 Constants.GAMESCREEN_HEIGHT / 2 - 100);
-        game.batch.end();
+        game.getStage().getBatch().end();
 
         if (Gdx.input.isTouched()) {
             game.setScreen(new RoomScreen(game));
@@ -37,7 +37,7 @@ public class NewMainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        game.font.dispose();
+        game.getFont().dispose();
     }
 
     @Override

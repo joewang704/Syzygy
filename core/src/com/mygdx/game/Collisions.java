@@ -16,11 +16,10 @@ public class Collisions {
         Iterator<Bullet> uIter = User.userBullets.iterator();
         while (uIter.hasNext()) {
             Bullet bullet = uIter.next();
-            bullet.y += 200 * bullet.velocity.y * Gdx.graphics.getDeltaTime();
-            bullet.x += 200 * bullet.velocity.x * Gdx.graphics.getDeltaTime();
-            if (bullet.y + Constants.BULLET_HEIGHT < 0 || bullet.y > Constants.GAMESCREEN_HEIGHT) {
+            bullet.getY() += 200 * bullet.velocity.y * Gdx.graphics.getDeltaTime();
+            bullet.getX() += 200 * bullet.velocity.x * Gdx.graphics.getDeltaTime();
+            if (bullet.getY() + Constants.BULLET_HEIGHT < 0 || bullet.getY() > Constants.GAMESCREEN_HEIGHT) {
                 uIter.remove();
-                System.out.println("PUSH");
             }
         }
     }

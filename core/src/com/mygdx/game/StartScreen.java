@@ -28,7 +28,7 @@ public class StartScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Welcome to Name! ", Constants.GAMESCREEN_WIDTH / 2,
+        game.font.draw(game.batch, "Welcome to Syzygy! ", Constants.GAMESCREEN_WIDTH / 2,
                 Constants.GAMESCREEN_HEIGHT / 2);
         game.font.draw(game.batch, "Tap anywhere to begin!", Constants.GAMESCREEN_WIDTH / 2,
                 Constants.GAMESCREEN_HEIGHT / 2 + 100);

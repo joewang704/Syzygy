@@ -5,17 +5,20 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class RoomScreen implements Screen {
+public class RoomScreen extends Stage implements Screen {
     //why does Name extend Game? We should change it its not very logical
     //does Name need to be passed to GameScreen at all? looks like we don't really use it.
     //should Name be final?
@@ -38,6 +41,7 @@ public class RoomScreen implements Screen {
 
 
     public RoomScreen(final Syzygy game) {
+        super(game.viewport, game.batch);
         this.game = game;
         img = new Texture(Gdx.files.internal("wizard.png"));
         bImg = new Texture(Gdx.files.internal("soccer.png"));
@@ -74,7 +78,7 @@ public class RoomScreen implements Screen {
         game.stage.getBatch().setProjectionMatrix(game.stage.getViewport().getCamera().combined);
         game.stage.getBatch().begin();
         //game.stage.getBatch().draw(img, user.x, user.y);
-        game.stage.getBatch().draw(img, user.x, user.y, user.width, user.height);
+        game.stage.getBatch().draw(img, user.getX(), user.getY(), user.getWidth(), user.getHeight());
 
         //draw all bullets and enemies from their respective arrays
         for (Rectangle bullet: User.userBullets) {

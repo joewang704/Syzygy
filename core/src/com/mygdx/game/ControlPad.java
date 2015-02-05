@@ -32,6 +32,7 @@ public class ControlPad extends Circle implements InputProcessor {
             RoomScreen.touchMap.get(pointer).y = screenY;
             RoomScreen.touchMap.get(pointer).touched = true;
             setDirectionVector(RoomScreen.touchMap.get(pointer));
+            directionVector.scl(1/8f);
         }
         return false;
         /*if (this.contains(screenX, screenY)) {

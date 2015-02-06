@@ -16,6 +16,7 @@ public class Bullet extends Actor {
     public Vector2 velocity;
     private Texture bulletImg;
     public boolean isEnemy;
+    int ctr = 0;
 
     public Bullet(Vector2 direction, float speed, boolean isEnemy) {
         bulletImg = new Texture(Gdx.files.internal("soccer.png"));
@@ -23,6 +24,7 @@ public class Bullet extends Actor {
         this.speed = speed;
         this.isEnemy = isEnemy;
         velocity = new Vector2(direction.x * speed, direction.y * speed);
+//        System.out.println(velocity);
     }
 
     public Bullet(Vector2 direction, float speed, boolean isEnemy,
@@ -34,13 +36,19 @@ public class Bullet extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
-        setX(velocity.x * delta);
-        setY(velocity.y * delta);
+        setX(getX() + velocity.x * delta);
+        setY(getY() + velocity.y * delta);
+//        ctr++;
+//        if (ctr == 60) {
+//            ctr = 0;
+//            System.out.println(getX() + ", "  + getY());
+//        }
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.draw(bulletImg, getX(), getY());
     }
+
     public Vector2 getVelocity() { return velocity; }
 }

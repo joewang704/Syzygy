@@ -39,7 +39,6 @@ public class User extends Actor {
         //move();
         //Why does getKnobPercent() work but not getKnob()?
         move(new Vector2(movePad.getKnobPercentX(), movePad.getKnobPercentY()));
-        fireBullet(new Vector2(firePad.getKnobPercentX(), firePad.getKnobPercentY()), 1.0f);
         checkScreenBoundsCollision();
     }
 
@@ -58,7 +57,7 @@ public class User extends Actor {
     public void move(Vector2 direction) {
         setX(getX() + direction.x*moveSpeed);
         setY(getY() + direction.y*moveSpeed);
-        }
+    }
 
     public void checkScreenBoundsCollision() {
         if (getX() < 0) setX(0);
@@ -70,17 +69,14 @@ public class User extends Actor {
             setY(Constants.GAMESCREEN_HEIGHT - Constants.USER_HEIGHT);
         }
     }
+
     public Bullet fireBullet(Vector2 direction, float speed) {
-        Bullet bullet = new Bullet(direction.nor(), speed, false);
+        Bullet bullet = new Bullet(direction, speed, false);
         bullet.setX(this.getX());
         bullet.setY(this.getY());
         // + Constants.USER_WIDTH / 4
-        if (!bullet.getVelocity().equals(new Vector2 (0, 0))) {
-            bullet.setWidth(Constants.BULLET_WIDTH);
-            bullet.setHeight(Constants.BULLET_HEIGHT);
-            userBullets.add(bullet);
-            lastShotTime = TimeUtils.nanoTime();
-        }
+        userBullets.add(bullet);
+        lastShotTime = TimeUtils.nanoTime();
         return bullet;
     }
 

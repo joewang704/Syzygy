@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
@@ -72,7 +73,12 @@ public class RoomScreen implements Screen {
         game.getStage().getBatch().end();
         game.getStage().draw();
         game.getStage().act(delta);
-
+        if (joystickFire.getKnobPercentX() != 0 || joystickFire.getKnobPercentY() != 0) {
+            if (TimeUtils.nanoTime() - user.getLastShotTime() > user.getAtkSpeed()) {
+                game.getStage().addActor(user.fireBullet(new Vector2(joystickFire.getKnobX() - 90f, joystickFire.getKnobY() - 90f), 5f));
+                System.out.println(joystickFire.getKnobX() + ", " + joystickFire.getKnobY());
+            }
+        }
         //WASD moves user
         //spawn slimes
         if (TimeUtils.nanoTime() - lastSpawnTime > 1000000000) spawnSlime();
@@ -160,8 +166,8 @@ public class RoomScreen implements Screen {
                 new Texture(Gdx.files.internal("controllerpad1.png"))));
         joystickKnob = new TextureRegionDrawable(new TextureRegion(
                 new Texture(Gdx.files.internal("controllerpadKnob40.png"))));
-        joystickMove = new Joystick(.25f, new Touchpad.TouchpadStyle(joystickImg, joystickKnob));
-        joystickFire = new Joystick(.25f, new Touchpad.TouchpadStyle(joystickImg, joystickKnob));
+        joystickMove = new Joystick(13f, new Touchpad.TouchpadStyle(joystickImg, joystickKnob));
+        joystickFire = new Joystick(13f, new Touchpad.TouchpadStyle(joystickImg, joystickKnob));
 
         joystickMove.setPosition(Constants.GAMESCREEN_WIDTH/40, Constants.GAMESCREEN_WIDTH/40);
         joystickFire.setPosition(

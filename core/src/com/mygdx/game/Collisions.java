@@ -17,9 +17,10 @@ public class Collisions {
         Iterator<Bullet> uIter = User.userBullets.iterator();
         while (uIter.hasNext()) {
             Bullet bullet = uIter.next();
-            bullet.setY(200 * bullet.velocity.y * Gdx.graphics.getDeltaTime());
-            bullet.setX(200 * bullet.velocity.x * Gdx.graphics.getDeltaTime());
-            if (bullet.getY() + Constants.BULLET_HEIGHT < 0 || bullet.getY() > Constants.GAMESCREEN_HEIGHT) {
+            if (bullet.getY() + Constants.BULLET_HEIGHT < 0 ||
+                    bullet.getY() > Constants.GAMESCREEN_HEIGHT ||
+                    bullet.getX() + Constants.BULLET_WIDTH < 0 ||
+                    bullet.getX() > Constants.GAMESCREEN_WIDTH) {
                 uIter.remove();
             }
         }

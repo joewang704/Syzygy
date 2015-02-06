@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
@@ -15,21 +16,30 @@ public class User extends Actor {
     private Texture userImg;
     private long lastShotTime;
     private int atkSpeed;
+    private float moveSpeed;
+    private Touchpad movePad;
+    private Touchpad firePad;
 
-    public User(float x, float y, float width, float height) {
-        this();
+    public User(Touchpad move, Touchpad fire, float x, float y, float width, float height) {
+        this(move, fire);
         setBounds(x, y, width, height);
     }
 
-    public User() {
+    public User(Touchpad move, Touchpad fire) {
+        movePad = move;
+        firePad = fire;
         atkSpeed = 300000000;
+        moveSpeed = 5;
         userImg = new Texture(Gdx.files.internal("wizard.png"));
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        move();
+        //move();
+        //Why does getKnobPercent() work but not getKnob()?
+        move(new Vector2(movePad.getKnobPercentX(), movePad.getKnobPercentY()));
+        fireBullet(new Vector2(firePad.getKnobPercentX(), firePad.getKnobPercentY()), 1.0f);
         checkScreenBoundsCollision();
     }
 
@@ -46,10 +56,8 @@ public class User extends Actor {
     }
 
     public void move(Vector2 direction) {
-        setX(direction.x);
-        setY(direction.y);
-
-        //keep user from moving off the screen
+        setX(getX() + direction.x*moveSpeed);
+        setY(getY() + direction.y*moveSpeed);
         }
 
     public void checkScreenBoundsCollision() {
@@ -64,8 +72,8 @@ public class User extends Actor {
     }
     public Bullet fireBullet(Vector2 direction, float speed) {
         Bullet bullet = new Bullet(direction.nor(), speed, false);
-        bullet.setX(getX());
-        bullet.setY(getY());
+        bullet.setX(this.getX());
+        bullet.setY(this.getY());
         // + Constants.USER_WIDTH / 4
         if (!bullet.getVelocity().equals(new Vector2 (0, 0))) {
             bullet.setWidth(Constants.BULLET_WIDTH);

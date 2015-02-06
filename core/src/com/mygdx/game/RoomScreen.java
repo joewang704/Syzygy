@@ -8,11 +8,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+
+import javafx.stage.Stage;
 
 public class RoomScreen implements Screen {
 
@@ -21,24 +24,23 @@ public class RoomScreen implements Screen {
     //Shapes
     private User user;
     private Array<Enemy> enemies;
-    private Touchpad touchpadMove;
-    private Touchpad touchpadFire;
-    private TextureRegionDrawable touchpadImg;
-    private TextureRegionDrawable touchpadKnob;
+    private Touchpad joystickMove;
+    private Joystick joystickFire;
+    private TextureRegionDrawable joystickImg;
+    private TextureRegionDrawable joystickKnob;
 
     //Utility
     private long lastSpawnTime;
-    private InputProcessor input;
 
     //Sprites now contained within respective classes
 
     public RoomScreen(final Syzygy game) {
         this.game = game;
-        input = game.getStage();
+        Gdx.input.setInputProcessor(game.getStage());
+        createJoysticks();
         spawnUser(Constants.GAMESCREEN_WIDTH / 2 - Constants.USER_WIDTH / 2,
                 0, Constants.USER_WIDTH, Constants.USER_HEIGHT);
         enemies = new Array<Enemy>();
-        createTouchpads();
         game.getStage().addActor(user);
     }
 
@@ -74,6 +76,8 @@ public class RoomScreen implements Screen {
         //WASD moves user
         //spawn slimes
         if (TimeUtils.nanoTime() - lastSpawnTime > 1000000000) spawnSlime();
+
+//        if(User.userBullets.get(User.userBullets.size - 1) == );
 
         //moves bullets, removes bullets off screen
         /*Iterator<Bullet> uIter = User.userBullets.iterator();
@@ -135,7 +139,7 @@ public class RoomScreen implements Screen {
 
     //helper methods
     private void spawnUser(float x, float y, float width, float height) {
-        user = new User(x, y, width, height);
+        user = new User(joystickMove, joystickFire, x, y, width, height);
     }
 
     private void spawnSlime() {
@@ -151,20 +155,20 @@ public class RoomScreen implements Screen {
         lastSpawnTime = TimeUtils.nanoTime();
     }
 
-    public void createTouchpads() {
-        touchpadImg = new TextureRegionDrawable(new TextureRegion(
+    public void createJoysticks() {
+        joystickImg = new TextureRegionDrawable(new TextureRegion(
                 new Texture(Gdx.files.internal("controllerpad1.png"))));
-        touchpadKnob = new TextureRegionDrawable(new TextureRegion(
+        joystickKnob = new TextureRegionDrawable(new TextureRegion(
                 new Texture(Gdx.files.internal("controllerpadKnob40.png"))));
-        touchpadMove = new Touchpad(.25f, new Touchpad.TouchpadStyle(touchpadImg, touchpadKnob));
-        touchpadFire = new Touchpad(.25f, new Touchpad.TouchpadStyle(touchpadImg, touchpadKnob));
+        joystickMove = new Joystick(.25f, new Touchpad.TouchpadStyle(joystickImg, joystickKnob));
+        joystickFire = new Joystick(.25f, new Touchpad.TouchpadStyle(joystickImg, joystickKnob));
 
-        touchpadMove.setPosition(Constants.GAMESCREEN_WIDTH/40, Constants.GAMESCREEN_WIDTH/40);
-        touchpadFire.setPosition(
-                Constants.GAMESCREEN_WIDTH - Constants.GAMESCREEN_WIDTH/40 - touchpadFire.getWidth(),
+        joystickMove.setPosition(Constants.GAMESCREEN_WIDTH/40, Constants.GAMESCREEN_WIDTH/40);
+        joystickFire.setPosition(
+                Constants.GAMESCREEN_WIDTH - Constants.GAMESCREEN_WIDTH/40 - joystickFire.getWidth(),
                 Constants.GAMESCREEN_WIDTH/40);
 
-        game.getStage().addActor(touchpadMove);
-        game.getStage().addActor(touchpadFire);
+        game.getStage().addActor(joystickMove);
+        game.getStage().addActor(joystickFire);
     }
 }

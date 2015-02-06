@@ -17,7 +17,7 @@ public class Enemy extends Actor {
         moveCtr = 0;
         moveDirection = new Vector2(MathUtils.random()*  MathUtils.randomSign(),
                 MathUtils.random() * MathUtils.randomSign());
-        enemyImage = new Texture(Gdx.files.internal("soccer.png"));
+        enemyImage = new Texture(Gdx.files.internal("cuteSlime64.png"));
     }
 
     @Override

@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
+
 import java.util.Iterator;
 /*import com.mygdx.game.Bullet;
 import com.mygdx.game.Constants;
@@ -23,17 +26,21 @@ public class Collisions {
             }
         }
     }
-/*    //TODO update collisions because Actors are now NOT Rectangles
+    //TODO update collisions because Actors are now NOT Rectangles
     public static void enemyHits(Array<Enemy> enemies) {
         for (Bullet bullet: User.userBullets) {
-            Iterator<Enemy> eIter = enemies.iterator();
-            while (eIter.hasNext()) {
-                if (bullet.overlaps(eIter.next())) {
-                    eIter.remove();
+            for (Enemy enemy: enemies) {
+                if (bullet.getBounds().overlaps(enemy.getBounds())) {
+                    enemy.clearActions();
+                    enemy.clearListeners();
+                    enemy.remove();
+                    bullet.clearActions();
+                    bullet.clearListeners();
+                    bullet.remove();
+                    enemies.removeValue(enemy, true);
                     User.userBullets.removeValue(bullet, true);
                 }
             }
         }
     }
-    */
 }

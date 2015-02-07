@@ -25,6 +25,7 @@ public class User extends Actor {
     public User(Touchpad move, Touchpad fire, float x, float y, float width, float height) {
         this(move, fire);
         setBounds(x, y, width, height);
+        bounds = new Rectangle(x, y, width, height);
     }
 
     public User(Touchpad move, Touchpad fire) {

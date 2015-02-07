@@ -89,6 +89,7 @@ public class RoomScreen implements Screen {
                 uIter.remove();
             }
         }*/
+        Collisions.enemyHits(enemies);
         Collisions.removeBullets(); //removes bullets that have flown off the screen
         //Collisions.enemyHits(enemies); //removes enemies that have been hit by bullets
         //iterate through bullets and check if they collide with an enemy.

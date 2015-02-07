@@ -26,6 +26,7 @@ public class Bullet extends Actor {
         this.speed = speed;
         this.isEnemy = isEnemy;
         velocity = new Vector2(direction.x * speed, direction.y * speed);
+        bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
 //        System.out.println(velocity);
     }
 

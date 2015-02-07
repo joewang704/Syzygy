@@ -12,8 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
-import javafx.stage.Stage;
-
 public class RoomScreen implements Screen {
 
     final Syzygy game;

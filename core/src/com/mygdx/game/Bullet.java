@@ -42,6 +42,8 @@ public class Bullet extends Actor {
         super.act(delta);
         setX(getX() + velocity.x * delta);
         setY(getY() + velocity.y * delta);
+        bounds.x = getX();
+        bounds.y = getY();
 //        ctr++;
 //        if (ctr == 60) {
 //            ctr = 0;

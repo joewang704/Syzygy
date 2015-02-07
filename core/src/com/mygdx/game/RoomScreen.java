@@ -143,13 +143,13 @@ public class RoomScreen implements Screen {
     }
 
     private void spawnSlime() {
-        Enemy e = new Enemy();
-        e.setX(MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
-                2 * Constants.GAMESCREEN_WIDTH / 3));
-        e.setY(MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
-                2 * Constants.GAMESCREEN_HEIGHT / 3));
-        e.setWidth(Constants.SLIME_ENEMY_WIDTH);
-        e.setHeight(Constants.SLIME_ENEMY_HEIGHT);
+        float xPos = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
+                2 * Constants.GAMESCREEN_WIDTH / 3);
+        float yPos = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
+                2 * Constants.GAMESCREEN_HEIGHT / 3);
+        float width = Constants.SLIME_ENEMY_WIDTH;
+        float height = Constants.SLIME_ENEMY_HEIGHT;
+        Enemy e = new Enemy(xPos, yPos, width, height);
         enemies.add(e);
         game.getStage().addActor(e);
         lastSpawnTime = TimeUtils.nanoTime();

@@ -20,7 +20,16 @@ public class Enemy extends Actor {
         moveDirection = new Vector2(MathUtils.random()*  MathUtils.randomSign(),
                 MathUtils.random() * MathUtils.randomSign());
         enemyImage = new Texture(Gdx.files.internal("cuteSlime64.png"));
-        bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
+    }
+
+    public Enemy(float x, float y) {
+        this(x, y, 64, 64);
+    }
+
+    public Enemy(float x, float y, float width, float height) {
+        this();
+        setBounds(x, y, width, height);
+        bounds = new Rectangle(x, y, width, height);
     }
 
     @Override
@@ -48,6 +57,8 @@ public class Enemy extends Actor {
             changeDirectionX();
             changeDirectionY();
         }
+        bounds.x = getX();
+        bounds.y = getY();
 
     }
 

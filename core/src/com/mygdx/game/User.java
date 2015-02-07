@@ -76,8 +76,9 @@ public class User extends Actor {
         }
     }
 
+    //70 and 3 are somewhat arbitrary, should be changed
     public Bullet fireBullet(Vector2 direction, float speed) {
-        Bullet bullet = new Bullet(direction.nor().scl(70), speed, false,
+        Bullet bullet = new Bullet(direction.nor().scl(70).scl(3), speed, false,
                 this.getX() + this.getWidth()/2 - Constants.BULLET_WIDTH,
                 this.getY() + this.getHeight()/2 - Constants.BULLET_HEIGHT,
                 Constants.BULLET_WIDTH, Constants.BULLET_HEIGHT);

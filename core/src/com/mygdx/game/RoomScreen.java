@@ -52,9 +52,14 @@ public class RoomScreen implements Screen {
 
         game.getStage().draw();
         game.getStage().act(delta);
+
+        //Bullet firing
         if (joystickFire.getKnobPercentX() != 0 || joystickFire.getKnobPercentY() != 0) {
             if (TimeUtils.nanoTime() - user.getLastShotTime() > user.getAtkSpeed()) {
-                game.getStage().addActor(user.fireBullet(new Vector2(joystickFire.getKnobX() - 90f, joystickFire.getKnobY() - 90f), 5f));
+                game.getStage().addActor(user.fireBullet(new Vector2(
+                        joystickFire.getKnobX() - joystickFire.getWidth()/2,
+                        joystickFire.getKnobY() - joystickFire.getHeight()/2),
+                        5f));
             }
         }
 

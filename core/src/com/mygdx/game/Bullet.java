@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.math.Rectangle;
 
 /**
  * Created by wojang on 1/26/15.
@@ -16,6 +17,7 @@ public class Bullet extends Actor {
     public Vector2 velocity;
     private Texture bulletImg;
     public boolean isEnemy;
+    private Rectangle bounds;
     int ctr = 0;
 
     public Bullet(Vector2 direction, float speed, boolean isEnemy) {
@@ -51,4 +53,6 @@ public class Bullet extends Actor {
     }
 
     public Vector2 getVelocity() { return velocity; }
+
+    public Rectangle getBounds() { return bounds; }
 }

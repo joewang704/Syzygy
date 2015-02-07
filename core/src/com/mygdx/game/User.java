@@ -32,7 +32,7 @@ public class User extends Actor {
         movePad = move;
         firePad = fire;
         atkSpeed = 300000000;
-        moveSpeed = 5;
+        moveSpeed = 10;
         userImg = new Texture(Gdx.files.internal("wizard.png"));
     }
 
@@ -50,6 +50,9 @@ public class User extends Actor {
         batch.draw(userImg, getX(), getY(), getWidth(), getHeight());
     }
 
+    public boolean overlaps(Actor a) {
+        return Collisions.overlap(this, a);
+    }
     public void move() {
         if (Gdx.input.isKeyPressed(Input.Keys.A)) setX(getX() - 200 * Gdx.graphics.getDeltaTime());
         if (Gdx.input.isKeyPressed(Input.Keys.D)) setX(getX() + 200 * Gdx.graphics.getDeltaTime());
@@ -75,7 +78,9 @@ public class User extends Actor {
 
     public Bullet fireBullet(Vector2 direction, float speed) {
         Bullet bullet = new Bullet(direction.nor().scl(70), speed, false,
-                this.getX(), this.getY(), this.getWidth(), this.getHeight());
+                this.getX() + this.getWidth()/2 - Constants.BULLET_WIDTH,
+                this.getY() + this.getHeight()/2 - Constants.BULLET_HEIGHT,
+                Constants.BULLET_WIDTH, Constants.BULLET_HEIGHT);
         // + Constants.USER_WIDTH / 4
         userBullets.add(bullet);
         lastShotTime = TimeUtils.nanoTime();

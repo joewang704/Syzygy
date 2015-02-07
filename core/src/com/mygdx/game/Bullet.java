@@ -51,9 +51,13 @@ public class Bullet extends Actor {
 //        }
     }
 
+    public boolean overlaps(Actor a) {
+        return Collisions.overlap(this, a);
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(bulletImg, getX(), getY());
+        batch.draw(bulletImg, getX(), getY(), getWidth(), getHeight());
     }
 
     public Vector2 getVelocity() { return velocity; }

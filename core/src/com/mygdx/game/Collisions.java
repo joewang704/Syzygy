@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.Iterator;
@@ -13,6 +14,7 @@ import com.mygdx.game.User;*/
  * Test comment for pushing.
  */
 public class Collisions {
+
     public static void removeBullets() {
         Iterator<Bullet> uIter = User.userBullets.iterator();
         while (uIter.hasNext()) {
@@ -29,7 +31,7 @@ public class Collisions {
     public static void enemyHits(Array<Enemy> enemies) {
         for (Bullet bullet: User.userBullets) {
             for (Enemy enemy: enemies) {
-                if (bullet.getBounds().overlaps(enemy.getBounds())) {
+                if (enemy.overlaps(bullet)) {
                     enemy.clearActions();
                     enemy.clearListeners();
                     enemy.remove();
@@ -41,5 +43,10 @@ public class Collisions {
                 }
             }
         }
+    }
+
+    public static boolean overlap (Actor first, Actor second) {
+        return first.getX() < second.getX() + second.getWidth() && first.getX() + first.getWidth() > second.getX()
+                && first.getY() < second.getY() + second.getHeight() && first.getY() + first.getHeight() > second.getY();
     }
 }

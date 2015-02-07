@@ -19,10 +19,8 @@ public class RoomScreen implements Screen {
     //Shapes
     private User user;
     private Array<Enemy> enemies;
-    private Touchpad joystickMove;
+    private Joystick joystickMove;
     private Joystick joystickFire;
-    private TextureRegionDrawable joystickImg;
-    private TextureRegionDrawable joystickKnob;
 
     //Utility
     private long lastSpawnTime;
@@ -51,20 +49,7 @@ public class RoomScreen implements Screen {
         //render elements
         game.getStage().getBatch().setProjectionMatrix(
                 game.getStage().getViewport().getCamera().combined);
-        game.getStage().getBatch().begin();
-//        //game.getStage().getBatch().draw(userImg, user.x, user.y);
-//        game.getStage().getBatch().draw(userImg, user.getX(), user.getY(), user.getWidth(), user.getHeight());
-//
-//        //draw all bullets and enemies from their respective arrays
-//        for (Rectangle bullet: User.userBullets) {
-//            game.getStage().getBatch().draw(bulletImg, bullet.x, bullet.y, bullet.width, bullet.height);
-//        }
-//
-//        for (Enemy enemy: enemies) {
-//            game.getStage().getBatch().draw(slimeImg, enemy.x, enemy.y, enemy.width, enemy.height);
-//        }
 
-        game.getStage().getBatch().end();
         game.getStage().draw();
         game.getStage().act(delta);
         if (joystickFire.getKnobPercentX() != 0 || joystickFire.getKnobPercentY() != 0) {
@@ -72,35 +57,12 @@ public class RoomScreen implements Screen {
                 game.getStage().addActor(user.fireBullet(new Vector2(joystickFire.getKnobX() - 90f, joystickFire.getKnobY() - 90f), 5f));
             }
         }
-        //WASD moves user
+
         //spawn slimes
         if (TimeUtils.nanoTime() - lastSpawnTime > 1000000000) spawnSlime();
 
-//        if(User.userBullets.get(User.userBullets.size - 1) == );
-
-        //moves bullets, removes bullets off screen
-        /*Iterator<Bullet> uIter = User.userBullets.iterator();
-        while (uIter.hasNext()) {
-            Bullet bullet = uIter.next();
-            bullet.y += 200 * bullet.velocity.y * Gdx.graphics.getDeltaTime();
-            bullet.x += 200 * bullet.velocity.x * Gdx.graphics.getDeltaTime();
-            if (bullet.y + Constants.BULLET_HEIGHT < 0 || bullet.y > Constants.GAMESCREEN_HEIGHT) {
-                uIter.remove();
-            }
-        }*/
         Collisions.enemyHits(enemies);
-        Collisions.removeBullets(); //removes bullets that have flown off the screen
-        //Collisions.enemyHits(enemies); //removes enemies that have been hit by bullets
-        //iterate through bullets and check if they collide with an enemy.
-        /*for (Bullet bullet: User.userBullets) {
-            Iterator<Enemy> eIter = enemies.iterator();
-            while (eIter.hasNext()) {
-                if (bullet.overlaps(eIter.next())) {
-                    eIter.remove();
-                    User.userBullets.removeValue(bullet, true);
-                }
-            }
-        }*/
+        Collisions.removeBullets();
     }
 
     @Override
@@ -155,13 +117,22 @@ public class RoomScreen implements Screen {
         lastSpawnTime = TimeUtils.nanoTime();
     }
 
+    //Joystick Position is entirely relative to GS_WIDTH
+    //Joystick width & height entirely relative to GS_HEIGHT
+    //sambady pls halp!
+    //OR is it good because regardless of screen size, joysticks will always be circular instead of stretched?idk
     public void createJoysticks() {
-        joystickImg = new TextureRegionDrawable(new TextureRegion(
+        TextureRegionDrawable joystickImg = new TextureRegionDrawable(new TextureRegion(
                 new Texture(Gdx.files.internal("controllerpad1.png"))));
-        joystickKnob = new TextureRegionDrawable(new TextureRegion(
-                new Texture(Gdx.files.internal("controllerpadKnob40.png"))));
-        joystickMove = new Joystick(13f, new Touchpad.TouchpadStyle(joystickImg, joystickKnob));
-        joystickFire = new Joystick(13f, new Touchpad.TouchpadStyle(joystickImg, joystickKnob));
+        TextureRegionDrawable joystickKnob = new TextureRegionDrawable(new TextureRegion(
+                new Texture(Gdx.files.internal("controllerpadKnob100.png"))));
+        joystickMove = new Joystick(20f, new Touchpad.TouchpadStyle(joystickImg, joystickKnob));
+        joystickFire = new Joystick(0f, new Touchpad.TouchpadStyle(joystickImg, joystickKnob));
+
+        joystickMove.setWidth(Constants.GAMESCREEN_HEIGHT/2f);
+        joystickMove.setHeight(Constants.GAMESCREEN_HEIGHT/2f);
+        joystickFire.setWidth(Constants.GAMESCREEN_HEIGHT/2f);
+        joystickFire.setHeight(Constants.GAMESCREEN_HEIGHT/2f);
 
         joystickMove.setPosition(Constants.GAMESCREEN_WIDTH/40, Constants.GAMESCREEN_WIDTH/40);
         joystickFire.setPosition(

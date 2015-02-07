@@ -62,9 +62,13 @@ public class Enemy extends Actor {
 
     }
 
+    public boolean overlaps(Actor a) {
+        return Collisions.overlap(this, a);
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(enemyImage, getX(), getY());
+        batch.draw(enemyImage, getX(), getY(), getWidth(), getHeight());
     }
     public void changeDirectionX() {
         moveDirection.set(MathUtils.random() * MathUtils.randomSign(), moveDirection.y);

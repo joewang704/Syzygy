@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 public class Syzygy extends Game {
 
     private BitmapFont font;
-    private Stage stage;
+    public static Stage stage;
     private OrthographicCamera camera;
 
     public void create() {

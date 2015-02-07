@@ -70,7 +70,6 @@ public class RoomScreen implements Screen {
         if (joystickFire.getKnobPercentX() != 0 || joystickFire.getKnobPercentY() != 0) {
             if (TimeUtils.nanoTime() - user.getLastShotTime() > user.getAtkSpeed()) {
                 game.getStage().addActor(user.fireBullet(new Vector2(joystickFire.getKnobX() - 90f, joystickFire.getKnobY() - 90f), 5f));
-                System.out.println(joystickFire.getKnobX() + ", " + joystickFire.getKnobY());
             }
         }
         //WASD moves user

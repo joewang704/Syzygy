@@ -74,9 +74,8 @@ public class User extends Actor {
     }
 
     public Bullet fireBullet(Vector2 direction, float speed) {
-        Bullet bullet = new Bullet(direction.nor().scl(70), speed, false);
-        bullet.setX(this.getX());
-        bullet.setY(this.getY());
+        Bullet bullet = new Bullet(direction.nor().scl(70), speed, false,
+                this.getX(), this.getY(), this.getWidth(), this.getHeight());
         // + Constants.USER_WIDTH / 4
         userBullets.add(bullet);
         lastShotTime = TimeUtils.nanoTime();

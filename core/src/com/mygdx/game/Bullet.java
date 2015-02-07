@@ -20,13 +20,13 @@ public class Bullet extends Actor {
     private Rectangle bounds;
     int ctr = 0;
 
+    //this constructor has no x y height or width
     public Bullet(Vector2 direction, float speed, boolean isEnemy) {
         bulletImg = new Texture(Gdx.files.internal("soccer.png"));
         this.direction = direction;
         this.speed = speed;
         this.isEnemy = isEnemy;
         velocity = new Vector2(direction.x * speed, direction.y * speed);
-        bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
 //        System.out.println(velocity);
     }
 
@@ -34,6 +34,7 @@ public class Bullet extends Actor {
                   float x, float y, float width, float height) {
         this(direction, speed, isEnemy);
         setBounds(x, y, width, height);
+        bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 
     @Override

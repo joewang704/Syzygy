@@ -44,7 +44,7 @@ public class User extends Actor {
 
     @Override
     public void draw(Batch batch, float alpha){
-        batch.draw(userImg, getX(), getY());
+        batch.draw(userImg, getX(), getY(), getWidth(), getHeight());
     }
 
     public void move() {
@@ -71,7 +71,7 @@ public class User extends Actor {
     }
 
     public Bullet fireBullet(Vector2 direction, float speed) {
-        Bullet bullet = new Bullet(direction, speed, false);
+        Bullet bullet = new Bullet(direction.nor().scl(70), speed, false);
         bullet.setX(this.getX());
         bullet.setY(this.getY());
         // + Constants.USER_WIDTH / 4

@@ -1,11 +1,9 @@
 package com.mygdx.game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.Array;
+
+import java.util.Iterator;
 /*import com.mygdx.game.Bullet;
 import com.mygdx.game.Constants;
 import com.mygdx.game.User;*/
-
-import java.util.Iterator;
 
 /**
  * Created by Jay on 2/3/2015.

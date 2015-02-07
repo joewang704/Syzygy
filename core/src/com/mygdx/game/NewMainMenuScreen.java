@@ -25,7 +25,8 @@ public class NewMainMenuScreen implements Screen {
         camera.update();
 
         game.getStage().getBatch().begin();
-        game.getFont().draw(game.getStage().getBatch(), "Tap to enter dungeon.", Constants.GAMESCREEN_WIDTH / 2 - 100,
+        game.getFont().draw(game.getStage().getBatch(),
+                "Tap to enter dungeon.", Constants.GAMESCREEN_WIDTH / 2 - 100,
                 Constants.GAMESCREEN_HEIGHT / 2 - 100);
         game.getStage().getBatch().end();
 

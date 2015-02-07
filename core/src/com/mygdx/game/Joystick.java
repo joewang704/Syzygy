@@ -1,6 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 
 /**
@@ -13,3 +12,4 @@ public class Joystick extends Touchpad {
 
     }
 }
+

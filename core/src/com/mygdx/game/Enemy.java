@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -12,6 +13,7 @@ public class Enemy extends Actor {
     private int moveCtr;
     Vector2 moveDirection;
     Texture enemyImage;
+    private Rectangle bounds;
 
     public Enemy() {
         moveCtr = 0;
@@ -61,4 +63,6 @@ public class Enemy extends Actor {
         moveDirection.set(moveDirection.x, MathUtils.random() * MathUtils.randomSign());
         moveCtr = 0;
     }
+
+    public Rectangle getBounds() { return bounds; }
 }

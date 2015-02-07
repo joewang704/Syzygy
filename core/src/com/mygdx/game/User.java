@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
@@ -19,6 +20,7 @@ public class User extends Actor {
     private float moveSpeed;
     private Touchpad movePad;
     private Touchpad firePad;
+    private Rectangle bounds;
 
     public User(Touchpad move, Touchpad fire, float x, float y, float width, float height) {
         this(move, fire);
@@ -81,6 +83,7 @@ public class User extends Actor {
     }
 
 
+    public Rectangle getBounds() { return bounds; }
     public long getLastShotTime() { return lastShotTime; }
     public int getAtkSpeed() { return atkSpeed; }
 }

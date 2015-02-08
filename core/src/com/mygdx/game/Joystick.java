@@ -11,5 +11,11 @@ public class Joystick extends Touchpad {
     public Joystick(float deadZoneRadius, Touchpad.TouchpadStyle style) {
         super(deadZoneRadius, style);
     }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        toFront();
+    }
 }
 

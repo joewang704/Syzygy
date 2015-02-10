@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,6 +22,7 @@ public class Syzygy extends Game {
         camera.setToOrtho(false, Constants.GAMESCREEN_WIDTH, Constants.GAMESCREEN_HEIGHT);
         stage = new Stage(new StretchViewport(Constants.GAMESCREEN_WIDTH,
                 Constants.GAMESCREEN_HEIGHT, camera), new SpriteBatch() );
+        Gdx.input.setInputProcessor(stage);
         //Use default arial font
         font = new BitmapFont();
         this.setScreen(new StartScreen(this));

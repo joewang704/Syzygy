@@ -12,6 +12,7 @@ public class Room {
     private Portal leftPortal;
     private Portal rightPortal;
     private Portal bottomPortal;
+    private int enemyNumber;
     int unassignedPortals = 4;
     Vector2 position;
     public Room(Dungeon dungeon) {
@@ -21,6 +22,15 @@ public class Room {
         this.dungeon = dungeon;
         position = new Vector2(x, y);
     }
+    public Room(Dungeon dungeon, int enemyNumber) {
+        this(dungeon);
+        this.enemyNumber = enemyNumber;
+    }
+    public Room(Dungeon dungeon, int x, int y, int enemyNumber) {
+        this(dungeon, x, y);
+        this.enemyNumber = enemyNumber;
+    }
+    public int getEnemyNumber() { return enemyNumber; }
     public Portal getTopPortal() {
         return topPortal;
     }

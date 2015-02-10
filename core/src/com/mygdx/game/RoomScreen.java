@@ -24,8 +24,10 @@ public class RoomScreen implements Screen {
     private Dungeon dungeon;
     private Room currentRoom;
 
+
     //Utility
     private long lastSpawnTime;
+    private int currentEnemyNumber;
 
     //Sprites now contained within respective classes
 
@@ -39,11 +41,21 @@ public class RoomScreen implements Screen {
         dungeon = new Dungeon(game, 1, 5);
         //get starting room
         currentRoom = dungeon.getRoomArray().get(0);
+        currentEnemyNumber = currentRoom.getEnemyNumber();
+        game.getStage().addActor(user);
+        spawnEnemies();
+    }
+
+    private void spawnEnemies() {
+        for(int i = 0; i < currentEnemyNumber; i++) {
+            spawnSlime();
+        }
+    }
+
+    private void spawnPortals() {
         for(Portal portal : currentRoom.getPortals()) {
             game.getStage().addActor(portal);
         }
-        game.getStage().addActor(user);
-
     }
 
     @Override
@@ -73,9 +85,12 @@ public class RoomScreen implements Screen {
         }
 
         //spawn slimes
-        if (TimeUtils.nanoTime() - lastSpawnTime > 1000000000) spawnSlime();
+        /*if (TimeUtils.nanoTime() - lastSpawnTime > 1000000000) spawnSlime();*/
 
-        Collisions.enemyHits(enemies);
+        currentEnemyNumber = Collisions.enemyHits(enemies, currentEnemyNumber);
+        if (currentEnemyNumber <= 0) {
+            spawnPortals();
+        }
         Collisions.removeBullets();
     }
 

@@ -11,9 +11,9 @@ public class Dungeon {
     public Dungeon(Syzygy game, int dungeonId, int roomNumber) {
         roomArray = new Array<Room>(roomNumber);
         //makes new rooms depending on roomNumber
-        roomArray.add(new Room(this, 0, 0));
+        roomArray.add(new Room(this, 0, 0, 7));
         for (int i = 1; i < roomNumber; i++) {
-            Room newRoom = new Room(this);
+            Room newRoom = new Room(this, 7);
             //inclusive
             int randomRoomNumber = MathUtils.random(1, i) - 1;
             Room parentRoom = roomArray.get(randomRoomNumber);

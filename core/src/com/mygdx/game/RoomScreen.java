@@ -22,6 +22,7 @@ public class RoomScreen implements Screen {
     private Joystick joystickMove;
     private Joystick joystickFire;
     private Dungeon dungeon;
+    private Room currentRoom;
 
     //Utility
     private long lastSpawnTime;
@@ -36,11 +37,10 @@ public class RoomScreen implements Screen {
                 0, Constants.USER_WIDTH, Constants.USER_HEIGHT);
         enemies = new Array<Enemy>();
         dungeon = new Dungeon(game, 1, 5);
-        for(Room room : dungeon.getRoomArray()) {
-            for(Portal portal : room.getPortals()) {
-                game.getStage().addActor(portal);
-            }
-            System.out.println(room.position.x+" "+room.position.y);
+        //get starting room
+        currentRoom = dungeon.getRoomArray().get(0);
+        for(Portal portal : currentRoom.getPortals()) {
+            game.getStage().addActor(portal);
         }
         game.getStage().addActor(user);
 

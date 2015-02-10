@@ -21,6 +21,7 @@ public class RoomScreen implements Screen {
     private Array<Enemy> enemies;
     private Joystick joystickMove;
     private Joystick joystickFire;
+    private Dungeon dungeon;
 
     //Utility
     private long lastSpawnTime;
@@ -34,7 +35,15 @@ public class RoomScreen implements Screen {
         spawnUser(Constants.GAMESCREEN_WIDTH / 2 - Constants.USER_WIDTH / 2,
                 0, Constants.USER_WIDTH, Constants.USER_HEIGHT);
         enemies = new Array<Enemy>();
+        dungeon = new Dungeon(game, 1, 5);
+        for(Room room : dungeon.getRoomArray()) {
+            for(Portal portal : room.getPortals()) {
+                game.getStage().addActor(portal);
+            }
+            System.out.println(room.position.x+" "+room.position.y);
+        }
         game.getStage().addActor(user);
+
     }
 
     @Override
@@ -73,11 +82,6 @@ public class RoomScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         game.getStage().getViewport().update(width, height, true);
-        //Constants.BULLET_HEIGHT = height / 40;
-        //Constants.BULLET_WIDTH = width / 40;
-        //Constants.USER_HEIGHT = height / 80;
-        //Constants.USER_WIDTH = width / 80;
-        //System.out.println(Constants.BULLET_HEIGHT+" "+Constants.BULLET_WIDTH);
     }
 
     @Override

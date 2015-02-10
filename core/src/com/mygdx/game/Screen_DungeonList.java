@@ -19,10 +19,8 @@ public class Screen_DungeonList extends Screen_MacroUI {
         horizontalGroup.addActor(scrollPane);
 
         for (int i = 0; i < 100; i++) {
-            for (int j = 0; j < 5; j++) {
-                dungeonTable.add("Test" + i*j).pad(10f);
-            }
-            dungeonTable.row().fillX().fillY();
+            dungeonTable.add("Test " + i).pad(10f).fillX().fillY();
+            dungeonTable.row();
         }
     }
 

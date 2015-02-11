@@ -5,6 +5,10 @@ import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by wojang on 2/3/15.
+ * TODO Portals .setVisible(false) on instantiation, .setVisible(true) on enemiesDefeated(), if (isVisible()) then collision sends to next room
+ * TODO Have map of Vector2 that maps Vector2 pos --> Room room,
+ * TODO make portal position constants
+ * TODO fix constructors
  */
 public class Room {
     Dungeon dungeon;
@@ -18,19 +22,22 @@ public class Room {
     public Room(Dungeon dungeon) {
         this.dungeon = dungeon;
     }
+
     public Room(Dungeon dungeon, int x, int y) {
         this.dungeon = dungeon;
         position = new Vector2(x, y);
     }
+
     public Room(Dungeon dungeon, int enemyNumber) {
         this(dungeon);
         this.enemyNumber = enemyNumber;
     }
+
     public Room(Dungeon dungeon, int x, int y, int enemyNumber) {
         this(dungeon, x, y);
         this.enemyNumber = enemyNumber;
     }
-    public int getEnemyNumber() { return enemyNumber; }
+
     public Portal getTopPortal() {
         return topPortal;
     }
@@ -43,6 +50,7 @@ public class Room {
     public Portal getBottomPortal() {
         return bottomPortal;
     }
+
     //sets portals to point to specific rooms
     public void setTopPortal(Room nextRoom) {
         topPortal = new Portal(this, nextRoom,
@@ -80,6 +88,7 @@ public class Room {
             unassignedPortals--;
         }
     }
+
     public Array<Portal> getPortals() {
         Array<Portal> portalArray = new Array<Portal>();
         if(topPortal != null) {
@@ -99,14 +108,15 @@ public class Room {
     public int getUnassignedPortals() {
         return unassignedPortals;
     }
+
+    public int getEnemyNumber() { return enemyNumber; }
+
     public void setPosition(int x, int y) {
         position = new Vector2(x, y);
     }
     public void setPosition(Vector2 newPosition) { position = newPosition; }
     public int getX() { return (int) position.x; }
-    public int getY() {
-        return (int) position.y;
-    }
+    public int getY() { return (int) position.y; }
 
 
 }

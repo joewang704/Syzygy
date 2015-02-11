@@ -7,11 +7,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
+//TODO made a bunch of TODOs in Room lol
 public class RoomScreen implements Screen {
 
     final Syzygy game;
@@ -74,6 +76,7 @@ public class RoomScreen implements Screen {
         game.getStage().draw();
         game.getStage().act(delta);
 
+
         //Bullet firing
         if (joystickFire.getKnobPercentX() != 0 || joystickFire.getKnobPercentY() != 0) {
             if (TimeUtils.nanoTime() - user.getLastShotTime() > user.getAtkSpeed()) {
@@ -84,12 +87,19 @@ public class RoomScreen implements Screen {
             }
         }
 
-        //spawn slimes
-        /*if (TimeUtils.nanoTime() - lastSpawnTime > 1000000000) spawnSlime();*/
 
+        //constantly
         currentEnemyNumber = Collisions.enemyHits(enemies, currentEnemyNumber);
         if (currentEnemyNumber <= 0) {
             spawnPortals();
+            //check for collisions between each portal and the user
+            for (Portal portal: currentRoom.getPortals()) {
+                if (user.overlaps(portal)) {
+                    System.out.print("User is overlapping portal!!");
+                    currentRoom = portal.getNextRoom();
+                    spawnEnemies();
+                }
+            }
         }
         Collisions.removeBullets();
     }
@@ -126,6 +136,7 @@ public class RoomScreen implements Screen {
     //helper methods
     private void spawnUser(float x, float y, float width, float height) {
         user = new User(joystickMove, joystickFire, x, y, width, height);
+        user.setName("user");
     }
 
     private void spawnSlime() {
@@ -136,6 +147,7 @@ public class RoomScreen implements Screen {
         float width = Constants.SLIME_ENEMY_WIDTH;
         float height = Constants.SLIME_ENEMY_HEIGHT;
         Enemy e = new Enemy(xPos, yPos, width, height);
+        e.setName("Slime" + enemies.size);
         enemies.add(e);
         game.getStage().addActor(e);
         lastSpawnTime = TimeUtils.nanoTime();

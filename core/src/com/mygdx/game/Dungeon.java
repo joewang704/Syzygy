@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -8,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
  */
 public class Dungeon {
     private Array<Room> roomArray;
+
     public Dungeon(Syzygy game, int dungeonId, int roomNumber) {
         roomArray = new Array<Room>(roomNumber);
         //makes new rooms depending on roomNumber

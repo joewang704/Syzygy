@@ -8,14 +8,12 @@ import com.badlogic.gdx.Screen;
 /**
  * Created by wojang on 1/26/15.
  */
-public class MainMenuScreen implements Screen {
+public class StartScreen implements Screen {
     final Syzygy game;
-
     OrthographicCamera camera;
 
-    public MainMenuScreen(final Syzygy game) {
+    public StartScreen(final Syzygy game) {
         this.game = game;
-
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
     }
@@ -26,24 +24,24 @@ public class MainMenuScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
+        game.getStage().getBatch().setProjectionMatrix(camera.combined);
 
-        game.batch.begin();
-        game.font.draw(game.batch, "Welcome to Name! ", Constants.GAMESCREEN_WIDTH / 2,
+        game.getStage().getBatch().begin();
+        game.getFont().draw(game.getStage().getBatch(), "Welcome to Syzygy! ", Constants.GAMESCREEN_WIDTH / 2,
                 Constants.GAMESCREEN_HEIGHT / 2);
-        game.font.draw(game.batch, "Tap anywhere to begin!", Constants.GAMESCREEN_WIDTH / 2,
+        game.getFont().draw(game.getStage().getBatch(), "Tap anywhere to begin!", Constants.GAMESCREEN_WIDTH / 2,
                 Constants.GAMESCREEN_HEIGHT / 2 + 100);
-        game.batch.end();
+        game.getStage().getBatch().end();
 
         if (Gdx.input.isTouched()) {
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new Screen_MacroUI(game));
             dispose();
         }
     }
 
     @Override
     public void dispose() {
-        game.font.dispose();
+        game.getFont().dispose();
     }
 
     @Override

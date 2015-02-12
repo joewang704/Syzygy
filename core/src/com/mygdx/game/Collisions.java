@@ -28,21 +28,20 @@ public class Collisions {
         }
     }
     //TODO update collisions because Actors are now NOT Rectangles
-    public static void enemyHits(Array<Enemy> enemies) {
+    public static int enemyHits(Array<Enemy> enemies, int enemyNumber) {
         for (Bullet bullet: User.userBullets) {
             for (Enemy enemy: enemies) {
                 if (enemy.overlaps(bullet)) {
-                    enemy.clearActions();
-                    enemy.clearListeners();
                     enemy.remove();
-                    bullet.clearActions();
-                    bullet.clearListeners();
                     bullet.remove();
                     enemies.removeValue(enemy, true);
                     User.userBullets.removeValue(bullet, true);
+                    System.out.println(enemyNumber);
+                    return --enemyNumber;
                 }
             }
         }
+        return enemyNumber;
     }
 
     public static boolean overlap (Actor first, Actor second) {

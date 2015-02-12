@@ -7,11 +7,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
+//TODO made a bunch of TODOs in Room lol
 public class RoomScreen implements Screen {
 
     final Syzygy game;
@@ -21,6 +23,9 @@ public class RoomScreen implements Screen {
     private Array<Enemy> enemies;
     private Joystick joystickMove;
     private Joystick joystickFire;
+    private Dungeon dungeon;
+    private Room currentRoom;
+
 
     //Utility
     private long lastSpawnTime;
@@ -31,9 +36,17 @@ public class RoomScreen implements Screen {
         this.game = game;
         Gdx.input.setInputProcessor(game.getStage());
         createJoysticks();
+
         spawnUser(Constants.GAMESCREEN_WIDTH / 2 - Constants.USER_WIDTH / 2,
                 0, Constants.USER_WIDTH, Constants.USER_HEIGHT);
         enemies = new Array<Enemy>();
+        dungeon = new Dungeon(game, 1, 8);
+        System.out.println(dungeon.getDungeonMap().entrySet());
+
+        //set starting room
+        currentRoom = dungeon.getDungeonMap().get(new Vector2(0, 0));
+        spawnEnemies();
+
         game.getStage().addActor(user);
     }
 
@@ -53,6 +66,7 @@ public class RoomScreen implements Screen {
         game.getStage().draw();
         game.getStage().act(delta);
 
+
         //Bullet firing
         if (joystickFire.getKnobPercentX() != 0 || joystickFire.getKnobPercentY() != 0) {
             if (TimeUtils.nanoTime() - user.getLastShotTime() > user.getAtkSpeed()) {
@@ -63,21 +77,27 @@ public class RoomScreen implements Screen {
             }
         }
 
-        //spawn slimes
-        if (TimeUtils.nanoTime() - lastSpawnTime > 1000000000) spawnSlime();
 
-        Collisions.enemyHits(enemies);
+        //constantly update total number of enemies until it reaches 0
+        currentRoom.setEnemyNumber(Collisions.enemyHits(enemies, currentRoom.getEnemyNumber()));
+        if (currentRoom.getEnemyNumber() <= 0) {
+            addPortalsToStage();
+            //check for collisions between each portal and the user
+            for (Portal portal: currentRoom.getPortals()) {
+                if (user.overlaps(portal) && portal.isVisible()) {
+                    currentRoom.removePortalsfromStage();
+                    currentRoom = portal.getNextRoom();
+                    System.out.println("||" + currentRoom.getEnemyNumber() + "||");
+                    spawnEnemies();
+                }
+            }
+        }
         Collisions.removeBullets();
     }
 
     @Override
     public void resize(int width, int height) {
         game.getStage().getViewport().update(width, height, true);
-        //Constants.BULLET_HEIGHT = height / 40;
-        //Constants.BULLET_WIDTH = width / 40;
-        //Constants.USER_HEIGHT = height / 80;
-        //Constants.USER_WIDTH = width / 80;
-        //System.out.println(Constants.BULLET_HEIGHT+" "+Constants.BULLET_WIDTH);
     }
 
     @Override
@@ -109,6 +129,19 @@ public class RoomScreen implements Screen {
         user = new User(joystickMove, joystickFire, x, y, width, height);
     }
 
+    private void spawnEnemies() {
+        for(int i = 0; i < currentRoom.getEnemyNumber(); i++) {
+            spawnSlime();
+            System.out.print(" Slime" + i);
+        }
+    }
+
+    private void addPortalsToStage() {
+        for(Portal portal : currentRoom.getPortals()) {
+            game.getStage().addActor(portal);
+        }
+    }
+
     private void spawnSlime() {
         float xPos = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
                 2 * Constants.GAMESCREEN_WIDTH / 3);
@@ -117,6 +150,7 @@ public class RoomScreen implements Screen {
         float width = Constants.SLIME_ENEMY_WIDTH;
         float height = Constants.SLIME_ENEMY_HEIGHT;
         Enemy e = new Enemy(xPos, yPos, width, height);
+        e.setName("Slime" + enemies.size);
         enemies.add(e);
         game.getStage().addActor(e);
         lastSpawnTime = TimeUtils.nanoTime();

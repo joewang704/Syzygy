@@ -47,7 +47,6 @@ public class Screen_MacroUI implements Screen {
         storageButt = new TextButton("Check your storage bbe!", uiSkin);
             storageButt.setSize(Constants.RIGHTABS_WIDTH, Constants.GAMESCREEN_HEIGHT/5);
         rmScreenTemp = new TextButton("Go to RMSCRN bbe <3", uiSkin);
-            rmScreenTemp.pad(100f);
 
         horizontalGroup = new HorizontalGroup();
 
@@ -58,6 +57,8 @@ public class Screen_MacroUI implements Screen {
         table.add(dungeonButt).minWidth(Constants.RIGHTABS_WIDTH).prefWidth(Constants.RIGHTABS_WIDTH * 2).row();
         table.add(equipButt).minWidth(Constants.RIGHTABS_WIDTH).prefWidth(Constants.RIGHTABS_WIDTH * 2).row();
         table.add(storageButt).minWidth(Constants.RIGHTABS_WIDTH).prefWidth(Constants.RIGHTABS_WIDTH * 2).row();
+
+        horizontalGroup.pad(20f);
         horizontalGroup.addActor(table);
         horizontalGroup.addActor(rmScreenTemp);
 

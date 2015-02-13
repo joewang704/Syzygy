@@ -79,6 +79,7 @@ public class RoomScreen implements Screen {
 
 
         //constantly update total number of enemies until it reaches 0
+        //change to new room
         currentRoom.setEnemyNumber(Collisions.enemyHits(enemies, currentRoom.getEnemyNumber()));
         if (currentRoom.getEnemyNumber() <= 0) {
             addPortalsToStage();
@@ -131,8 +132,14 @@ public class RoomScreen implements Screen {
 
     private void spawnEnemies() {
         for(int i = 0; i < currentRoom.getEnemyNumber(); i++) {
-            spawnSlime();
-            System.out.print(" Slime" + i);
+            int enemyToSpawn = MathUtils.random(1);
+            if (enemyToSpawn == 1) {
+                spawnSlime();
+                System.out.print("Slime" + i);
+            } else {
+                spawnGolem();
+                System.out.print("Golem" + i);
+            }
         }
     }
 
@@ -143,14 +150,27 @@ public class RoomScreen implements Screen {
     }
 
     private void spawnSlime() {
+        float xPos = MathUtils.random(Constants.GAMESCREEN_WIDTH / 3,
+                2 * Constants.GAMESCREEN_WIDTH / 3);
+        float yPos = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
+                2 * Constants.GAMESCREEN_HEIGHT / 3);
+        float width = Constants.ENEMY_SLIME_WIDTH;
+        float height = Constants.ENEMY_SLIME_HEIGHT;
+        Enemy e = new Enemy_Slime(xPos, yPos, width, height);
+        e.setName("Slime" + enemies.size);
+        enemies.add(e);
+        game.getStage().addActor(e);
+        lastSpawnTime = TimeUtils.nanoTime();
+    }
+    private void spawnGolem() {
         float xPos = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
                 2 * Constants.GAMESCREEN_WIDTH / 3);
         float yPos = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
                 2 * Constants.GAMESCREEN_HEIGHT / 3);
-        float width = Constants.SLIME_ENEMY_WIDTH;
-        float height = Constants.SLIME_ENEMY_HEIGHT;
-        Enemy e = new Enemy(xPos, yPos, width, height);
-        e.setName("Slime" + enemies.size);
+        float width = Constants.ENEMY_GOLEM_WIDTH;
+        float height = Constants.ENEMY_GOLEM_HEIGHT;
+        Enemy e = new Enemy_Golem(xPos, yPos, width, height);
+        e.setName("Golem" + enemies.size);
         enemies.add(e);
         game.getStage().addActor(e);
         lastSpawnTime = TimeUtils.nanoTime();

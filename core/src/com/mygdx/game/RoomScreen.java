@@ -29,7 +29,6 @@ public class RoomScreen implements Screen {
 
     //Utility
     private long lastSpawnTime;
-    private int currentEnemyNumber;
 
     //Sprites now contained within respective classes
 
@@ -37,27 +36,18 @@ public class RoomScreen implements Screen {
         this.game = game;
         Gdx.input.setInputProcessor(game.getStage());
         createJoysticks();
+
         spawnUser(Constants.GAMESCREEN_WIDTH / 2 - Constants.USER_WIDTH / 2,
                 0, Constants.USER_WIDTH, Constants.USER_HEIGHT);
         enemies = new Array<Enemy>();
-        dungeon = new Dungeon(game, 1, 5);
-        //get starting room
-        currentRoom = dungeon.getRoomArray().get(0);
-        currentEnemyNumber = currentRoom.getEnemyNumber();
-        game.getStage().addActor(user);
+        dungeon = new Dungeon(game, 1, 8);
+        System.out.println(dungeon.getDungeonMap().entrySet());
+
+        //set starting room
+        currentRoom = dungeon.getDungeonMap().get(new Vector2(0, 0));
         spawnEnemies();
-    }
 
-    private void spawnEnemies() {
-        for(int i = 0; i < currentEnemyNumber; i++) {
-            spawnSlime();
-        }
-    }
-
-    private void spawnPortals() {
-        for(Portal portal : currentRoom.getPortals()) {
-            game.getStage().addActor(portal);
-        }
+        game.getStage().addActor(user);
     }
 
     @Override
@@ -88,15 +78,16 @@ public class RoomScreen implements Screen {
         }
 
 
-        //constantly
-        currentEnemyNumber = Collisions.enemyHits(enemies, currentEnemyNumber);
-        if (currentEnemyNumber <= 0) {
-            spawnPortals();
+        //constantly update total number of enemies until it reaches 0
+        currentRoom.setEnemyNumber(Collisions.enemyHits(enemies, currentRoom.getEnemyNumber()));
+        if (currentRoom.getEnemyNumber() <= 0) {
+            addPortalsToStage();
             //check for collisions between each portal and the user
             for (Portal portal: currentRoom.getPortals()) {
-                if (user.overlaps(portal)) {
-                    System.out.print("User is overlapping portal!!");
+                if (user.overlaps(portal) && portal.isVisible()) {
+                    currentRoom.removePortalsfromStage();
                     currentRoom = portal.getNextRoom();
+                    System.out.println("||" + currentRoom.getEnemyNumber() + "||");
                     spawnEnemies();
                 }
             }
@@ -136,7 +127,19 @@ public class RoomScreen implements Screen {
     //helper methods
     private void spawnUser(float x, float y, float width, float height) {
         user = new User(joystickMove, joystickFire, x, y, width, height);
-        user.setName("user");
+    }
+
+    private void spawnEnemies() {
+        for(int i = 0; i < currentRoom.getEnemyNumber(); i++) {
+            spawnSlime();
+            System.out.print(" Slime" + i);
+        }
+    }
+
+    private void addPortalsToStage() {
+        for(Portal portal : currentRoom.getPortals()) {
+            game.getStage().addActor(portal);
+        }
     }
 
     private void spawnSlime() {

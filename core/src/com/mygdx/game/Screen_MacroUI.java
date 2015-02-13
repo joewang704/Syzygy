@@ -22,7 +22,7 @@ import javax.xml.soap.Text;
  */
 public class Screen_MacroUI implements Screen {
 
-    private final Syzygy game;
+    protected final Syzygy game;
     protected OrthographicCamera camera;
     protected Skin uiSkin;
 
@@ -95,16 +95,18 @@ public class Screen_MacroUI implements Screen {
 
         //TODO in child classes that use super.render(), how do we dispose of just THEIR assets?
         if (dungeonButt.isPressed()) {
+            game.getScreen().dispose();
             game.setScreen(new Screen_DungeonList(game));
         } else if (equipButt.isPressed()) {
+            game.getScreen().dispose();
             game.setScreen(new Screen_Equipped(game));
         } else if (storageButt.isPressed()) {
+            game.getScreen().dispose();
             game.setScreen(new Screen_Storage(game));
         } else if (rmScreenTemp.isPressed()) {
             game.stage.dispose();
             game.stage.clear();
             game.setScreen(new RoomScreen(game));
-
         }
     }
 

@@ -1,6 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
@@ -24,6 +23,11 @@ public class Screen_Equipped extends Screen_MacroUI {
             }
             storageTable.row().fillX().fillY();
         }
+    }
 
+    @Override
+    public void dispose() {
+        scrollPane.clear();
+        scrollPane.remove();
     }
 }

@@ -5,41 +5,32 @@ import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by wojang on 2/3/15.
- * TODO Portals .setVisible(false) on instantiation, .setVisible(true) on enemiesDefeated(), if (isVisible()) then collision sends to next room
- * TODO Have map of Vector2 that maps Vector2 pos --> Room room,
- * TODO make portal position constants
- * TODO fix constructors
  */
 public class Room {
     Dungeon dungeon;
-
     private Portal topPortal;
     private Portal leftPortal;
     private Portal rightPortal;
     private Portal bottomPortal;
-
-    private Array<Portal> portals;
-
     private int enemyNumber;
+    int unassignedPortals = 4;
     Vector2 position;
-
+    public Room(Dungeon dungeon) {
+        this.dungeon = dungeon;
+    }
     public Room(Dungeon dungeon, int x, int y) {
         this.dungeon = dungeon;
-        portals = new Array();
         position = new Vector2(x, y);
-
-        enemyNumber = 7;
-        setTopPortal();
-        setLeftPortal();
-        setRightPortal();
-        setBottomPortal();
     }
-
+    public Room(Dungeon dungeon, int enemyNumber) {
+        this(dungeon);
+        this.enemyNumber = enemyNumber;
+    }
     public Room(Dungeon dungeon, int x, int y, int enemyNumber) {
         this(dungeon, x, y);
         this.enemyNumber = enemyNumber;
     }
-
+    public int getEnemyNumber() { return enemyNumber; }
     public Portal getTopPortal() {
         return topPortal;
     }
@@ -52,73 +43,70 @@ public class Room {
     public Portal getBottomPortal() {
         return bottomPortal;
     }
-
     //sets portals to point to specific rooms
-    //will have to check if the roomAbove is not null
-    public void setTopPortal() {
-        if (portals.contains(topPortal, true)) {
-            portals.removeValue(topPortal, true);
-        }
-        topPortal = new Portal(this, PortalPos.UP,
+    public void setTopPortal(Room nextRoom) {
+        topPortal = new Portal(this, nextRoom,
                 Constants.GAMESCREEN_WIDTH / 2 - Constants.PORTAL_WIDTH / 2,
                 Constants.GAMESCREEN_HEIGHT - Constants.PORTAL_HEIGHT,
                 Constants.PORTAL_WIDTH, Constants.PORTAL_HEIGHT);
-        portals.add(topPortal);
-    }
-    public void setLeftPortal() {
-        if (portals.contains(leftPortal, true)) {
-            portals.removeValue(leftPortal, true);
+        if (unassignedPortals > 0) {
+            unassignedPortals--;
         }
-        leftPortal = new Portal(this, PortalPos.LEFT,
+    }
+    public void setLeftPortal(Room nextRoom) {
+        leftPortal = new Portal(this, nextRoom,
                 0,
                 Constants.GAMESCREEN_HEIGHT / 2 - Constants.PORTAL_HEIGHT / 2,
                 Constants.PORTAL_WIDTH, Constants.PORTAL_HEIGHT);
-        portals.add(leftPortal);
-    }
-    public void setRightPortal() {
-        if (portals.contains(rightPortal, true)) {
-            portals.removeValue(rightPortal, true);
+        if (unassignedPortals > 0) {
+            unassignedPortals--;
         }
-        rightPortal = new Portal(this, PortalPos.RIGHT,
+    }
+    public void setRightPortal(Room nextRoom) {
+        rightPortal = new Portal(this, nextRoom,
                 Constants.GAMESCREEN_WIDTH - Constants.PORTAL_WIDTH,
                 Constants.GAMESCREEN_HEIGHT / 2 - Constants.PORTAL_HEIGHT / 2,
                 Constants.PORTAL_WIDTH, Constants.PORTAL_HEIGHT);
-        portals.add(rightPortal);
-    }
-    public void setBottomPortal() {
-        if (portals.contains(bottomPortal, true)) {
-            portals.removeValue(bottomPortal, true);
+        if (unassignedPortals > 0) {
+            unassignedPortals--;
         }
-        bottomPortal = new Portal(this,PortalPos.DOWN,
+    }
+    public void setBottomPortal(Room nextRoom) {
+        bottomPortal = new Portal(this, nextRoom,
                 Constants.GAMESCREEN_WIDTH / 2 - Constants.PORTAL_WIDTH / 2,
                 0,
                 Constants.PORTAL_WIDTH, Constants.PORTAL_HEIGHT);
-        portals.add(bottomPortal);
+        if (unassignedPortals > 0) {
+            unassignedPortals--;
+        }
     }
-
     public Array<Portal> getPortals() {
-        return portals;
+        Array<Portal> portalArray = new Array<Portal>();
+        if(topPortal != null) {
+            portalArray.add(topPortal);
+        }
+        if(leftPortal != null) {
+            portalArray.add(leftPortal);
+        }
+        if(rightPortal != null) {
+            portalArray.add(rightPortal);
+        }
+        if(bottomPortal != null) {
+            portalArray.add(bottomPortal);
+        }
+        return portalArray;
     }
-
-    public int getEnemyNumber() { return enemyNumber; }
-    public void setEnemyNumber(int n) { enemyNumber = n; }
-
-    public void removePortalsfromStage() {
-        topPortal.remove();
-        leftPortal.remove();
-        rightPortal.remove();
-        bottomPortal.remove();
+    public int getUnassignedPortals() {
+        return unassignedPortals;
     }
-
     public void setPosition(int x, int y) {
         position = new Vector2(x, y);
     }
-    public void setPosition(Vector2 newPosition) {
-        position.x = newPosition.x;
-        position.y = newPosition.y;
-    }
+    public void setPosition(Vector2 newPosition) { position = newPosition; }
     public int getX() { return (int) position.x; }
-    public int getY() { return (int) position.y; }
-    public Vector2 getPosition() { return position; }
+    public int getY() {
+        return (int) position.y;
+    }
+
 
 }

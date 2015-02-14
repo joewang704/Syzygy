@@ -20,7 +20,7 @@ public class Room {
 
     private Array<Portal> portals;
 
-    private int enemyNumber;
+    protected int enemyNumber;
     Vector2 position;
 
     public Room(Dungeon dungeon, int x, int y) {
@@ -28,11 +28,11 @@ public class Room {
         portals = new Array();
         position = new Vector2(x, y);
 
-        enemyNumber = 7;
         setTopPortal();
         setLeftPortal();
         setRightPortal();
         setBottomPortal();
+        enemyNumber = 7;
     }
 
     public Room(Dungeon dungeon, int x, int y, int enemyNumber) {

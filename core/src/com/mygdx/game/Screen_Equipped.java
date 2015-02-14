@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
@@ -29,12 +27,28 @@ public class Screen_Equipped extends Screen_MacroUI {
         super(game);
         equipment = new VerticalGroup();
         glovesAndChest = new HorizontalGroup();
-        head = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("equipHead.png")))));
-        chest = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("equipChest.png")))));
-        handLeft = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("equipLeftHand.png")))));
-        handRight = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("equipRightHand.png")))));
-        legs = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("equipLegs.png")))));
-        feet = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("equipFeet.png")))));
+
+        //make equipped item buttons with generic textures
+        head = new ImageButton(new TextureRegionDrawable(new TextureRegion(
+                new Texture(Gdx.files.internal("equipHead.png")))));
+        chest = new ImageButton(new TextureRegionDrawable(new TextureRegion(
+                new Texture(Gdx.files.internal("equipChest.png")))));
+        handLeft = new ImageButton(new TextureRegionDrawable(new TextureRegion(
+                new Texture(Gdx.files.internal("equipLeftHand.png")))));
+        handRight = new ImageButton(new TextureRegionDrawable(new TextureRegion(
+                new Texture(Gdx.files.internal("equipRightHand.png")))));
+        legs = new ImageButton(new TextureRegionDrawable(new TextureRegion(
+                new Texture(Gdx.files.internal("equipLegs.png")))));
+        feet = new ImageButton(new TextureRegionDrawable(new TextureRegion(
+                new Texture(Gdx.files.internal("equipFeet.png")))));
+
+        //scale each button by the height of the Game, and then divide it by 5 <-- shit implementation
+        scaleButton(head);
+        scaleButton(chest);
+        scaleButton(handLeft);
+        scaleButton(handRight);
+        scaleButton(legs);
+        scaleButton(feet);
 
         glovesAndChest.addActor(handLeft);
         glovesAndChest.addActor(chest);
@@ -46,6 +60,16 @@ public class Screen_Equipped extends Screen_MacroUI {
         equipment.addActor(feet);
 
         horizontalGroup.addActor(equipment);
+    }
+
+    /**
+     * scales button to GS_HEIGHT / curHeight / 5
+     * @param button to scale
+     */
+    private void scaleButton (ImageButton button) {
+        button.setBounds(button.getX(), button.getY(), 
+                Constants.GAMESCREEN_HEIGHT / button.getHeight() / 5, 
+                Constants.GAMESCREEN_HEIGHT / button.getHeight() / 5);
     }
 
     @Override

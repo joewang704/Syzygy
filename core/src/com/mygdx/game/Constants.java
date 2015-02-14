@@ -13,13 +13,10 @@ public class Constants {
     static float BULLET_HEIGHT = GAMESCREEN_HEIGHT / 15;//32
     static float USER_WIDTH = GAMESCREEN_WIDTH / 10;//64
     static float USER_HEIGHT = GAMESCREEN_HEIGHT / 6;//64
-    static float ENEMY_SLIME_WIDTH = GAMESCREEN_WIDTH / 12.5f;
-    static float ENEMY_SLIME_HEIGHT = GAMESCREEN_HEIGHT / 7.5f;
     static float RIGHTABS_WIDTH = GAMESCREEN_WIDTH / 10;
     static float PORTAL_WIDTH = GAMESCREEN_WIDTH / 7.5f;
     static float PORTAL_HEIGHT = GAMESCREEN_HEIGHT / 4.5f;
-    static float ENEMY_GOLEM_WIDTH = GAMESCREEN_HEIGHT / 6f;
-    static float ENEMY_GOLEM_HEIGHT = GAMESCREEN_WIDTH / 3.6f;
+    //all enemy related constants moved to the respected enemy class.
     //static float JOYSTICK_RADIUS = GAMESCREEN_WIDTH / ?;
     //lets not use stretch viewport because we don't really want aspect ratio being changed, maybe?
 }

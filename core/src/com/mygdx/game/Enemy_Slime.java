@@ -18,6 +18,9 @@ public class Enemy_Slime extends Enemy{
         moveDirection = new Vector2(MathUtils.random()*  MathUtils.randomSign(),
                 MathUtils.random() * MathUtils.randomSign());
         enemyImage = new Texture(Gdx.files.internal("cuteSlime64.png"));
+        enemyHeight = Constants.GAMESCREEN_HEIGHT / 7.5f;
+        enemyWidth = Constants.GAMESCREEN_WIDTH / 12.5f;
+        setBounds(xPos, yPos, enemyWidth, enemyHeight);
     }
 
     public Enemy_Slime(float x, float y) {

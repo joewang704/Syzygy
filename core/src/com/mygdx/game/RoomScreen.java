@@ -133,13 +133,17 @@ public class RoomScreen implements Screen {
     private void spawnEnemies() {
         for(int i = 0; i < currentRoom.getEnemyNumber(); i++) {
             int enemyToSpawn = MathUtils.random(1);
+            Enemy e;
             if (enemyToSpawn == 1) {
-                spawnSlime();
-                System.out.print("Slime" + i);
+                e = new Enemy_Slime();
+                System.out.print(" Slime" + i);
             } else {
-                spawnGolem();
-                System.out.print("Golem" + i);
+                e = new Enemy_Golem();
+                System.out.print(" Golem" + i);
             }
+            enemies.add(e);
+            game.getStage().addActor(e);
+            lastSpawnTime = TimeUtils.nanoTime();
         }
     }
 
@@ -148,34 +152,6 @@ public class RoomScreen implements Screen {
             game.getStage().addActor(portal);
         }
     }
-
-    private void spawnSlime() {
-        float xPos = MathUtils.random(Constants.GAMESCREEN_WIDTH / 3,
-                2 * Constants.GAMESCREEN_WIDTH / 3);
-        float yPos = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
-                2 * Constants.GAMESCREEN_HEIGHT / 3);
-        float width = Constants.ENEMY_SLIME_WIDTH;
-        float height = Constants.ENEMY_SLIME_HEIGHT;
-        Enemy e = new Enemy_Slime(xPos, yPos, width, height);
-        e.setName("Slime" + enemies.size);
-        enemies.add(e);
-        game.getStage().addActor(e);
-        lastSpawnTime = TimeUtils.nanoTime();
-    }
-    private void spawnGolem() {
-        float xPos = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
-                2 * Constants.GAMESCREEN_WIDTH / 3);
-        float yPos = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
-                2 * Constants.GAMESCREEN_HEIGHT / 3);
-        float width = Constants.ENEMY_GOLEM_WIDTH;
-        float height = Constants.ENEMY_GOLEM_HEIGHT;
-        Enemy e = new Enemy_Golem(xPos, yPos, width, height);
-        e.setName("Golem" + enemies.size);
-        enemies.add(e);
-        game.getStage().addActor(e);
-        lastSpawnTime = TimeUtils.nanoTime();
-    }
-
     //Joystick Position is entirely relative to GS_WIDTH
     //Joystick width & height entirely relative to GS_HEIGHT
     //sambady pls halp!

@@ -14,11 +14,9 @@ public class Enemy_Golem extends Enemy {
     public Enemy_Golem() {
         moveCtr = 0;
         enemyImage = new Texture(Gdx.files.internal("golem.png"));
-    }
-
-    public Enemy_Golem(float x, float y, float width, float height) {
-        this();
-        setBounds(x, y, width, height);
+        enemyHeight = Constants.GAMESCREEN_HEIGHT / 6f;
+        enemyWidth = Constants.GAMESCREEN_WIDTH / 3.6f;
+        setBounds(xPos, yPos, enemyWidth, enemyHeight);
     }
 
     @Override
@@ -27,8 +25,8 @@ public class Enemy_Golem extends Enemy {
            moveCtr++;
        } else {
            super.act(delta);
-           setX(MathUtils.random(Constants.GAMESCREEN_WIDTH - Constants.ENEMY_GOLEM_WIDTH));
-           setY(MathUtils.random(Constants.GAMESCREEN_HEIGHT - Constants.ENEMY_GOLEM_HEIGHT));
+           setX(MathUtils.random(Constants.GAMESCREEN_WIDTH - enemyWidth));
+           setY(MathUtils.random(Constants.GAMESCREEN_HEIGHT - enemyHeight));
            if (getX() + getWidth() >= Constants.GAMESCREEN_WIDTH) {
                setX(Constants.GAMESCREEN_WIDTH - getWidth());
            } else if (getX() < 0) {

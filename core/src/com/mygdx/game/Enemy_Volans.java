@@ -13,10 +13,12 @@ import com.badlogic.gdx.utils.TimeUtils;
 public class Enemy_Volans extends Enemy {
 
     public static Array<Bullet> enemyBullets = new Array<Bullet>();
-    private long lastShotTime;
 
     public Enemy_Volans() {
         moveCtr = 0;
+        //vector needs to be normalized even if its x and y are less than 1
+        moveDirection = (new Vector2(MathUtils.random()*  MathUtils.randomSign(),
+                MathUtils.random() * MathUtils.randomSign())).nor();
         enemyImage = new Texture(Gdx.files.internal("volans.png"));
     }
 
@@ -26,8 +28,8 @@ public class Enemy_Volans extends Enemy {
             moveCtr++;
         } else {
             super.act(delta);
-            setX(MathUtils.random(Constants.GAMESCREEN_WIDTH - Constants.ENEMY_GOLEM_WIDTH));
-            setY(MathUtils.random(Constants.GAMESCREEN_HEIGHT - Constants.ENEMY_GOLEM_HEIGHT));
+            setX(getX() + MathUtils.random(Constants.GAMESCREEN_WIDTH - Constants.ENEMY_VOLANS_WIDTH));
+            setY(getY() + MathUtils.random(Constants.GAMESCREEN_HEIGHT - Constants.ENEMY_VOLANS_HEIGHT));
             if (getX() + getWidth() >= Constants.GAMESCREEN_WIDTH) {
                 setX(Constants.GAMESCREEN_WIDTH - getWidth());
             } else if (getX() < 0) {
@@ -38,12 +40,11 @@ public class Enemy_Volans extends Enemy {
             } else if (getY() < 0) {
                 setY(0);
             }
-
             moveCtr = 0;
         }
     }
 
-    public Bullet fireBullet(Vector2 direction, float speed) {
+    public void attack(Vector2 direction, float speed) {
         Bullet bullet = new Bullet(direction.nor().scl(70).scl(3), speed, false,
                 this.getX() + this.getWidth()/2 - Constants.BULLET_WIDTH,
                 this.getY() + this.getHeight()/2 - Constants.BULLET_HEIGHT,
@@ -51,6 +52,5 @@ public class Enemy_Volans extends Enemy {
         // + Constants.USER_WIDTH / 4
         enemyBullets.add(bullet);
         lastShotTime = TimeUtils.nanoTime();
-        return bullet;
     }
 }

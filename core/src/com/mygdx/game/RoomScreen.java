@@ -133,12 +133,12 @@ public class RoomScreen implements Screen {
     private void spawnEnemies() {
         for(int i = 0; i < currentRoom.getEnemyNumber(); i++) {
             int enemyToSpawn = MathUtils.random(1);
-            if (enemyToSpawn == 1) {
+            if (enemyToSpawn == 0) {
                 spawnSlime();
-                System.out.print("Slime" + i);
-            } else {
+                System.out.print(" |Slime" + i);
+            } else if (enemyToSpawn == 1) {
                 spawnGolem();
-                System.out.print("Golem" + i);
+                System.out.print(" |Golem" + i);
             }
         }
     }

@@ -15,8 +15,9 @@ public class Enemy_Slime extends Enemy{
 
     public Enemy_Slime() {
         moveCtr = 0;
-        moveDirection = new Vector2(MathUtils.random()*  MathUtils.randomSign(),
-                MathUtils.random() * MathUtils.randomSign());
+        //vector needs to be normalized even if its x and y are less than 1
+        moveDirection = (new Vector2(MathUtils.random()*  MathUtils.randomSign(),
+                MathUtils.random() * MathUtils.randomSign())).nor();
         enemyImage = new Texture(Gdx.files.internal("cuteSlime64.png"));
     }
 

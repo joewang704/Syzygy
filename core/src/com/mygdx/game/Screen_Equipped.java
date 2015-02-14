@@ -30,6 +30,7 @@ public class Screen_Equipped extends Screen_MacroUI {
         equipment = new VerticalGroup();
         glovesAndChest = new HorizontalGroup();
 
+
         //make equipped item buttons with generic textures
         head = new ImageButton(new TextureRegionDrawable(new TextureRegion(
                 new Texture(Gdx.files.internal("equipHead.png")))));
@@ -69,9 +70,8 @@ public class Screen_Equipped extends Screen_MacroUI {
      * @param button to scale
      */
     private void scaleButton (ImageButton button) {
-        button.setBounds(button.getX(), button.getY(), 
-                Constants.GAMESCREEN_HEIGHT / button.getHeight() / 5, 
-                Constants.GAMESCREEN_HEIGHT / button.getHeight() / 5);
+        button.getStyle().imageUp.setMinWidth(Constants.GAMESCREEN_HEIGHT / button.getHeight() / 5);
+        button.getStyle().imageUp.setMinHeight(Constants.GAMESCREEN_HEIGHT / button.getHeight() / 5);
     }
 
     @Override

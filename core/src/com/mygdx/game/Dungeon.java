@@ -27,7 +27,7 @@ public class Dungeon {
         for (int i = 1; i < numberOfRooms; i++) {
             Portal randomPortal = unassignedPortals.get(MathUtils.random(unassignedPortals.size - 1));
             Vector2 currentRoomPos = randomPortal.getCurrentRoom().getPosition();
-            Room newRoom = new Room(this, 99, 99);
+            Room newRoom;
 
             //if statements to check for which portal we refer to
             if (randomPortal.getPortalPos() == PortalPos.UP) {
@@ -48,7 +48,7 @@ public class Dungeon {
                 randomPortal.setNextRoom(newRoom);
                 newRoom.getLeftPortal().setNextRoom(randomPortal.getCurrentRoom());
 
-            } else if (randomPortal.getPortalPos() == PortalPos.DOWN) {
+            } else {
                 newRoom = new Room(this, (int) currentRoomPos.x, (int) currentRoomPos.y - 1);
                 randomPortal.setNextRoom(newRoom);
                 newRoom.getTopPortal().setNextRoom(randomPortal.getCurrentRoom());

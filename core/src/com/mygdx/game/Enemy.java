@@ -17,7 +17,7 @@ public class Enemy extends Actor {
     protected Texture enemyImage;
 
     public Enemy() {
-        //fill in later with properties
+            //fill in later with properties
     }
 
     @Override
@@ -28,6 +28,10 @@ public class Enemy extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.draw(enemyImage, getX(), getY(), getWidth(), getHeight());
+    }
+
+    public Bullet attack() {
+        return null;
     }
 
     public boolean overlaps(Actor a) {

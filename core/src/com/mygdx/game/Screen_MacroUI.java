@@ -53,7 +53,7 @@ public class Screen_MacroUI implements Screen {
         horizontalGroup.reverse();
         horizontalGroup.setFillParent(true);
         table = new Table(uiSkin);
-        table.right();
+        table.pad(20f).right();
         table.add(dungeonButt).minWidth(Constants.RIGHTABS_WIDTH).prefWidth(Constants.RIGHTABS_WIDTH * 2).row();
         table.add(equipButt).minWidth(Constants.RIGHTABS_WIDTH).prefWidth(Constants.RIGHTABS_WIDTH * 2).row();
         table.add(storageButt).minWidth(Constants.RIGHTABS_WIDTH).prefWidth(Constants.RIGHTABS_WIDTH * 2).row();

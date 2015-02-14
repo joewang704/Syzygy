@@ -6,7 +6,6 @@ package com.mygdx.game;
  */
 public class Room_Boss extends Room {
 
-
     public Room_Boss(Dungeon dungeon, int x, int y) {
         super(dungeon, x, y);
         setEnemyNumber(1);

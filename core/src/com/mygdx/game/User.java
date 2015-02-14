@@ -13,19 +13,17 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class User extends Actor {
 
-    public static Array<Bullet> userBullets = new Array<Bullet>();
+    public static Array<Bullet> userBullets = new Array();
     private Texture userImg;
     private long lastShotTime;
     private int atkSpeed;
     private float moveSpeed;
     private Touchpad movePad;
     private Touchpad firePad;
-    private Rectangle bounds;
 
     public User(Touchpad move, Touchpad fire, float x, float y, float width, float height) {
         this(move, fire);
         setBounds(x, y, width, height);
-        bounds = new Rectangle(x, y, width, height);
     }
 
     public User(Touchpad move, Touchpad fire) {
@@ -88,8 +86,6 @@ public class User extends Actor {
         return bullet;
     }
 
-
-    public Rectangle getBounds() { return bounds; }
     public long getLastShotTime() { return lastShotTime; }
     public int getAtkSpeed() { return atkSpeed; }
 }

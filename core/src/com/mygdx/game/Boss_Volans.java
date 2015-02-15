@@ -13,11 +13,12 @@ import com.badlogic.gdx.utils.TimeUtils;
 /**
  * Created by Lucas on 2/13/2015.
  * 1st Boss
- * TODO should have multiple attack methods for different attacks?
+ * TODO should have multiple attack methods for different attacks? should Array<Bullet> be static?
  */
 public class Boss_Volans extends Enemy {
 
     public static Array<Bullet> volansBullets = new Array<Bullet>();
+    public static ClassName className = ClassName.VOLANS;
     private Sound volansCall;
     private Vector2 directionOfUser;
 

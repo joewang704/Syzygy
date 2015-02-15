@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
  */
 public class Enemy_Golem extends Enemy {
 
+    public static ClassName className = ClassName.GOLEM;
+
     public Enemy_Golem() {
         moveCtr = 0;
         enemyImage = new Texture(Gdx.files.internal("golem.png"));

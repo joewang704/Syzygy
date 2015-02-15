@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 public class Enemy_Slime extends Enemy{
 
+    public static ClassName className = ClassName.SLIME;
+
     public Enemy_Slime() {
         moveCtr = 0;
         //vector needs to be normalized even if its x and y are less than 1

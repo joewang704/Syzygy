@@ -1,0 +1,22 @@
+==Important Info==
+> New enum ClassName attribute in each class to be used to refer to the class as a whole
+> Use Actions for simple actor manipulation
+
+==Bugs==
+> Sometimes portals won't spawn after killing all enemies.
+> Alpha cannot be manipulated properly -> we are most likely drawing actors without their alpha property
+
+Lucas:
+---Boss_Volans
+---Room_Boss
+---DungeonID and Array<ClassName> possibleEnemies in Dungeon class
+
+Joe:
+
+
+Jatin:
+
+
+Jay:
+
+

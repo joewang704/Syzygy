@@ -13,8 +13,10 @@ public class Dungeon {
 
     private HashMap<Vector2, Room> dungeonMap;
     private Array<Portal> unassignedPortals;
+    private Array<ClassName> possibleEnemies;
 
-    public Dungeon(Syzygy game, int dungeonId, int numberOfRooms) {
+    //TODO populate possibleEnemies based on dungeonID
+    public Dungeon(Syzygy game, int dungeonID, int numberOfRooms) {
         dungeonMap = new HashMap();
         unassignedPortals = new Array();
         //make room0

@@ -44,6 +44,20 @@ public class Enemy extends Actor {
         lastShotTime = TimeUtils.nanoTime();
     }
 
+    public void checkBoundsCollision () {
+        if (getX() + getWidth() >= Constants.GAMESCREEN_WIDTH) {
+            setX(Constants.GAMESCREEN_WIDTH - getWidth());
+        } else if (getX() < 0) {
+            setX(0);
+        }
+
+        if (getY() >= Constants.GAMESCREEN_HEIGHT - getHeight()) {
+            setY(Constants.GAMESCREEN_HEIGHT - getHeight());
+        } else if (getY() < 0) {
+            setY(0);
+        }
+    }
+
     public boolean overlaps(Actor a) {
         return Collisions.overlap(this, a);
     }

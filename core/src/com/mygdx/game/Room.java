@@ -61,7 +61,7 @@ public class Room {
         }
         topPortal = new Portal(this, PortalPos.UP,
                 Constants.GAMESCREEN_WIDTH / 2 - Constants.PORTAL_WIDTH / 2,
-                Constants.GAMESCREEN_HEIGHT - Constants.PORTAL_HEIGHT,
+                Constants.GAMESCREEN_HEIGHT - Constants.PORTAL_HEIGHT/2,
                 Constants.PORTAL_WIDTH, Constants.PORTAL_HEIGHT);
         portals.add(topPortal);
     }
@@ -70,7 +70,7 @@ public class Room {
             portals.removeValue(leftPortal, true);
         }
         leftPortal = new Portal(this, PortalPos.LEFT,
-                0,
+                -Constants.PORTAL_WIDTH/2,
                 Constants.GAMESCREEN_HEIGHT / 2 - Constants.PORTAL_HEIGHT / 2,
                 Constants.PORTAL_WIDTH, Constants.PORTAL_HEIGHT);
         portals.add(leftPortal);
@@ -80,7 +80,7 @@ public class Room {
             portals.removeValue(rightPortal, true);
         }
         rightPortal = new Portal(this, PortalPos.RIGHT,
-                Constants.GAMESCREEN_WIDTH - Constants.PORTAL_WIDTH,
+                Constants.GAMESCREEN_WIDTH - Constants.PORTAL_WIDTH/2,
                 Constants.GAMESCREEN_HEIGHT / 2 - Constants.PORTAL_HEIGHT / 2,
                 Constants.PORTAL_WIDTH, Constants.PORTAL_HEIGHT);
         portals.add(rightPortal);
@@ -91,7 +91,7 @@ public class Room {
         }
         bottomPortal = new Portal(this,PortalPos.DOWN,
                 Constants.GAMESCREEN_WIDTH / 2 - Constants.PORTAL_WIDTH / 2,
-                0,
+                -Constants.PORTAL_HEIGHT,
                 Constants.PORTAL_WIDTH, Constants.PORTAL_HEIGHT);
         portals.add(bottomPortal);
     }

@@ -34,7 +34,7 @@ public class Enemy_Slime extends Enemy{
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (moveCtr < 100) {
+        if (moveCtr < 75) {
             moveCtr++;
             setX(getX() + 200 * Gdx.graphics.getDeltaTime() * moveDirection.x);
             setY(getY() + 200 * Gdx.graphics.getDeltaTime() * moveDirection.y);

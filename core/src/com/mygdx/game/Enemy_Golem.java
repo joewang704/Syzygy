@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 /**
  * Created by jatin1 on 2/13/15.
@@ -21,24 +22,19 @@ public class Enemy_Golem extends Enemy {
         setBounds(x, y, width, height);
     }
 
+    //now using actions to move, and alpha for fadeOut and fadeIn not working I guess...
     @Override
     public void act(float delta) {
-       if (moveCtr < 20) {
+        super.act(delta);
+        if (moveCtr < 100) {
            moveCtr++;
        } else {
-           super.act(delta);
-           setX(MathUtils.random(Constants.GAMESCREEN_WIDTH - Constants.ENEMY_GOLEM_WIDTH));
-           setY(MathUtils.random(Constants.GAMESCREEN_HEIGHT - Constants.ENEMY_GOLEM_HEIGHT));
-           if (getX() + getWidth() >= Constants.GAMESCREEN_WIDTH) {
-               setX(Constants.GAMESCREEN_WIDTH - getWidth());
-           } else if (getX() < 0) {
-               setX(0);
-           }
-           if (getY() >= Constants.GAMESCREEN_HEIGHT - getHeight()) {
-               setY(Constants.GAMESCREEN_HEIGHT - getHeight());
-           } else if (getY() < 0) {
-               setY(0);
-           }
+           addAction(Actions.sequence(Actions.fadeOut(.5f),
+                   Actions.moveTo(MathUtils.random(Constants.GAMESCREEN_WIDTH - Constants.ENEMY_GOLEM_WIDTH),
+                           MathUtils.random(Constants.GAMESCREEN_HEIGHT - Constants.ENEMY_GOLEM_HEIGHT)),
+                   Actions.fadeIn(.5f)));
+           checkBoundsCollision();
+
            moveCtr = 0;
        }
     }

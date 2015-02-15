@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
@@ -88,6 +89,17 @@ public class RoomScreen implements Screen {
                 if (user.overlaps(portal) && portal.isVisible()) {
                     currentRoom.removePortalsfromStage();
                     currentRoom = portal.getNextRoom();
+                    //repositions user after moving thru portal to pos of equivalent portal in newroom
+                    //sets x or y to a certain edge of portal
+                    if (PortalPos.UP == portal.getPortalPos()) {
+                        user.setY(portal.getHeight()/2);
+                    } else if (PortalPos.LEFT == portal.getPortalPos()) {
+                        user.setX(Constants.GAMESCREEN_WIDTH - Constants.PORTAL_HEIGHT / 2);
+                    } else if (PortalPos.RIGHT == portal.getPortalPos()) {
+                        user.setX(portal.getWidth()/2);
+                    } else if (PortalPos.DOWN == portal.getPortalPos()) {
+                        user.setY(Constants.GAMESCREEN_HEIGHT - Constants.PORTAL_HEIGHT/2);
+                    }
                     System.out.println("||" + currentRoom.getEnemyNumber() + "||");
                     spawnEnemies();
                 }
@@ -197,6 +209,7 @@ public class RoomScreen implements Screen {
         joystickFire.setPosition(
                 Constants.GAMESCREEN_WIDTH - Constants.GAMESCREEN_WIDTH/40 - joystickFire.getWidth(),
                 Constants.GAMESCREEN_WIDTH/40);
+
 
         game.getStage().addActor(joystickMove);
         game.getStage().addActor(joystickFire);

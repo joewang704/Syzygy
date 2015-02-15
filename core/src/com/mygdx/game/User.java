@@ -51,12 +51,6 @@ public class User extends Actor {
     public boolean overlaps(Actor a) {
         return Collisions.overlap(this, a);
     }
-    public void move() {
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) setX(getX() - 200 * Gdx.graphics.getDeltaTime());
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) setX(getX() + 200 * Gdx.graphics.getDeltaTime());
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) setY(getY() - 180 * Gdx.graphics.getDeltaTime());
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) setY(getY() + 180 * Gdx.graphics.getDeltaTime());
-    }
 
     public void move(Vector2 direction) {
         setX(getX() + direction.x*moveSpeed);

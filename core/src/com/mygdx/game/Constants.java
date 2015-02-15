@@ -20,8 +20,8 @@ public class Constants {
     static float PORTAL_HEIGHT = GAMESCREEN_HEIGHT / 4.5f;
     static float ENEMY_GOLEM_WIDTH = GAMESCREEN_WIDTH / 6f;
     static float ENEMY_GOLEM_HEIGHT = GAMESCREEN_HEIGHT / 3.6f;
-    static float ENEMY_VOLANS_WIDTH = GAMESCREEN_WIDTH / 6f;
-    static float ENEMY_VOLANS_HEIGHT = GAMESCREEN_HEIGHT / 3.6f;
+    static float BOSS_VOLANS_WIDTH = GAMESCREEN_WIDTH / 6f;
+    static float BOSS_VOLANS_HEIGHT = GAMESCREEN_HEIGHT / 3.6f;
     //static float JOYSTICK_RADIUS = GAMESCREEN_WIDTH / ?;
     //lets not use stretch viewport because we don't really want aspect ratio being changed, maybe?
 }

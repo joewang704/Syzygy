@@ -57,7 +57,10 @@ public class Enemy extends Actor {
             setY(0);
         }
     }
-
+    public int hitAction() {
+        remove();
+        return 0; //report net increase in enemies
+    }
     public boolean overlaps(Actor a) {
         return Collisions.overlap(this, a);
     }

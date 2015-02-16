@@ -32,7 +32,7 @@ public class Collisions {
         for (Bullet bullet: User.userBullets) {
             for (Enemy enemy: enemies) {
                 if (enemy.overlaps(bullet)) {
-                    enemy.remove();
+                    enemyNumber += enemy.hitAction();
                     bullet.remove();
                     enemies.removeValue(enemy, true);
                     User.userBullets.removeValue(bullet, true);

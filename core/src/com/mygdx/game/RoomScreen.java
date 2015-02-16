@@ -144,13 +144,15 @@ public class RoomScreen implements Screen {
 
     private void spawnEnemies() {
         for(int i = 0; i < currentRoom.getEnemyNumber(); i++) {
-            int enemyToSpawn = MathUtils.random(1);
+            int enemyToSpawn = MathUtils.random(2); //Line changed Jay Devanathan 2_15_2014
             if (enemyToSpawn == 0) {
                 spawnSlime();
                 System.out.print(" |Slime" + i);
             } else if (enemyToSpawn == 1) {
                 spawnGolem();
                 System.out.print(" |Golem" + i);
+            } else {
+                spawnBigSlime();
             }
         }
     }
@@ -160,7 +162,22 @@ public class RoomScreen implements Screen {
             game.getStage().addActor(portal);
         }
     }
-
+    /**
+     * Method added 2_15_2015 Jay Devanathan
+     */
+    private void spawnBigSlime() {
+        float xPos = MathUtils.random(Constants.GAMESCREEN_WIDTH / 3,
+                2 * Constants.GAMESCREEN_WIDTH / 3);
+        float yPos = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
+                2 * Constants.GAMESCREEN_HEIGHT / 3);
+        float width = Constants.ENEMY_SLIME_WIDTH;
+        float height = Constants.ENEMY_SLIME_HEIGHT;
+        Enemy e = new Enemy_BigSlime(xPos, yPos, game.getStage(), enemies);//, width, height);//Changed Line
+        e.setName("Slime" + enemies.size);
+        enemies.add(e);
+        game.getStage().addActor(e);
+        lastSpawnTime = TimeUtils.nanoTime();
+    }
     private void spawnSlime() {
         float xPos = MathUtils.random(Constants.GAMESCREEN_WIDTH / 3,
                 2 * Constants.GAMESCREEN_WIDTH / 3);

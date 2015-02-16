@@ -18,6 +18,11 @@ Jatin:
 
 
 Jay:
+In progress:
+Working on portal bugs(fixed left - right looping portal issue, working on getting portals to spawn in every room)
+Wearable items that affect gameplay (chestplate, boots, helmet, etc)
+
+Done:
  - Made a BigSlime enemy class that, when hit, spawns four slimes in its place.
  - Changed Enemy class to have a hitAction() method, which for most enemies is remove but for specific enemies
  (like BigSlime),can allow the Enemy to have different options

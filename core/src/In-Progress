@@ -18,5 +18,11 @@ Jatin:
 
 
 Jay:
+ - Made a BigSlime enemy class that, when hit, spawns four slimes in its place.
+ - Changed Enemy class to have a hitAction() method, which for most enemies is remove but for specific enemies
+ (like BigSlime),can allow the Enemy to have different options
+ - Changed Collisions class to invoke hitAction() instead of remove() method on enemies
+ - Changed RoomScreen class to include BigSlime as a third enemy(changed random generator, made
+   spawnBigSlime() method)
 
 

@@ -33,7 +33,25 @@ public class User extends Actor {
         moveSpeed = 10;
         userImg = new Texture(Gdx.files.internal("wizard.png"));
     }
-
+    /*
+    * Returns direction user is moving in.
+    * 1 if UP, 2 if LEFT, 3 if RIGHT, 4 if DOWN
+    * 0 if not moving or directly diagonal
+     */
+    public int getDir() {
+        double angle = Math.atan2(movePad.getKnobPercentY(), movePad.getKnobPercentX());
+        if (angle < Math.PI / 4 || angle > 7 * Math.PI / 4) {
+            return PortalPos.RIGHT.ordinal(); //Right direction
+        } else if (angle > Math.PI / 4 && angle < 3 * Math.PI / 4) {
+            return PortalPos.UP.ordinal(); //Upward direction
+        } else if (angle > 3* Math.PI / 4 && angle < 5 * Math.PI / 4) {
+            return PortalPos.LEFT.ordinal();
+        } else if (angle > 5* Math.PI / 4 && angle < 2 * Math.PI) {
+            return PortalPos.DOWN.ordinal();
+        } else {
+            return 0;
+        }
+    }
     @Override
     public void act(float delta) {
         super.act(delta);

@@ -86,7 +86,7 @@ public class RoomScreen implements Screen {
             addPortalsToStage();
             //check for collisions between each portal and the user
             for (Portal portal: currentRoom.getPortals()) {
-                if (user.overlaps(portal) && portal.isVisible()) {
+                if (user.overlaps(portal) && portal.isVisible() && Collisions.moveToward(user, portal.getPortalPos())) {
                     currentRoom.removePortalsfromStage();
                     currentRoom = portal.getNextRoom();
                     //repositions user after moving thru portal to pos of equivalent portal in newroom

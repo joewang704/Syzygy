@@ -48,4 +48,8 @@ public class Collisions {
         return first.getX() < second.getX() + second.getWidth() && first.getX() + first.getWidth() > second.getX()
                 && first.getY() < second.getY() + second.getHeight() && first.getY() + first.getHeight() > second.getY();
     }
+
+    public static boolean moveToward (User user, PortalPos p) {
+        return user.getDir() == p.ordinal();
+    }
 }

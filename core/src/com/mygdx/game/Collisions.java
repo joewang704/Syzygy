@@ -37,7 +37,7 @@ public class Collisions {
                     enemies.removeValue(enemy, true);
                     User.userBullets.removeValue(bullet, true);
                     System.out.println(enemyNumber);
-                    return --enemyNumber;
+                    --enemyNumber;
                 }
             }
         }

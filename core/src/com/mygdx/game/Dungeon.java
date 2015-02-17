@@ -96,6 +96,7 @@ public class Dungeon {
             //remove the changed portal from the portal array
             unassignedPortals.removeValue(randomPortal, true);
         }
+        System.out.println();
     }
 
 

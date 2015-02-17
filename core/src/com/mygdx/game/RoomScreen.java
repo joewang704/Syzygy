@@ -8,11 +8,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+
+import java.awt.event.InputEvent;
 
 //TODO made a bunch of TODOs in Room lol
 public class RoomScreen implements Screen {
@@ -23,7 +26,6 @@ public class RoomScreen implements Screen {
     private User user;
     private Array<Enemy> enemies;
     private Joystick joystickMove;
-    private Joystick joystickFire;
     private Dungeon dungeon;
     private Room currentRoom;
 
@@ -36,7 +38,7 @@ public class RoomScreen implements Screen {
     public RoomScreen(final Syzygy game) {
         this.game = game;
         Gdx.input.setInputProcessor(game.getStage());
-        createJoysticks();
+        createMoveAndFire();
 
         spawnUser(Constants.GAMESCREEN_WIDTH / 2 - Constants.USER_WIDTH / 2,
                 0, Constants.USER_WIDTH, Constants.USER_HEIGHT);
@@ -67,18 +69,6 @@ public class RoomScreen implements Screen {
         game.getStage().draw();
         game.getStage().act(delta);
 
-
-        //Bullet firing
-        if (joystickFire.getKnobPercentX() != 0 || joystickFire.getKnobPercentY() != 0) {
-            if (TimeUtils.nanoTime() - user.getLastShotTime() > user.getAtkSpeed()) {
-                game.getStage().addActor(user.fireBullet(new Vector2(
-                        joystickFire.getKnobX() - joystickFire.getWidth()/2,
-                        joystickFire.getKnobY() - joystickFire.getHeight()/2),
-                        5f));
-            }
-        }
-
-
         //constantly update total number of enemies until it reaches 0
         //change to new room
         currentRoom.setEnemyNumber(Collisions.enemyHits(enemies, currentRoom.getEnemyNumber()));
@@ -106,6 +96,24 @@ public class RoomScreen implements Screen {
             }
         }
         Collisions.removeBullets();
+
+        //bullet firing
+        if (Gdx.input.isTouched()) {
+            Vector2 touchPos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+            Vector2 touchCoords = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+            touchPos = game.getStage().screenToStageCoordinates(touchPos);
+            touchCoords = game.getStage().screenToStageCoordinates(touchCoords);
+
+            //check if touchPos is outside of the moveStick
+            if (touchPos.sub(joystickMove.getX() + joystickMove.getWidth()/2,
+                    joystickMove.getY() + joystickMove.getHeight()/2).dst(touchCoords) > joystickMove.getWidth()/2) {
+               if (TimeUtils.nanoTime() - user.getLastShotTime() > user.getAtkSpeed()) {
+
+                   game.getStage().addActor(user.fireBullet(
+                            new Vector2(touchCoords), 10f));
+               }
+            }
+        }
     }
 
     @Override
@@ -139,7 +147,7 @@ public class RoomScreen implements Screen {
 
     //helper methods
     private void spawnUser(float x, float y, float width, float height) {
-        user = new User(joystickMove, joystickFire, x, y, width, height);
+        user = new User(joystickMove, x, y, width, height);
     }
 
     private void spawnEnemies() {
@@ -209,26 +217,18 @@ public class RoomScreen implements Screen {
     //Joystick width & height entirely relative to GS_HEIGHT
     //sambady pls halp!
     //OR is it good because regardless of screen size, joysticks will always be circular instead of stretched?idk
-    public void createJoysticks() {
+    public void createMoveAndFire() {
         TextureRegionDrawable joystickImg = new TextureRegionDrawable(new TextureRegion(
                 new Texture(Gdx.files.internal("controllerpad1.png"))));
         TextureRegionDrawable joystickKnob = new TextureRegionDrawable(new TextureRegion(
                 new Texture(Gdx.files.internal("controllerpadKnob100.png"))));
         joystickMove = new Joystick(20f, new Touchpad.TouchpadStyle(joystickImg, joystickKnob));
-        joystickFire = new Joystick(0f, new Touchpad.TouchpadStyle(joystickImg, joystickKnob));
 
         joystickMove.setWidth(Constants.GAMESCREEN_HEIGHT/2f);
         joystickMove.setHeight(Constants.GAMESCREEN_HEIGHT/2f);
-        joystickFire.setWidth(Constants.GAMESCREEN_HEIGHT/2f);
-        joystickFire.setHeight(Constants.GAMESCREEN_HEIGHT/2f);
-
         joystickMove.setPosition(Constants.GAMESCREEN_WIDTH/40, Constants.GAMESCREEN_WIDTH/40);
-        joystickFire.setPosition(
-                Constants.GAMESCREEN_WIDTH - Constants.GAMESCREEN_WIDTH/40 - joystickFire.getWidth(),
-                Constants.GAMESCREEN_WIDTH/40);
-
-
         game.getStage().addActor(joystickMove);
-        game.getStage().addActor(joystickFire);
+
+        //add firing
     }
 }

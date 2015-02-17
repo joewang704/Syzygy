@@ -18,7 +18,7 @@ public class Enemy_BigSlime extends Enemy_Slime {
     //public Enemy_BigSlime(float x, float y)
     @Override
     public int hitAction() {
-        remove();
+        super.hitAction();
         Enemy e1 = new Enemy_Slime(getX(), getY());
         Enemy e2 = new Enemy_Slime(getX(), getY());
         Enemy e3 = new Enemy_Slime(getX(), getY());

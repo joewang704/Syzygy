@@ -13,10 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 public class Enemy_Golem extends Enemy {
 
     public static ClassName className = ClassName.GOLEM;
-
+    private int health;
     public Enemy_Golem() {
         moveCtr = 0;
         enemyImage = new Texture(Gdx.files.internal("golem.png"));
+        health = 5;
     }
 
     public Enemy_Golem(float x, float y, float width, float height) {
@@ -39,6 +40,16 @@ public class Enemy_Golem extends Enemy {
 
            moveCtr = 0;
        }
+    }
+    @Override
+    public int hitAction() {
+        if (health == 0) {
+            super.hitAction();
+            return 0;
+        } else {
+            health--;
+            return 1; //counters decrementation in main loop
+        }
     }
 }
 

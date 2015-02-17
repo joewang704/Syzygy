@@ -4,6 +4,8 @@
 
 ==Bugs==
 > Sometimes portals won't spawn after killing all enemies.
+> Sometimes portals don't spawn in correct places.
+> Weird scaling issues with entire application on startup on random occasions.
 > Alpha cannot be manipulated properly -> we are most likely drawing actors without their alpha property
 
 Lucas:

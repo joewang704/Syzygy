@@ -15,7 +15,7 @@ public class Constants {
     static float USER_HEIGHT = GAMESCREEN_HEIGHT / 6;//64
     static float ENEMY_SLIME_WIDTH = GAMESCREEN_WIDTH / 12.5f;
     static float ENEMY_SLIME_HEIGHT = GAMESCREEN_HEIGHT / 7.5f;
-    static float RIGHTABS_WIDTH = GAMESCREEN_WIDTH / 10;
+    static float RIGHTABS_WIDTH = GAMESCREEN_WIDTH / 6;
     static float PORTAL_WIDTH = GAMESCREEN_WIDTH / 7.5f;
     static float PORTAL_HEIGHT = GAMESCREEN_HEIGHT / 4.5f;
     static float ENEMY_GOLEM_WIDTH = GAMESCREEN_WIDTH / 6f;
@@ -23,5 +23,12 @@ public class Constants {
     static float BOSS_VOLANS_WIDTH = GAMESCREEN_WIDTH / 6f;
     static float BOSS_VOLANS_HEIGHT = GAMESCREEN_HEIGHT / 3.6f;
     //static float JOYSTICK_RADIUS = GAMESCREEN_WIDTH / ?;
+
+    //UI constants
+    static float MAINMENU_WIDTH = GAMESCREEN_WIDTH / 6;
+    static float MAINMENU_HEIGHT = GAMESCREEN_HEIGHT / 15;
+    static float MAINMENU_X = GAMESCREEN_WIDTH / 2 - MAINMENU_WIDTH / 2;
+    static float MAINMENU_Y = GAMESCREEN_HEIGHT / 2 - MAINMENU_HEIGHT / 2;
+
     //lets not use stretch viewport because we don't really want aspect ratio being changed, maybe?
 }

@@ -34,7 +34,6 @@ public class Syzygy extends Game {
 
     public void dispose() {
         stage.dispose();
-        stage.getBatch().dispose();
         font.dispose();
     }
 

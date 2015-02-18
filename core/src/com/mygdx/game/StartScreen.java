@@ -34,7 +34,7 @@ public class StartScreen implements Screen {
         game.getStage().getBatch().end();
 
         if (Gdx.input.isTouched()) {
-            game.setScreen(new Screen_MacroUI(game));
+            game.setScreen(new Screen_Menu(game));
             dispose();
         }
     }

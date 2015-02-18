@@ -17,11 +17,15 @@ public class Enemy_Golem extends Enemy {
     public Enemy_Golem() {
         moveCtr = 0;
         enemyImage = new Texture(Gdx.files.internal("golem.png"));
+        enemyHeight = Constants.GAMESCREEN_HEIGHT / 3.6f;
+        enemyWidth = Constants.GAMESCREEN_WIDTH / 6f;
+        setBounds(xPos, yPos, enemyWidth, enemyHeight);
     }
 
-    public Enemy_Golem(float x, float y, float width, float height) {
+    //for creating bigger golems
+    public Enemy_Golem(float golemWidth, float golemHeight) {
         this();
-        setBounds(x, y, width, height);
+        setBounds(xPos, yPos, golemWidth, golemHeight);
     }
 
     //now using actions to move, and alpha for fadeOut and fadeIn not working I guess...
@@ -32,8 +36,8 @@ public class Enemy_Golem extends Enemy {
            moveCtr++;
        } else {
            addAction(Actions.sequence(Actions.fadeOut(.5f),
-                   Actions.moveTo(MathUtils.random(Constants.GAMESCREEN_WIDTH - Constants.ENEMY_GOLEM_WIDTH),
-                           MathUtils.random(Constants.GAMESCREEN_HEIGHT - Constants.ENEMY_GOLEM_HEIGHT)),
+                   Actions.moveTo(MathUtils.random(Constants.GAMESCREEN_WIDTH - enemyWidth),
+                           MathUtils.random(Constants.GAMESCREEN_HEIGHT - enemyHeight)),
                    Actions.fadeIn(.5f)));
            checkBoundsCollision();
 

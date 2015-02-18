@@ -8,5 +8,8 @@ public enum ClassName {
     VOLANS,
 
     //normal enemies
-    GOLEM, SLIME
+    GOLEM, SLIME, HIT_DETECTOR,
+
+    //special enemies
+    BIG_SLIME
 }

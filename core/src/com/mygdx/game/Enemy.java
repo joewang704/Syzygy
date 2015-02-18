@@ -10,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class Enemy extends Actor {
-    //Empty for now - add properties of every enemy later (health, etc)
+public abstract class Enemy extends Actor {
+    //Abstract because it's not instantiable, and we can do cool stuff with this later
     //protected for subclasses
 
     protected int moveCtr;
@@ -19,6 +19,12 @@ public class Enemy extends Actor {
     protected Array<Bullet> enemyBullets;
     protected Vector2 moveDirection;
     protected Texture enemyImage;
+    protected float enemyHeight;
+    protected float enemyWidth;
+    protected float xPos = MathUtils.random(Constants.GAMESCREEN_WIDTH / 3,
+            2 * Constants.GAMESCREEN_WIDTH / 3);
+    protected float yPos = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
+            2 * Constants.GAMESCREEN_HEIGHT / 3);
 
     public Enemy() {
             //fill in later with properties

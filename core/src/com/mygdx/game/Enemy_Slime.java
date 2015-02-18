@@ -21,16 +21,20 @@ public class Enemy_Slime extends Enemy{
         moveDirection = (new Vector2(MathUtils.random()*  MathUtils.randomSign(),
                 MathUtils.random() * MathUtils.randomSign())).nor();
         enemyImage = new Texture(Gdx.files.internal("cuteSlime64.png"));
+        enemyHeight = Constants.GAMESCREEN_HEIGHT / 7.5f;
+        enemyWidth = Constants.GAMESCREEN_WIDTH / 12.5f;
+        setBounds(xPos, yPos, enemyWidth, enemyHeight);
     }
 
-    public Enemy_Slime(float x, float y) {
-
-        this(x, y, 64, 64);
-    }
-
-    public Enemy_Slime(float x, float y, float width, float height) {
+    //for creating bigger slimes
+    public Enemy_Slime(float xPos, float yPos, float slimeWidth, float slimeHeight) {
         this();
-        setBounds(x, y, width, height);
+        setBounds(xPos, yPos, slimeWidth, slimeHeight);
+    }
+
+    public Enemy_Slime(float xPos, float yPos) {
+        this();
+        setBounds(xPos, yPos, enemyWidth, enemyHeight);
     }
 
     @Override

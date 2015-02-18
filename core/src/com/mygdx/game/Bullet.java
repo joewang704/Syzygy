@@ -62,5 +62,7 @@ public class Bullet extends Actor {
 
     public Vector2 getVelocity() { return velocity; }
 
+    public Vector2 getDirection() { return direction; }
+
     public Rectangle getBounds() { return bounds; }
 }

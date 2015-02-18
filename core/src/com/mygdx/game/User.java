@@ -97,6 +97,11 @@ public class User extends Actor {
         return bullet;
     }
 
-    public long getLastShotTime() { return lastShotTime; }
-    public int getAtkSpeed() { return atkSpeed; }
+    public long getLastShotTime() {
+        return lastShotTime;
+    }
+
+    public int getAtkSpeed() {
+        return atkSpeed;
+    }
 }

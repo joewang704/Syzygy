@@ -148,66 +148,34 @@ public class RoomScreen implements Screen {
     }
 
     private void spawnEnemies() {
+    //edited to include the "spawn enemyname" method details in one method
+    //change the value of e to spawn a new enemy, no need for separate method call.
+    //If enemies have specific spawning properties, these should be dealt with in the constructors (ex: Big_Slime)
         for(int i = 0; i < currentRoom.getEnemyNumber(); i++) {
-            int enemyToSpawn = MathUtils.random(2); //Line changed Jay Devanathan 2_15_2014
-            if (enemyToSpawn == 0) {
-                spawnSlime();
-                System.out.print(" |Slime" + i);
+            int enemyToSpawn = MathUtils.random(3);
+            Enemy e;
+            if (enemyToSpawn == 3) {
+                e = new Enemy_Slime();
+                System.out.print(" Slime" + i);
+            } else if (enemyToSpawn == 2) {
+                e = new Enemy_Golem();
+                System.out.print(" Golem" + i);
             } else if (enemyToSpawn == 1) {
-                spawnGolem();
-                System.out.print(" |Golem" + i);
+                e = new Enemy_BigSlime(game.getStage(), enemies);
+                System.out.print(" BigSlime" + i);
             } else {
-                spawnBigSlime();
+                e = new Enemy_HitDetector(user.userBullets);
+                System.out.print(" Spongebob" + i);
             }
+            enemies.add(e);
+            game.getStage().addActor(e);
+            lastSpawnTime = TimeUtils.nanoTime();
         }
     }
-
     private void addPortalsToStage() {
         for(Portal portal : currentRoom.getPortals()) {
             game.getStage().addActor(portal);
         }
-    }
-    /**
-     * Method added 2_15_2015 Jay Devanathan
-     */
-    private void spawnBigSlime() {
-        float xPos = MathUtils.random(Constants.GAMESCREEN_WIDTH / 3,
-                2 * Constants.GAMESCREEN_WIDTH / 3);
-        float yPos = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
-                2 * Constants.GAMESCREEN_HEIGHT / 3);
-        float width = Constants.ENEMY_SLIME_WIDTH;
-        float height = Constants.ENEMY_SLIME_HEIGHT;
-        Enemy e = new Enemy_BigSlime(xPos, yPos, game.getStage(), enemies);//, width, height);//Changed Line
-        e.setName("Slime" + enemies.size);
-        enemies.add(e);
-        game.getStage().addActor(e);
-        lastSpawnTime = TimeUtils.nanoTime();
-    }
-    private void spawnSlime() {
-        float xPos = MathUtils.random(Constants.GAMESCREEN_WIDTH / 3,
-                2 * Constants.GAMESCREEN_WIDTH / 3);
-        float yPos = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
-                2 * Constants.GAMESCREEN_HEIGHT / 3);
-        float width = Constants.ENEMY_SLIME_WIDTH;
-        float height = Constants.ENEMY_SLIME_HEIGHT;
-        Enemy e = new Enemy_Slime(xPos, yPos, width, height);
-        e.setName("Slime" + enemies.size);
-        enemies.add(e);
-        game.getStage().addActor(e);
-        lastSpawnTime = TimeUtils.nanoTime();
-    }
-    private void spawnGolem() {
-        float xPos = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
-                2 * Constants.GAMESCREEN_WIDTH / 3);
-        float yPos = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
-                2 * Constants.GAMESCREEN_HEIGHT / 3);
-        float width = Constants.ENEMY_GOLEM_WIDTH;
-        float height = Constants.ENEMY_GOLEM_HEIGHT;
-        Enemy e = new Enemy_Golem(xPos, yPos, width, height);
-        e.setName("Golem" + enemies.size);
-        enemies.add(e);
-        game.getStage().addActor(e);
-        lastSpawnTime = TimeUtils.nanoTime();
     }
 
     //Joystick Position is entirely relative to GS_WIDTH
@@ -222,8 +190,8 @@ public class RoomScreen implements Screen {
         joystickMove = new Joystick(20f, new Touchpad.TouchpadStyle(joystickImg, joystickKnob));
 
         joystickMove.setWidth(Constants.GAMESCREEN_HEIGHT/2f);
-        joystickMove.setHeight(Constants.GAMESCREEN_HEIGHT/2f);
-        joystickMove.setPosition(Constants.GAMESCREEN_WIDTH/40, Constants.GAMESCREEN_WIDTH/40);
+        joystickMove.setHeight(Constants.GAMESCREEN_HEIGHT / 2f);
+        joystickMove.setPosition(Constants.GAMESCREEN_WIDTH / 40, Constants.GAMESCREEN_WIDTH / 40);
         game.getStage().addActor(joystickMove);
 
         //add firing

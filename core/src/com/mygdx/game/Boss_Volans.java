@@ -16,9 +16,8 @@ import com.badlogic.gdx.utils.TimeUtils;
  * TODO should have multiple attack methods for different attacks? should Array<Bullet> be static?
  */
 public class Boss_Volans extends Enemy {
-
-    public static Array<Bullet> volansBullets = new Array<Bullet>();
     public static ClassName className = ClassName.VOLANS;
+    public static Array<Bullet> volansBullets = new Array<Bullet>();
     private Sound volansCall;
     private Vector2 directionOfUser;
 
@@ -28,6 +27,8 @@ public class Boss_Volans extends Enemy {
         moveDirection = (new Vector2(MathUtils.random()*  MathUtils.randomSign(),
                 MathUtils.random() * MathUtils.randomSign())).nor();
         enemyImage = new Texture(Gdx.files.internal("volans.png"));
+        enemyHeight = Constants.GAMESCREEN_WIDTH / 6f;
+        enemyHeight = Constants.GAMESCREEN_HEIGHT / 3.6f;
         volansCall = Gdx.audio.newSound(Gdx.files.internal("data/volans_call"));
         volansCall.play();
         directionOfUser = userPos.nor();
@@ -39,8 +40,8 @@ public class Boss_Volans extends Enemy {
         super.act(delta);
         if (getActions().size == 0) {
             if (MathUtils.random(1) == 0) {
-                addAction(Actions.moveTo(MathUtils.random(Constants.GAMESCREEN_WIDTH - Constants.BOSS_VOLANS_WIDTH),
-                        MathUtils.random(Constants.GAMESCREEN_HEIGHT - Constants.BOSS_VOLANS_HEIGHT),
+                addAction(Actions.moveTo(MathUtils.random(Constants.GAMESCREEN_WIDTH - enemyWidth),
+                        MathUtils.random(Constants.GAMESCREEN_HEIGHT - enemyHeight),
                         MathUtils.random(.5f, 1.5f)));
             } else {
                 for (int i = 0; i < MathUtils.random(3, 5); i++) {

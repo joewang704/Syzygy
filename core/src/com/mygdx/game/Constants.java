@@ -7,21 +7,16 @@ import com.badlogic.gdx.Gdx;
  */
 public class Constants {
     //Constants
+    //Enemy-specific constants are now protected variables in the class. Access via "Enemy_Name.enemyHeight", etc.
     static float GAMESCREEN_WIDTH = Gdx.graphics.getWidth();//800
     static float GAMESCREEN_HEIGHT = Gdx.graphics.getHeight();//480
     static float BULLET_WIDTH = GAMESCREEN_WIDTH / 25;//32
     static float BULLET_HEIGHT = GAMESCREEN_HEIGHT / 15;//32
     static float USER_WIDTH = GAMESCREEN_WIDTH / 10;//64
     static float USER_HEIGHT = GAMESCREEN_HEIGHT / 6;//64
-    static float ENEMY_SLIME_WIDTH = GAMESCREEN_WIDTH / 12.5f;
-    static float ENEMY_SLIME_HEIGHT = GAMESCREEN_HEIGHT / 7.5f;
     static float RIGHTABS_WIDTH = GAMESCREEN_WIDTH / 6;
     static float PORTAL_WIDTH = GAMESCREEN_WIDTH / 7.5f;
     static float PORTAL_HEIGHT = GAMESCREEN_HEIGHT / 4.5f;
-    static float ENEMY_GOLEM_WIDTH = GAMESCREEN_WIDTH / 6f;
-    static float ENEMY_GOLEM_HEIGHT = GAMESCREEN_HEIGHT / 3.6f;
-    static float BOSS_VOLANS_WIDTH = GAMESCREEN_WIDTH / 6f;
-    static float BOSS_VOLANS_HEIGHT = GAMESCREEN_HEIGHT / 3.6f;
     //static float JOYSTICK_RADIUS = GAMESCREEN_WIDTH / ?;
 
     //UI constants

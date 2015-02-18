@@ -19,16 +19,14 @@ public class User extends Actor {
     private int atkSpeed;
     private float moveSpeed;
     private Touchpad movePad;
-    private Touchpad firePad;
 
-    public User(Touchpad move, Touchpad fire, float x, float y, float width, float height) {
-        this(move, fire);
+    public User(Touchpad move, float x, float y, float width, float height) {
+        this(move);
         setBounds(x, y, width, height);
     }
 
-    public User(Touchpad move, Touchpad fire) {
+    public User(Touchpad move) {
         movePad = move;
-        firePad = fire;
         atkSpeed = 300000000;
         moveSpeed = 10;
         userImg = new Texture(Gdx.files.internal("wizard.png"));
@@ -52,6 +50,7 @@ public class User extends Actor {
             return 0;
         }
     }
+
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -89,8 +88,8 @@ public class User extends Actor {
     //70 and 3 are somewhat arbitrary, should be changed
     public Bullet fireBullet(Vector2 direction, float speed) {
         Bullet bullet = new Bullet(direction.nor().scl(70).scl(3), speed, false,
-                this.getX() + this.getWidth()/2 - Constants.BULLET_WIDTH,
-                this.getY() + this.getHeight()/2 - Constants.BULLET_HEIGHT,
+                this.getX() + this.getWidth()/2 - Constants.BULLET_WIDTH/2,
+                this.getY() + this.getHeight()/2 - Constants.BULLET_HEIGHT/2,
                 Constants.BULLET_WIDTH, Constants.BULLET_HEIGHT);
         // + Constants.USER_WIDTH / 4
         userBullets.add(bullet);

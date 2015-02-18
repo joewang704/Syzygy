@@ -19,10 +19,9 @@ public class Enemy extends Actor {
     protected Array<Bullet> enemyBullets;
     protected Vector2 moveDirection;
     protected Texture enemyImage;
-    protected boolean isDead;
+
     public Enemy() {
             //fill in later with properties
-        isDead = false;
     }
 
     @Override
@@ -60,11 +59,7 @@ public class Enemy extends Actor {
     }
     public int hitAction() {
         remove();
-        isDead = true;
         return 0; //report net increase in enemies
-    }
-    public boolean isDead() {
-        return isDead;
     }
     public boolean overlaps(Actor a) {
         return Collisions.overlap(this, a);

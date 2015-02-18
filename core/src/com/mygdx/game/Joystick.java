@@ -20,7 +20,6 @@ public class Joystick extends Touchpad {
     }
 
     //TODO not using parentAlpha means no transparency will be applied
-    //TODO correctly implement cheap fix for knob placement
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);

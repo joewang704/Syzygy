@@ -34,7 +34,7 @@ public class Collisions {
                 if (enemy.overlaps(bullet)) {
                     enemyNumber += enemy.hitAction();
                     bullet.remove();
-                    if(enemy.isDead()) { enemies.removeValue(enemy, true); }
+                    enemies.removeValue(enemy, true);
                     User.userBullets.removeValue(bullet, true);
                     System.out.println(enemyNumber);
                     --enemyNumber;

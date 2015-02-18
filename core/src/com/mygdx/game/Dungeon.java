@@ -96,6 +96,10 @@ public class Dungeon {
             //remove the changed portal from the portal array
             unassignedPortals.removeValue(randomPortal, true);
         }
+        for (Vector2 v : dungeonMap.keySet()) {
+            System.out.print(v);
+            System.out.println(dungeonMap.get(v));
+        }
     }
 
 

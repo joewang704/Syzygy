@@ -120,5 +120,8 @@ public class Room {
     public int getX() { return (int) position.x; }
     public int getY() { return (int) position.y; }
     public Vector2 getPosition() { return position; }
+    public String toString() {
+        return "" + topPortal + "\n" + leftPortal + "\n" + bottomPortal + "\n" + rightPortal;
+    }
 
 }

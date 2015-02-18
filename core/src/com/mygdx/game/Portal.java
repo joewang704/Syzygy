@@ -69,4 +69,10 @@ public class Portal extends Actor {
     public void draw(Batch batch, float alpha) {
         batch.draw(portalImg, getX(), getY(), getWidth(), getHeight());
     }
+    public String toString() {
+        if(isVisible()) {
+            return "" + portalPos;
+        }
+        return "not visible";
+    }
 }

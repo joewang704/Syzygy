@@ -91,7 +91,7 @@ public class Room {
         }
         bottomPortal = new Portal(this,PortalPos.DOWN,
                 Constants.GAMESCREEN_WIDTH / 2 - Constants.PORTAL_WIDTH / 2,
-                -Constants.PORTAL_HEIGHT,
+                -Constants.PORTAL_HEIGHT/2,
                 Constants.PORTAL_WIDTH, Constants.PORTAL_HEIGHT);
         portals.add(bottomPortal);
     }

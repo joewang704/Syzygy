@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
@@ -25,6 +25,7 @@ public class RoomScreen implements Screen {
     private Joystick joystickMove;
     private Dungeon dungeon;
     private Room currentRoom;
+    private Vector2 screenHWInStageCoords;
 
 
     //Utility
@@ -34,6 +35,7 @@ public class RoomScreen implements Screen {
 
     public RoomScreen(final Syzygy game) {
         this.game = game;
+        screenHWInStageCoords = game.getStage().screenToStageCoordinates(new Vector2(Constants.GAMESCREEN_WIDTH, Constants.GAMESCREEN_HEIGHT));
         Gdx.input.setInputProcessor(game.getStage());
         createMoveAndFire();
 
@@ -73,7 +75,7 @@ public class RoomScreen implements Screen {
             addPortalsToStage();
             //check for collisions between each portal and the user
             for (Portal portal: currentRoom.getPortals()) {
-                if (user.overlaps(portal) && portal.isVisible() && Collisions.moveToward(user, portal.getPortalPos())) {
+                if (user.overlaps(portal) && portal.isVisible()) {
                     currentRoom.removePortalsfromStage();
                     currentRoom = portal.getNextRoom();
                     //repositions user after moving thru portal to pos of equivalent portal in newroom
@@ -81,36 +83,18 @@ public class RoomScreen implements Screen {
                     if (PortalPos.UP == portal.getPortalPos()) {
                         user.setY(portal.getHeight()/2);
                     } else if (PortalPos.LEFT == portal.getPortalPos()) {
-                        user.setX(Constants.GAMESCREEN_WIDTH - Constants.PORTAL_HEIGHT / 2);
+                        user.setX(Constants.GAMESCREEN_WIDTH - Constants.PORTAL_WIDTH/2 - user.getWidth());
                     } else if (PortalPos.RIGHT == portal.getPortalPos()) {
                         user.setX(portal.getWidth()/2);
                     } else if (PortalPos.DOWN == portal.getPortalPos()) {
-                        user.setY(Constants.GAMESCREEN_HEIGHT - Constants.PORTAL_HEIGHT/2);
+                        user.setY(Constants.GAMESCREEN_HEIGHT - Constants.PORTAL_HEIGHT/2 - user.getHeight());
                     }
-                    System.out.println("||" + currentRoom.getEnemyNumber() + "||");
+                    System.out.println("||" + currentRoom.getPortals() + "||");
                     spawnEnemies();
                 }
             }
         }
         Collisions.removeBullets();
-
-        //bullet firing
-        if (Gdx.input.isTouched()) {
-            Vector2 touchPos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-            Vector2 touchCoords = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-            touchPos = game.getStage().screenToStageCoordinates(touchPos);
-            touchCoords = game.getStage().screenToStageCoordinates(touchCoords);
-
-            //check if touchPos is outside of the moveStick
-            if (touchPos.sub(joystickMove.getX() + joystickMove.getWidth()/2,
-                    joystickMove.getY() + joystickMove.getHeight()/2).dst(touchCoords) > joystickMove.getWidth()/2) {
-               if (TimeUtils.nanoTime() - user.getLastShotTime() > user.getAtkSpeed()) {
-
-                   game.getStage().addActor(user.fireBullet(
-                            new Vector2(touchCoords), 10f));
-               }
-            }
-        }
     }
 
     @Override
@@ -225,6 +209,26 @@ public class RoomScreen implements Screen {
         joystickMove.setHeight(Constants.GAMESCREEN_HEIGHT/2f);
         joystickMove.setPosition(Constants.GAMESCREEN_WIDTH/40, Constants.GAMESCREEN_WIDTH/40);
         game.getStage().addActor(joystickMove);
+
+        game.getStage().addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Vector2 touchPos = new Vector2(event.getStageX(), event.getStageY());
+                Vector2 fireDirection = new Vector2(
+                        event.getStageX() - user.getX(), event.getStageY() - user.getY());
+
+                //check if touchPos is outside of the moveStick
+                if (touchPos.sub(joystickMove.getX() + joystickMove.getWidth() / 2,
+                        joystickMove.getY() + joystickMove.getHeight() / 2).len() > joystickMove.getWidth() / 2) {
+
+                    if (TimeUtils.nanoTime() - user.getLastShotTime() > user.getAtkSpeed()) {
+                        game.getStage().addActor(user.fireBullet(
+                                new Vector2(fireDirection), 10f));
+                    }
+                }
+                return false;
+            }
+        });
 
         //add firing
     }

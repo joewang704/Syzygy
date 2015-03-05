@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
  */
 public class Joystick extends Touchpad {
 
+    int multiTouchPointer;
+
     public Joystick(float deadZoneRadius, Touchpad.TouchpadStyle style) {
         super(deadZoneRadius, style);
     }

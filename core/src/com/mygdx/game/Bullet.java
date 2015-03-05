@@ -17,7 +17,6 @@ public class Bullet extends Actor {
     public Vector2 velocity;
     private Texture bulletImg;
     public boolean isEnemy;
-    private Rectangle bounds;
     int ctr = 0;
 
     //this constructor has no x y height or width
@@ -34,7 +33,6 @@ public class Bullet extends Actor {
                   float x, float y, float width, float height) {
         this(direction, speed, isEnemy);
         setBounds(x, y, width, height);
-        bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 
     @Override
@@ -42,8 +40,6 @@ public class Bullet extends Actor {
         super.act(delta);
         setX(getX() + velocity.x * delta);
         setY(getY() + velocity.y * delta);
-        bounds.x = getX();
-        bounds.y = getY();
 //        ctr++;
 //        if (ctr == 60) {
 //            ctr = 0;
@@ -61,6 +57,4 @@ public class Bullet extends Actor {
     }
 
     public Vector2 getVelocity() { return velocity; }
-
-    public Rectangle getBounds() { return bounds; }
 }

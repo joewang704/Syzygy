@@ -107,48 +107,6 @@ public class Dungeon {
         }
     }
 
-//    //root is dungeonMap.get(new Vector2(0,0))
-//    private int furthestRooms(Room root, int maxHeight) {
-//        for (Room room)
-//    }
-
-//        private void setPortalReferences(Room newRoom, Room parentRoom) {
-//            int randomPortalNumber = MathUtils.random(1, 4);
-//            if (randomPortalNumber == 1
-//                    && parentRoom.getTopPortal() == null) {
-//                parentRoom.setTopPortal(newRoom);
-//                newRoom.setBottomPortal(parentRoom);
-//                newRoom.setPosition(parentRoom.getX(), parentRoom.getY() + 1);
-//                portalSet = true;
-//            } else if (randomPortalNumber == 2
-//                    && parentRoom.getLeftPortal() == null) {
-//                parentRoom.setLeftPortal(newRoom);
-//                newRoom.setRightPortal(parentRoom);
-//                newRoom.setPosition(parentRoom.getX() - 1, parentRoom.getY());
-//                portalSet = true;
-//            } else if (randomPortalNumber == 3
-//                    && parentRoom.getRightPortal() == null) {
-//                parentRoom.setRightPortal(newRoom);
-//                newRoom.setLeftPortal(parentRoom);
-//                newRoom.setPosition(parentRoom.getX() + 1, parentRoom.getY());
-//                portalSet = true;
-//            } else if (randomPortalNumber == 4
-//                    && parentRoom.getBottomPortal() == null) {
-//                parentRoom.setBottomPortal(newRoom);
-//                newRoom.setTopPortal(parentRoom);
-//                newRoom.setPosition(parentRoom.getX(), parentRoom.getY() - 1);
-//                portalSet = true;
-//            }
-//        }
-
     public HashMap<Vector2, Room> getDungeonMap() { return dungeonMap; }
-        /*private boolean checkAllRoomsConnected() {
-        for (Room room : dungeonMap) {
-            if (room.getUnassignedPortals() == 4) {
-                return false;
-            }
-        }
-        return true;
-        }*/
     }
 

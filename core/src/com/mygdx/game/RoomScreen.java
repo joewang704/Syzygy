@@ -183,8 +183,7 @@ public class RoomScreen implements Screen {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Vector2 touchPos = new Vector2(event.getStageX(), event.getStageY());
                 Vector2 fireDirection = new Vector2(
-                        event.getStageX() - user.getX(), event.getStageY() - user.getY());
-
+                        event.getStageX() - user.getX() - user.getHeight()/2, event.getStageY() - user.getY() - user.getHeight()/2);
                 //check if touchPos is outside of the moveStick
                 if (touchPos.sub(joystickMove.getX() + joystickMove.getWidth() / 2,
                         joystickMove.getY() + joystickMove.getHeight() / 2).len() > joystickMove.getWidth() / 2) {

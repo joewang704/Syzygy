@@ -1,10 +1,8 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
@@ -91,7 +89,6 @@ public class User extends Actor {
                 this.getX() + this.getWidth()/2 - Constants.BULLET_WIDTH/2,
                 this.getY() + this.getHeight()/2 - Constants.BULLET_HEIGHT/2,
                 Constants.BULLET_WIDTH, Constants.BULLET_HEIGHT);
-        // + Constants.USER_WIDTH / 4
         userBullets.add(bullet);
         lastShotTime = TimeUtils.nanoTime();
         return bullet;

@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 public class Screen_Menu extends Screen_MacroUI {
     private Table table;
     private TextButton dungeonButt;
-    private TextButton equipButt;
+    //private TextButton equipButt;
     private TextButton storageButt;
     private TextButton rmScreenTemp;
 
@@ -17,8 +17,8 @@ public class Screen_Menu extends Screen_MacroUI {
         super(game);
         dungeonButt = new TextButton("Enter a dungeon", uiSkin);
         dungeonButt.setSize(Constants.RIGHTABS_WIDTH * 2, Constants.GAMESCREEN_HEIGHT/5);
-        equipButt = new TextButton("Equip", uiSkin);
-        equipButt.setSize(Constants.RIGHTABS_WIDTH * 2, Constants.GAMESCREEN_HEIGHT/5);
+        /*equipButt = new TextButton("Equip", uiSkin);
+        equipButt.setSize(Constants.RIGHTABS_WIDTH * 2, Constants.GAMESCREEN_HEIGHT/5);*/
         storageButt = new TextButton("Inventory", uiSkin);
         storageButt.setSize(Constants.RIGHTABS_WIDTH * 2, Constants.GAMESCREEN_HEIGHT/5);
         rmScreenTemp = new TextButton("RoomScreen Test", uiSkin);
@@ -28,7 +28,7 @@ public class Screen_Menu extends Screen_MacroUI {
         table.setPosition(Constants.MAINMENU_X, Constants.MAINMENU_Y);
         table.setSize(Constants.MAINMENU_WIDTH, Constants.MAINMENU_HEIGHT);
         table.add(dungeonButt).minWidth(Constants.RIGHTABS_WIDTH * 2).prefWidth(Constants.RIGHTABS_WIDTH * 3).pad(3f).row();
-        table.add(equipButt).minWidth(Constants.RIGHTABS_WIDTH * 2).prefWidth(Constants.RIGHTABS_WIDTH * 3).pad(3f).row();
+        //table.add(equipButt).minWidth(Constants.RIGHTABS_WIDTH * 2).prefWidth(Constants.RIGHTABS_WIDTH * 3).pad(3f).row();
         table.add(storageButt).minWidth(Constants.RIGHTABS_WIDTH * 2).prefWidth(Constants.RIGHTABS_WIDTH * 3).pad(3f).row();
         table.add(rmScreenTemp).minWidth(Constants.RIGHTABS_WIDTH * 2).prefWidth(Constants.RIGHTABS_WIDTH * 3).pad(3f).row();
 
@@ -39,10 +39,10 @@ public class Screen_Menu extends Screen_MacroUI {
         if (dungeonButt.isPressed()) {
             game.getScreen().dispose();
             game.setScreen(new Screen_DungeonList(game));
-        } else if (equipButt.isPressed()) {
+        } /*else if (equipButt.isPressed()) {
             game.getScreen().dispose();
             game.setScreen(new Screen_Equipped(game));
-        } else if (storageButt.isPressed()) {
+        }*/ else if (storageButt.isPressed()) {
             game.getScreen().dispose();
             game.setScreen(new Screen_Storage(game));
         } else if (rmScreenTemp.isPressed()) {

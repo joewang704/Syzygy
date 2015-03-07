@@ -47,7 +47,7 @@ public class Screen_DungeonList extends Screen_MacroUI {
             if(txtButton.isPressed()) {
                 Syzygy.stage.dispose();
                 Syzygy.stage.clear();
-                game.setScreen(new RoomScreen(game));
+                game.setScreen(new RoomScreen(game, 0));
             }
         }
         if (backButt.isPressed()) {

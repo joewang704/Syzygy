@@ -9,18 +9,13 @@ import com.badlogic.gdx.utils.TimeUtils;
  * Created by Jay on 2/15/2015.
  */
 public class Enemy_BigSlime extends Enemy_Slime {
-    public static ClassName className = ClassName.BIG_SLIME;
     private Array<Enemy> enemies;//regenerate slimes when hit
-    private Stage s;
 
-
-
-    public Enemy_BigSlime(Stage s, Array<Enemy> enemies) {
+    public Enemy_BigSlime(Array<Enemy> enemies) {
         super(MathUtils.random(Constants.GAMESCREEN_WIDTH / 3,
                 2 * Constants.GAMESCREEN_WIDTH / 3),
               MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
                 2 * Constants.GAMESCREEN_HEIGHT / 3),128, 128);
-        this.s = s;
         this.enemies = enemies;
     }
 
@@ -34,10 +29,10 @@ public class Enemy_BigSlime extends Enemy_Slime {
         Enemy e4 = new Enemy_Slime(getX(), getY());
         enemies.addAll(e1, e2, e3, e4);
         //lastSpawnTime = TimeUtils.nanoTime();
-        s.addActor(e1);
-        s.addActor(e2);
-        s.addActor(e3);
-        s.addActor(e4);
+        Syzygy.stage.addActor(e1);
+        Syzygy.stage.addActor(e2);
+        Syzygy.stage.addActor(e3);
+        Syzygy.stage.addActor(e4);
         return 4;//report any increase in enemies
     }
 }

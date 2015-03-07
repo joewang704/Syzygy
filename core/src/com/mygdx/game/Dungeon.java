@@ -1,5 +1,4 @@
 package com.mygdx.game;
-
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -8,23 +7,92 @@ import java.util.HashMap;
 
 /**
  * Created by wojang on 2/3/15.
+ *
+ * Rooms are no longer being potentially linked to each other. If a portal would be chosen that
+ * would have a prexisting room it tries again. Can replace if needed.
+ *   if (dungeonMap.containsKey(newPos)) {
+ *     randomPortal.setNextRoom(dungeonMap.get(newPos));
+ *     //get the linked-to room and set it's equivalent portal to currentRoom
+ *     dungeonMap.get(newPos).getBottomPortal().setNextRoom(randomPortal.getCurrentRoom());
  */
 public class Dungeon {
 
     private HashMap<Vector2, Room> dungeonMap;
     private Array<Portal> unassignedPortals;
-    private Array<ClassName> possibleEnemies;
+    public Array<Class> possibleEnemies;
+    public Array<Enemy> bossList;
 
     //TODO populate possibleEnemies based on dungeonID
-    public Dungeon(Syzygy game, int dungeonID, int numberOfRooms) {
+
+    public Dungeon(Syzygy game, int dungeonID, int numberOfRooms, User user) {
         dungeonMap = new HashMap();
-        unassignedPortals = new Array();
+        unassignedPortals = new Array<Portal>();
+        possibleEnemies = new Array<Class>();
+        bossList = new Array<Enemy>();
+
         //make room0
         Room firstRoom = new Room(this, 0, 0, 2);
         addUnassignedPortals(firstRoom);
-
         dungeonMap.put(firstRoom.getPosition(), firstRoom);
 
+        //make remaining rooms
+        roomCreation(numberOfRooms);
+
+        if (dungeonID == 0) {
+            possibleEnemies.addAll(Enemy_BigSlime.class, Enemy_Golem.class, Enemy_Slime.class, Enemy_HitDetector.class);
+            bossList.add(new Boss_Volans(user));
+        }
+
+        Room current = firstRoom;
+        Room previous = null;
+        int badPortalCtr = 0;
+        //finds a placement for the boss room
+        //TODO not really random because the navigation is placement in the order of the portals of getPortals()
+        while (badPortalCtr < 4) {
+            Portal portal = current.getPortals().get((current.hashCode() + badPortalCtr) % 4);
+            if (portal != null && portal.getNextRoom() != previous && portal.isVisible()) {
+                previous = current;
+                current = portal.getNextRoom();
+                badPortalCtr = 0;
+            } else {
+                badPortalCtr++;
+            }
+        }
+
+        Array<Portal> oldPortals = current.getPortals();
+
+        //should probably have a new screen for bossRooms
+        current = new Room_Boss(this, current.getX(), current.getY(), user, game);
+        current.setPortals(oldPortals);
+        dungeonMap.replace(current.getPosition(), current);
+
+        //set all connected rooms equivalent portals back to current rooms
+        for (int i = 0; i < current.getPortals().size; i++) {
+            Room nextRoom = current.getPortals().get(i).getNextRoom();
+            if (nextRoom != null) {
+                nextRoom.getPortalByOrdinal(current.getPortals().size - 1 - i).setNextRoom(current);
+            }
+        }
+    }
+
+    /**
+     * Adds all portals that do not point to a room to the collection of unassigned portals.
+     * unassignedPortals is used in generating new rooms
+     * @param room the room from which the portals are being taken
+     */
+    private void addUnassignedPortals(Room room) {
+        for (Portal p: room.getPortals()) {
+            if (!p.isVisible()) {
+                unassignedPortals.add(p);
+            }
+        }
+    }
+
+    /**
+     * Creates each room in the dungeon outside of the root room
+     * @param numberOfRooms total number of rooms that will exist w/in dungeon
+     */
+    private void roomCreation(int numberOfRooms) {
         //creates all rooms,
         for (int i = 1; i < numberOfRooms; i++) {
             Portal randomPortal = unassignedPortals.get(MathUtils.random(unassignedPortals.size - 1));
@@ -35,11 +103,9 @@ public class Dungeon {
             //always check if the un linked portal chosen should refer to an already created room.
             if (randomPortal.getPortalPos() == PortalPos.UP) {
                 Vector2 newPos = new Vector2(currentRoomPos.x, currentRoomPos.y + 1);
-                //if the new room position already exists, link to the already existing room
                 if (dungeonMap.containsKey(newPos)) {
-                    randomPortal.setNextRoom(dungeonMap.get(newPos));
-                    //get the linked-to room and set it's equivalent portal to currentRoom
-                    dungeonMap.get(newPos).getBottomPortal().setNextRoom(randomPortal.getCurrentRoom());
+                    //find another portal!
+                    i--;
                 } else {
                     //line 1 creates new room at the new positions
                     newRoom = new Room(this, (int) currentRoomPos.x, (int) currentRoomPos.y + 1);
@@ -56,8 +122,8 @@ public class Dungeon {
             } else if (randomPortal.getPortalPos() == PortalPos.LEFT) {
                 Vector2 newPos = new Vector2(currentRoomPos.x - 1, currentRoomPos.y);
                 if (dungeonMap.containsKey(newPos)) {
-                    randomPortal.setNextRoom(dungeonMap.get(newPos));
-                    dungeonMap.get(newPos).getRightPortal().setNextRoom(randomPortal.getCurrentRoom());
+                    //find another portal!
+                    i--;
                 } else {
                     newRoom = new Room(this, (int) currentRoomPos.x - 1, (int) currentRoomPos.y);
                     randomPortal.setNextRoom(newRoom);
@@ -69,8 +135,8 @@ public class Dungeon {
             } else if (randomPortal.getPortalPos() == PortalPos.RIGHT) {
                 Vector2 newPos = new Vector2(currentRoomPos.x + 1, currentRoomPos.y);
                 if (dungeonMap.containsKey(newPos)) {
-                    randomPortal.setNextRoom(dungeonMap.get(newPos));
-                    dungeonMap.get(newPos).getLeftPortal().setNextRoom(randomPortal.getCurrentRoom());
+                    //find another portal!
+                    i--;
                 } else {
                     newRoom = new Room(this, (int) currentRoomPos.x + 1, (int) currentRoomPos.y);
                     randomPortal.setNextRoom(newRoom);
@@ -82,8 +148,8 @@ public class Dungeon {
             } else {
                 Vector2 newPos = new Vector2(currentRoomPos.x, currentRoomPos.y - 1);
                 if (dungeonMap.containsKey(newPos)) {
-                    randomPortal.setNextRoom(dungeonMap.get(newPos));
-                    dungeonMap.get(newPos).getTopPortal().setNextRoom(randomPortal.getCurrentRoom());
+                    //find another portal!
+                    i--;
                 } else {
                     newRoom = new Room(this, (int) currentRoomPos.x, (int) currentRoomPos.y - 1);
                     randomPortal.setNextRoom(newRoom);
@@ -98,15 +164,25 @@ public class Dungeon {
         }
     }
 
-
-    private void addUnassignedPortals(Room room) {
-        for (Portal p: room.getPortals()) {
-            if (!p.isVisible()) {
-                unassignedPortals.add(p);
-            }
-        }
-    }
-
     public HashMap<Vector2, Room> getDungeonMap() { return dungeonMap; }
+
+    //I'll save this for a rainy day.
+//    private Room[] findFurthestRooms() {
+//        findFurthestRoomsHelper(null, dungeonMap.get(new Vector2(0, 0)), 1);
+//    }
+
+//    private class RoomDepthPairing {
+//        Room room;
+//        int depth;
+//
+//        private RoomDepthPairing(Room room, int i) {
+//            this.room = room;
+//            depth = i;
+//        }
+//    }
+
+
+
+
     }
 

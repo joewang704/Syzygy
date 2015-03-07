@@ -17,7 +17,9 @@ public class Constants {
     static float RIGHTABS_WIDTH = GAMESCREEN_WIDTH / 6;
     static float PORTAL_WIDTH = GAMESCREEN_WIDTH / 7.5f;
     static float PORTAL_HEIGHT = GAMESCREEN_HEIGHT / 4.5f;
-    //static float JOYSTICK_RADIUS = GAMESCREEN_WIDTH / ?;
+
+    static float HOME_PORTAL_WIDTH = PORTAL_WIDTH * 1.5f;
+    static float HOME_PORTAL_HEIGHT = PORTAL_HEIGHT * 1.5f;
 
     //UI constants
     static float MAINMENU_WIDTH = GAMESCREEN_WIDTH / 6;

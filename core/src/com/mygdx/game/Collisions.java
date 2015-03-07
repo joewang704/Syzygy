@@ -15,8 +15,9 @@ import com.mygdx.game.User;*/
  */
 public class Collisions {
 
-    public static void removeBullets() {
-        Iterator<Bullet> uIter = User.userBullets.iterator();
+    public static void removeBullets(Array<Bullet> bullets) {
+        Iterator<Bullet> uIter = bullets.iterator();
+
         while (uIter.hasNext()) {
             Bullet bullet = uIter.next();
             if (bullet.getY() + Constants.BULLET_HEIGHT < 0 ||
@@ -27,15 +28,16 @@ public class Collisions {
             }
         }
     }
+
     //TODO update collisions because Actors are now NOT Rectangles
     public static int enemyHits(Array<Enemy> enemies, int enemyNumber) {
-        for (Bullet bullet: User.userBullets) {
-            for (Enemy enemy: enemies) {
+        for (Enemy enemy: enemies) {
+            for (Bullet bullet: User.bullets) {
                 if (enemy.overlaps(bullet)) {
                     enemyNumber += enemy.hitAction();
                     bullet.remove();
                     enemies.removeValue(enemy, true);
-                    User.userBullets.removeValue(bullet, true);
+                    User.bullets.removeValue(bullet, true);
                     System.out.println(enemyNumber);
                     --enemyNumber;
                 }

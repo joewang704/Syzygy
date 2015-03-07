@@ -54,9 +54,6 @@ public class Portal extends Actor {
     public Room getCurrentRoom() { return currentRoom; }
     public PortalPos getPortalPos() { return portalPos; }
     public Room getNextRoom() {
-        if (nextRoom == null) {
-            throw new NoSuchElementException("Portal's next room has not been set.");
-        }
         return nextRoom;
     }
 

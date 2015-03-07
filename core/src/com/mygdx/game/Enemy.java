@@ -19,15 +19,12 @@ public abstract class Enemy extends Actor {
     protected Array<Bullet> enemyBullets;
     protected Vector2 moveDirection;
     protected Texture enemyImage;
-    protected float enemyHeight;
-    protected float enemyWidth;
-    protected float xPos = MathUtils.random(Constants.GAMESCREEN_WIDTH / 3,
-            2 * Constants.GAMESCREEN_WIDTH / 3);
-    protected float yPos = MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
-            2 * Constants.GAMESCREEN_HEIGHT / 3);
 
     public Enemy() {
-            //fill in later with properties
+        setX(MathUtils.random(Constants.GAMESCREEN_WIDTH / 3,
+                2 * Constants.GAMESCREEN_WIDTH / 3));
+        setY(MathUtils.random(Constants.GAMESCREEN_HEIGHT / 3,
+                2 * Constants.GAMESCREEN_HEIGHT / 3));
     }
 
     @Override
@@ -63,9 +60,14 @@ public abstract class Enemy extends Actor {
             setY(0);
         }
     }
+
     public int hitAction() {
         remove();
         return 0; //report net increase in enemies
+    }
+
+    public void playCall() {
+        //most enemies do not have calls yet
     }
     public boolean overlaps(Actor a) {
         return Collisions.overlap(this, a);

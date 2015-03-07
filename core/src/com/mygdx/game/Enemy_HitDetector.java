@@ -12,19 +12,18 @@ import com.badlogic.gdx.utils.Array;
  * Created by jatin1 on 2/17/15.
  */
 public class Enemy_HitDetector extends Enemy {
-    public static ClassName className = ClassName.HIT_DETECTOR;
     private Sound HitDetectorTaunt;
     private Array<Bullet> bulletsShot;
 
     public Enemy_HitDetector(Array<Bullet> userBullets) {
+        super();
         moveCtr = 0;
         moveDirection = (new Vector2(MathUtils.random()*  MathUtils.randomSign(),
                 MathUtils.random() * MathUtils.randomSign())).nor();
         //why is it not showing up!@?#!?@#?
         enemyImage = new Texture(Gdx.files.internal("spongebob.png"));
-        enemyHeight = Constants.GAMESCREEN_HEIGHT / 7.5f;
-        enemyWidth = Constants.GAMESCREEN_WIDTH / 12.5f;
-        setBounds(xPos, yPos, enemyWidth, enemyHeight);
+        setWidth(Constants.GAMESCREEN_WIDTH / 12.5f);
+        setHeight(Constants.GAMESCREEN_HEIGHT / 7.5f);
         this.bulletsShot = userBullets;
     }
     @Override

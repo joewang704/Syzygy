@@ -1,28 +1,9 @@
 ==Important Info==
-> New enum ClassName attribute in each class to be used to refer to the class as a whole
 > Use Actions for simple actor manipulation
 
-==Bugs==
-> Sometimes portals won't spawn after killing all enemies.
-> Sometimes portals don't spawn in correct places.
-> Weird scaling issues with entire application on startup on random occasions.
-> Alpha cannot be manipulated properly -> we are most likely drawing actors without their alpha property
+==Needs Resolution==
+Standing on homeportal when killing boss immediately returns to main screen.
 
-Lucas:
----Boss_Volans
----Room_Boss
----DungeonID and Array<ClassName> possibleEnemies in Dungeon class
-
-Joe:
-
-
-Jatin:
-
-
-Jay:
-In progress:
-Working on portal bugs(fixed left - right looping portal issue, working on getting portals to spawn in every room)
-Wearable items that affect gameplay (chestplate, boots, helmet, etc)
 
 Done:
  - Made a BigSlime enemy class that, when hit, spawns four slimes in its place.

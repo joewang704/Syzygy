@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class User extends Actor {
 
-    public static Array<Bullet> userBullets = new Array();
+    public static Array<Bullet> bullets = new Array<Bullet>();
     private Texture userImg;
     private long lastShotTime;
     private int atkSpeed;
@@ -89,7 +89,7 @@ public class User extends Actor {
                 this.getX() + this.getWidth()/2 - Constants.BULLET_WIDTH/2,
                 this.getY() + this.getHeight()/2 - Constants.BULLET_HEIGHT/2,
                 Constants.BULLET_WIDTH, Constants.BULLET_HEIGHT);
-        userBullets.add(bullet);
+        bullets.add(bullet);
         lastShotTime = TimeUtils.nanoTime();
         return bullet;
     }

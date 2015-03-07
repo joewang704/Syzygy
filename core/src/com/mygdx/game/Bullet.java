@@ -17,7 +17,6 @@ public class Bullet extends Actor {
     public Vector2 velocity;
     private Texture bulletImg;
     public boolean isEnemy;
-    int ctr = 0;
 
     //this constructor has no x y height or width
     public Bullet(Vector2 direction, float speed, boolean isEnemy) {
@@ -40,11 +39,13 @@ public class Bullet extends Actor {
         super.act(delta);
         setX(getX() + velocity.x * delta);
         setY(getY() + velocity.y * delta);
-//        ctr++;
-//        if (ctr == 60) {
-//            ctr = 0;
-//            System.out.println(getX() + ", "  + getY());
-//        }
+
+        if (getY() + Constants.BULLET_HEIGHT < 0 ||
+                getY() > Constants.GAMESCREEN_HEIGHT ||
+                getX() + Constants.BULLET_WIDTH < 0 ||
+                getX() > Constants.GAMESCREEN_WIDTH) {
+            remove();
+        }
     }
 
     public boolean overlaps(Actor a) {

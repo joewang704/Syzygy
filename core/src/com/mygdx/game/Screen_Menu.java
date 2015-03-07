@@ -48,7 +48,7 @@ public class Screen_Menu extends Screen_MacroUI {
         } else if (rmScreenTemp.isPressed()) {
             game.stage.dispose();
             game.stage.clear();
-            game.setScreen(new RoomScreen(game));
+            game.setScreen(new RoomScreen(game, 0));
         }
     }
 }

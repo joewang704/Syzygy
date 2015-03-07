@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import java.util.NoSuchElementException;
+
 //TODO made a bunch of TODOs in Room lol
 public class RoomScreen implements Screen {
 
@@ -25,31 +27,24 @@ public class RoomScreen implements Screen {
     private Joystick joystickMove;
     private Dungeon dungeon;
     private Room currentRoom;
-    private Vector2 screenHWInStageCoords;
-
-
-    //Utility
-    private long lastSpawnTime;
 
     //Sprites now contained within respective classes
 
-    public RoomScreen(final Syzygy game) {
+    public RoomScreen(final Syzygy game, int  dungeonID) {
         this.game = game;
-        screenHWInStageCoords = game.getStage().screenToStageCoordinates(new Vector2(Constants.GAMESCREEN_WIDTH, Constants.GAMESCREEN_HEIGHT));
         Gdx.input.setInputProcessor(game.getStage());
         createMoveAndFire();
 
         spawnUser(Constants.GAMESCREEN_WIDTH / 2 - Constants.USER_WIDTH / 2,
                 0, Constants.USER_WIDTH, Constants.USER_HEIGHT);
+        game.getStage().addActor(user);
+
         enemies = new Array<Enemy>();
-        dungeon = new Dungeon(game, 1, 8);
-        System.out.println(dungeon.getDungeonMap().entrySet());
+        dungeon = new Dungeon(game, dungeonID, 8, user);
 
         //set starting room
         currentRoom = dungeon.getDungeonMap().get(new Vector2(0, 0));
         spawnEnemies();
-
-        game.getStage().addActor(user);
     }
 
     @Override
@@ -70,31 +65,53 @@ public class RoomScreen implements Screen {
 
         //constantly update total number of enemies until it reaches 0
         //change to new room
+        //should not use enemyNumber but length of enemies array instead
+        //can also change screen back to main menu after defeating boss
+
+        //Most recent Portal does not get removed
         currentRoom.setEnemyNumber(Collisions.enemyHits(enemies, currentRoom.getEnemyNumber()));
         if (currentRoom.getEnemyNumber() <= 0) {
-            addPortalsToStage();
-            //check for collisions between each portal and the user
-            for (Portal portal: currentRoom.getPortals()) {
+
+            ChangeScreenPortal homePort = null;
+            if (!currentRoom.PortalsAreOnStage()) {
+                addPortalsToStage();
+            }
+
+            if (currentRoom.getClass().equals(Room_Boss.class)) {
+
+                homePort = ((Room_Boss) currentRoom).getEndDungeon();
+                homePort.setVisible(true);
+                if (user.overlaps(homePort)) {
+                    Syzygy.stage.clear();
+                    Syzygy.stage.dispose();
+                    game.setScreen(new Screen_Menu(game));
+                }
+            }
+
+            //checking for movement to new Room
+            for (int i = 0; i < currentRoom.getPortals().size; i++) {
+                Portal portal = currentRoom.getPortals().get(i);
                 if (user.overlaps(portal) && portal.isVisible()) {
                     currentRoom.removePortalsfromStage();
-                    currentRoom = portal.getNextRoom();
+                    if (homePort != null) {
+                        homePort.remove();
+                        homePort.clear();
+                    }
                     //repositions user after moving thru portal to pos of equivalent portal in newroom
                     //sets x or y to a certain edge of portal
                     if (PortalPos.UP == portal.getPortalPos()) {
-                        user.setY(portal.getHeight()/2);
+                        user.setY(portal.getHeight() / 2);
                     } else if (PortalPos.LEFT == portal.getPortalPos()) {
-                        user.setX(Constants.GAMESCREEN_WIDTH - Constants.PORTAL_WIDTH/2 - user.getWidth());
+                        user.setX(Constants.GAMESCREEN_WIDTH - Constants.PORTAL_WIDTH / 2 - user.getWidth());
                     } else if (PortalPos.RIGHT == portal.getPortalPos()) {
-                        user.setX(portal.getWidth()/2);
+                        user.setX(portal.getWidth() / 2);
                     } else if (PortalPos.DOWN == portal.getPortalPos()) {
-                        user.setY(Constants.GAMESCREEN_HEIGHT - Constants.PORTAL_HEIGHT/2 - user.getHeight());
+                        user.setY(Constants.GAMESCREEN_HEIGHT - Constants.PORTAL_HEIGHT / 2 - user.getHeight());
                     }
-                    System.out.println("||" + currentRoom.getPortals() + "||");
-                    spawnEnemies();
+                    moveToNewRoom(portal);
                 }
             }
         }
-        Collisions.removeBullets();
     }
 
     @Override
@@ -132,41 +149,47 @@ public class RoomScreen implements Screen {
     }
 
     private void spawnEnemies() {
-    //edited to include the "spawn enemyname" method details in one method
-    //change the value of e to spawn a new enemy, no need for separate method call.
     //If enemies have specific spawning properties, these should be dealt with in the constructors (ex: Big_Slime)
-        for(int i = 0; i < currentRoom.getEnemyNumber(); i++) {
-            int enemyToSpawn = MathUtils.random(3);
+        for (int i = 0; i < currentRoom.getEnemyNumber(); i++) {
+            //gets random enemy from the possible enemies of the room
+//            Enemy e = new currentRoom.enemyArray.(MathUtils.random(currentRoom.enemyArray.size));
+            int enemyToSpawn = MathUtils.random(dungeon.possibleEnemies.size - 1);
+            Class enemyClass = dungeon.possibleEnemies.get(enemyToSpawn);
             Enemy e;
-            if (enemyToSpawn == 3) {
+            if (enemyClass == Enemy_Slime.class) {
                 e = new Enemy_Slime();
                 System.out.print(" Slime" + i);
-            } else if (enemyToSpawn == 2) {
+            } else if (enemyClass == Enemy_Golem.class) {
                 e = new Enemy_Golem();
                 System.out.print(" Golem" + i);
-            } else if (enemyToSpawn == 1) {
-                e = new Enemy_BigSlime(game.getStage(), enemies);
+            } else if (enemyClass == Enemy_BigSlime.class) {
+                e = new Enemy_BigSlime(enemies);
                 System.out.print(" BigSlime" + i);
-            } else {
-                e = new Enemy_HitDetector(user.userBullets);
+            } else if (enemyClass == Enemy_HitDetector.class) {
+                e = new Enemy_HitDetector(User.bullets);
                 System.out.print(" Spongebob" + i);
+            } else {
+                System.out.print("ERROR: ENEMY IN POSSIBLE ENEMIES NOT HANDLED WITH IFS IN SPAWNENEMIES()");
+                break;//how do I not use the break? An exception causes yucky problems.
             }
+            System.out.print(" " + e + i);
             enemies.add(e);
             game.getStage().addActor(e);
-            lastSpawnTime = TimeUtils.nanoTime();
         }
     }
+
+    private void spawnBoss(Enemy boss) {
+        enemies.add(boss);
+        Syzygy.stage.addActor(boss);
+    }
+
     private void addPortalsToStage() {
         for(Portal portal : currentRoom.getPortals()) {
             game.getStage().addActor(portal);
         }
     }
 
-    //Joystick Position is entirely relative to GS_WIDTH
-    //Joystick width & height entirely relative to GS_HEIGHT
-    //sambady pls halp!
-    //OR is it good because regardless of screen size, joysticks will always be circular instead of stretched?idk
-    public void createMoveAndFire() {
+    private void createMoveAndFire() {
         TextureRegionDrawable joystickImg = new TextureRegionDrawable(new TextureRegion(
                 new Texture(Gdx.files.internal("controllerpad1.png"))));
         TextureRegionDrawable joystickKnob = new TextureRegionDrawable(new TextureRegion(
@@ -198,5 +221,24 @@ public class RoomScreen implements Screen {
         });
 
         //add firing
+    }
+
+    //TODO should be adding bosses to bossList whenever adding a bossRoom during roomCreate so bossList.size == #of bossRooms
+    private void moveToNewRoom(Portal portal) {
+        currentRoom = portal.getNextRoom();
+        if (currentRoom.getClass().equals(Room_Boss.class)) {
+            //takes enemyNumber of bosses from the bosslist and adds them to the room
+            for (int i = 0; i < currentRoom.getEnemyNumber(); i++) {
+                Enemy newBoss = dungeon.bossList.random();
+                spawnBoss(newBoss);
+                dungeon.bossList.removeValue(newBoss, true);
+            }
+            Syzygy.stage.addActor(((Room_Boss) currentRoom).getEndDungeon());
+
+        } else if (currentRoom.getClass().equals(Room_Trap.class)) {
+            //trap rooms not implemented
+        } else {
+            spawnEnemies();
+        }
     }
 }

@@ -11,9 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  * Created by jatin1 on 2/13/15.
  * Slime enemy - normal movement.
  */
-public class Enemy_Slime extends Enemy{
-
-    public static ClassName className = ClassName.SLIME;
+public class Enemy_Slime extends Enemy {
 
     public Enemy_Slime() {
         moveCtr = 0;
@@ -21,9 +19,9 @@ public class Enemy_Slime extends Enemy{
         moveDirection = (new Vector2(MathUtils.random()*  MathUtils.randomSign(),
                 MathUtils.random() * MathUtils.randomSign())).nor();
         enemyImage = new Texture(Gdx.files.internal("cuteSlime64.png"));
-        enemyHeight = Constants.GAMESCREEN_HEIGHT / 7.5f;
-        enemyWidth = Constants.GAMESCREEN_WIDTH / 12.5f;
-        setBounds(xPos, yPos, enemyWidth, enemyHeight);
+
+        setWidth(Constants.GAMESCREEN_WIDTH / 12.5f);
+        setHeight(Constants.GAMESCREEN_HEIGHT / 7.5f);
     }
 
     //for creating bigger slimes
@@ -34,7 +32,7 @@ public class Enemy_Slime extends Enemy{
 
     public Enemy_Slime(float xPos, float yPos) {
         this();
-        setBounds(xPos, yPos, enemyWidth, enemyHeight);
+        setBounds(xPos, yPos, getWidth(), getHeight());
     }
 
     @Override
@@ -64,12 +62,12 @@ public class Enemy_Slime extends Enemy{
         }
     }
 
-    public void changeDirectionX() {
+    private void changeDirectionX() {
         moveDirection.set(MathUtils.random() * MathUtils.randomSign(), moveDirection.y);
         moveCtr = 0;
     }
 
-    public void changeDirectionY() {
+    private void changeDirectionY() {
         moveDirection.set(moveDirection.x, MathUtils.random() * MathUtils.randomSign());
         moveCtr = 0;
     }

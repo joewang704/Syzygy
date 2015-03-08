@@ -1,4 +1,5 @@
 package com.mygdx.game;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -37,41 +38,11 @@ public class Dungeon {
 
         //make remaining rooms
         roomCreation(numberOfRooms);
+        makeBossRoom(firstRoom, user, game);
 
         if (dungeonID == 0) {
             possibleEnemies.addAll(Enemy_BigSlime.class, Enemy_Golem.class, Enemy_Slime.class, Enemy_HitDetector.class);
             bossList.add(new Boss_Volans(user));
-        }
-
-        Room current = firstRoom;
-        Room previous = null;
-        int badPortalCtr = 0;
-        //finds a placement for the boss room
-        //TODO not really random because the navigation is placement in the order of the portals of getPortals()
-        while (badPortalCtr < 4) {
-            Portal portal = current.getPortals().get((current.hashCode() + badPortalCtr) % 4);
-            if (portal != null && portal.getNextRoom() != previous && portal.isVisible()) {
-                previous = current;
-                current = portal.getNextRoom();
-                badPortalCtr = 0;
-            } else {
-                badPortalCtr++;
-            }
-        }
-
-        Array<Portal> oldPortals = current.getPortals();
-
-        //should probably have a new screen for bossRooms
-        current = new Room_Boss(this, current.getX(), current.getY(), user, game);
-        current.setPortals(oldPortals);
-        dungeonMap.replace(current.getPosition(), current);
-
-        //set all connected rooms equivalent portals back to current rooms
-        for (int i = 0; i < current.getPortals().size; i++) {
-            Room nextRoom = current.getPortals().get(i).getNextRoom();
-            if (nextRoom != null) {
-                nextRoom.getPortalByOrdinal(current.getPortals().size - 1 - i).setNextRoom(current);
-            }
         }
     }
 
@@ -161,6 +132,39 @@ public class Dungeon {
 
             //remove the changed portal from the portal array
             unassignedPortals.removeValue(randomPortal, true);
+        }
+    }
+
+    private void makeBossRoom(Room firstRoom, User user, Game game) {
+        Room current = firstRoom;
+        Room previous = null;
+        int badPortalCtr = 0;
+        //finds a placement for the boss room
+        //TODO not really random because the navigation is placement in the order of the portals of getPortals()
+        while (badPortalCtr < 4) {
+            Portal portal = current.getPortals().get(Math.abs(current.hashCode() + badPortalCtr) % 4);
+            if (portal != null && portal.getNextRoom() != previous && portal.isVisible()) {
+                previous = current;
+                current = portal.getNextRoom();
+                badPortalCtr = 0;
+            } else {
+                badPortalCtr++;
+            }
+        }
+
+        Array<Portal> oldPortals = current.getPortals();
+
+        //should probably have a new screen for bossRooms
+        current = new Room_Boss(this, current.getX(), current.getY(), user, game);
+        current.setPortals(oldPortals);
+        dungeonMap.put(current.getPosition(), current);
+
+        //set all connected rooms equivalent portals back to current rooms
+        for (int i = 0; i < current.getPortals().size; i++) {
+            Room nextRoom = current.getPortals().get(i).getNextRoom();
+            if (nextRoom != null) {
+                nextRoom.getPortalByOrdinal(current.getPortals().size - 1 - i).setNextRoom(current);
+            }
         }
     }
 

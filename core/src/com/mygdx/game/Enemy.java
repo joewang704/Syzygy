@@ -19,6 +19,7 @@ public abstract class Enemy extends Actor {
     protected Array<Bullet> enemyBullets;
     protected Vector2 moveDirection;
     protected Texture enemyImage;
+    protected boolean isVulnerable = true;
 
     public Enemy() {
         setX(MathUtils.random(Constants.GAMESCREEN_WIDTH / 3,
@@ -72,5 +73,7 @@ public abstract class Enemy extends Actor {
     public boolean overlaps(Actor a) {
         return Collisions.overlap(this, a);
     }
+
+    public boolean isVulnerable() {return isVulnerable;}
 
 }

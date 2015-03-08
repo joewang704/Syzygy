@@ -34,12 +34,14 @@ public class Collisions {
         for (Enemy enemy: enemies) {
             for (Bullet bullet: User.bullets) {
                 if (enemy.overlaps(bullet)) {
-                    enemyNumber += enemy.hitAction();
+                    if (enemy.isVulnerable()) {
+                        enemyNumber += enemy.hitAction();
+                        enemies.removeValue(enemy, true);
+                        --enemyNumber;
+                    }
                     bullet.remove();
-                    enemies.removeValue(enemy, true);
                     User.bullets.removeValue(bullet, true);
                     System.out.println(enemyNumber);
-                    --enemyNumber;
                 }
             }
         }

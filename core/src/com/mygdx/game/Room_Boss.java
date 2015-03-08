@@ -13,7 +13,7 @@ public class Room_Boss extends Room {
     private Enemy boss;
     private ChangeScreenPortal endDungeon;
 
-    public Room_Boss(Dungeon dungeon, int x, int y, User user, Syzygy syzygy) {
+    public Room_Boss(Dungeon dungeon, int x, int y, User user, Game syzygy) {
         super(dungeon, x, y);
         setEnemyNumber(1);
         boss = new Boss_Volans(user);

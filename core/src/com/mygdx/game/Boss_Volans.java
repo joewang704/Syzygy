@@ -32,6 +32,7 @@ public class Boss_Volans extends Enemy {
         setHeight(Constants.GAMESCREEN_HEIGHT / 3.6f);
         volansCall = Gdx.audio.newSound(Gdx.files.internal("data/volans_call.wav"));
         this.user = user;
+        isVulnerable = false;
 
         addAction(Actions.sequence(
             new Action() {
@@ -44,7 +45,9 @@ public class Boss_Volans extends Enemy {
             new Action(){
                 @Override
                 public boolean act(float delta) {
+                    volansCall.stop();
                     volansCall.dispose();
+                    isVulnerable = true;
                     return true;
                 }
             }));
@@ -85,7 +88,7 @@ public class Boss_Volans extends Enemy {
         //random direction of bullet relative to user pos, with a range of 40 degrees
         directionOfUser = (new Vector2(user.getX() - getX(), user.getY() - getY())).nor();
         Bullet bullet = new Bullet(
-                directionOfUser.scl(20).setAngle(directionOfUser.angle() + MathUtils.random(-30, 30)),
+                directionOfUser.scl(50).setAngle(directionOfUser.angle() + MathUtils.random(-30, 30)),
                 10f, false,
                 this.getX() + this.getWidth()/2 - Constants.BULLET_WIDTH,
                 this.getY() + this.getHeight()/2 - Constants.BULLET_HEIGHT,

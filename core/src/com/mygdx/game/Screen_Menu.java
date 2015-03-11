@@ -11,26 +11,28 @@ public class Screen_Menu extends Screen_MacroUI {
     private TextButton dungeonButt;
     //private TextButton equipButt;
     private TextButton storageButt;
-    private TextButton rmScreenTemp;
+    private TextButton addGesture;
 
     public Screen_Menu(Syzygy game) {
         super(game);
         dungeonButt = new TextButton("Enter a dungeon", uiSkin);
-        dungeonButt.setSize(Constants.RIGHTABS_WIDTH * 2, Constants.GAMESCREEN_HEIGHT/5);
-        /*equipButt = new TextButton("Equip", uiSkin);
-        equipButt.setSize(Constants.RIGHTABS_WIDTH * 2, Constants.GAMESCREEN_HEIGHT/5);*/
         storageButt = new TextButton("Inventory", uiSkin);
-        storageButt.setSize(Constants.RIGHTABS_WIDTH * 2, Constants.GAMESCREEN_HEIGHT/5);
-        rmScreenTemp = new TextButton("RoomScreen Test", uiSkin);
-        rmScreenTemp.setSize(Constants.RIGHTABS_WIDTH * 2, Constants.GAMESCREEN_HEIGHT/5);
+        addGesture = new TextButton("Add Gesture", uiSkin);
+
+        dungeonButt.setSize(Constants.MAINMENU_BUTTON_WIDTH * 2, Constants.MAINMENU_BUTTON_HEIGHT);
+        storageButt.setSize(Constants.MAINMENU_BUTTON_WIDTH * 2, Constants.MAINMENU_BUTTON_HEIGHT);
+        addGesture.setSize(Constants.MAINMENU_BUTTON_WIDTH * 2, Constants.MAINMENU_BUTTON_HEIGHT);
 
         table = new Table(uiSkin);
         table.setPosition(Constants.MAINMENU_X, Constants.MAINMENU_Y);
         table.setSize(Constants.MAINMENU_WIDTH, Constants.MAINMENU_HEIGHT);
-        table.add(dungeonButt).minWidth(Constants.RIGHTABS_WIDTH * 2).prefWidth(Constants.RIGHTABS_WIDTH * 3).pad(3f).row();
-        //table.add(equipButt).minWidth(Constants.RIGHTABS_WIDTH * 2).prefWidth(Constants.RIGHTABS_WIDTH * 3).pad(3f).row();
-        table.add(storageButt).minWidth(Constants.RIGHTABS_WIDTH * 2).prefWidth(Constants.RIGHTABS_WIDTH * 3).pad(3f).row();
-        table.add(rmScreenTemp).minWidth(Constants.RIGHTABS_WIDTH * 2).prefWidth(Constants.RIGHTABS_WIDTH * 3).pad(3f).row();
+
+        table.add(dungeonButt).minWidth(Constants.MAINMENU_BUTTON_WIDTH * 2).prefWidth(Constants.MAINMENU_BUTTON_WIDTH * 3)
+                .minHeight(Constants.MAINMENU_BUTTON_HEIGHT/2).prefHeight(Constants.MAINMENU_BUTTON_HEIGHT).pad(3f).row();
+        table.add(storageButt).minWidth(Constants.MAINMENU_BUTTON_WIDTH * 2).prefWidth(Constants.MAINMENU_BUTTON_WIDTH * 3)
+                .minHeight(Constants.MAINMENU_BUTTON_HEIGHT/2).prefHeight(Constants.MAINMENU_BUTTON_HEIGHT).pad(3f).row();
+        table.add(addGesture).minWidth(Constants.MAINMENU_BUTTON_WIDTH * 2).prefWidth(Constants.MAINMENU_BUTTON_WIDTH * 3)
+                .minHeight(Constants.MAINMENU_BUTTON_HEIGHT/2).prefHeight(Constants.MAINMENU_BUTTON_HEIGHT).pad(3f).row();
 
         Syzygy.stage.addActor(table);
     }
@@ -45,10 +47,8 @@ public class Screen_Menu extends Screen_MacroUI {
         }*/ else if (storageButt.isPressed()) {
             game.getScreen().dispose();
             game.setScreen(new Screen_Storage(game));
-        } else if (rmScreenTemp.isPressed()) {
-            game.stage.dispose();
-            game.stage.clear();
-            game.setScreen(new RoomScreen(game, 0));
+        } else if (addGesture.isPressed()) {
+            //TODO gesture reader
         }
     }
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+    <item id="1">
+        <type>head</type>
+        <name>bard</name>
+    </item>
+    <item id="2">
+        <type>head</type>
+        <name>crown</name>
+    </item>
+    <item id="3">
+        <type>head</type>
+        <name>full</name>
+    </item>
+    <item id="4">
+        <type>head</type>
+        <name>great</name>
+    </item>
+</items>

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 /**
  * Created by Lucas on 2/9/2015.
@@ -49,11 +50,26 @@ public class Screen_Storage extends Screen_MacroUI {
         backButt.setPosition(Constants.GAMESCREEN_WIDTH/70,
                 Constants.GAMESCREEN_HEIGHT - backButt.getHeight()
                 - Constants.GAMESCREEN_HEIGHT/60);
+        //Image testImage = new Image(ItemsXMLReader.itemArray.get(0).getItemImage());
+        /*storageTable.add(testImage);
         for (int i = 0; i < 50; i++) {
             for (int j = 0; j < 5; j++) {
                 storageTable.add("Test" + i + j).pad(10f);
             }
             storageTable.row().fillX().fillY();
+        }*/
+        //box space of 50
+        for (int i = 0; i < 50; i++) {
+            if (i % 4 == 0) {
+                storageTable.row().fillX().fillY();
+            }
+            //fills empty space after items iterated through with placeholders
+            if (i >= ItemsXMLReader.itemArray.size) {
+                storageTable.add("TEST" + i).pad(10f);
+            } else {
+                Image img = new Image(ItemsXMLReader.itemArray.get(i).getItemImage());
+                storageTable.add(img);
+            }
         }
         scrollPane = new ScrollPane(storageTable);
         Syzygy.stage.addActor(leftItemTable);

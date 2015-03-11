@@ -1,0 +1,4 @@
+Use the gesture detection
+
+Whatever gesture is returned, pass it into a method activateItem(x, y) that finds the item active
+using a map from gesture -> item

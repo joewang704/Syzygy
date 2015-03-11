@@ -140,7 +140,7 @@ public class RoomScreen implements Screen {
 
     @Override
     public void dispose() {
-        //dispose of all native resources
+
     }
 
     //helper methods
@@ -226,6 +226,9 @@ public class RoomScreen implements Screen {
     //TODO should be adding bosses to bossList whenever adding a bossRoom during roomCreate so bossList.size == #of bossRooms
     private void moveToNewRoom(Portal portal) {
         currentRoom = portal.getNextRoom();
+        for (Bullet bullet: User.bullets) {
+            bullet.remove();
+        }
         if (currentRoom.getClass().equals(Room_Boss.class)) {
             //takes enemyNumber of bosses from the bosslist and adds them to the room
             for (int i = 0; i < currentRoom.getEnemyNumber(); i++) {

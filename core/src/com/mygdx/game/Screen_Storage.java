@@ -2,15 +2,22 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 /**
  * Created by Lucas on 2/9/2015.
@@ -18,22 +25,35 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 public class Screen_Storage extends Screen_MacroUI {
 
     //Inventory
-    Table storageTable;
-    ScrollPane scrollPane;
+    private Table storageTable;
+    private ScrollPane scrollPane;
     private TextButton backButt;
     private Table storageOuterTable;
     private Table leftItemTable;
 
     //Equipment
-    VerticalGroup equipment;
-    HorizontalGroup glovesAndChest;
-    ImageButton head;
-    ImageButton chest;
-    ImageButton handLeft, handRight;
-    ImageButton legs;
-    ImageButton feet;
-    ImageButton ring1, ring2;
+    private VerticalGroup equipment;
+    private HorizontalGroup glovesAndChest;
+    private Image head;
+    private ImageButton chest;
+    private ImageButton handLeft, handRight;
+    private ImageButton legs;
+    private ImageButton feet;
+    private ImageButton ring1, ring2;
     private Table rightEquipTable;
+
+    //used for pop up item info
+    private Button closeButt, equipButt;
+    private Window itemInfo;
+    private Item currentOpenedItem;
+
+    //used for equipment
+    private Item equippedHeadItem;
+    private Item equippedHandLeftItem;
+    private Item equippedHandRightItem;
+    private Item equippedChestItem;
+    private Item equippedLegsItem;
+    private Item equippedFeetItem;
 
     public Screen_Storage(Syzygy game) {
         super(game);
@@ -44,20 +64,17 @@ public class Screen_Storage extends Screen_MacroUI {
         storageTable = new Table(uiSkin);
         storageOuterTable = new Table(uiSkin);
 
+        //Item Information Pop Up
+        closeButt = new TextButton("Close", uiSkin);
+        equipButt = new TextButton("Equip", uiSkin);
+
         //storageTable.padTop(30);
         backButt = new TextButton("<", uiSkin);
         backButt.setSize(Constants.GAMESCREEN_WIDTH/20, Constants.GAMESCREEN_HEIGHT/20);
         backButt.setPosition(Constants.GAMESCREEN_WIDTH/70,
                 Constants.GAMESCREEN_HEIGHT - backButt.getHeight()
                 - Constants.GAMESCREEN_HEIGHT/60);
-        //Image testImage = new Image(ItemsXMLReader.itemArray.get(0).getItemImage());
-        /*storageTable.add(testImage);
-        for (int i = 0; i < 50; i++) {
-            for (int j = 0; j < 5; j++) {
-                storageTable.add("Test" + i + j).pad(10f);
-            }
-            storageTable.row().fillX().fillY();
-        }*/
+
         //box space of 50
         for (int i = 0; i < 50; i++) {
             if (i % 4 == 0) {
@@ -68,6 +85,8 @@ public class Screen_Storage extends Screen_MacroUI {
                 storageTable.add("TEST" + i).pad(10f);
             } else {
                 Image img = new Image(ItemsXMLReader.itemArray.get(i).getItemImage());
+                img.addListener(new ItemClickListener(ItemsXMLReader.itemArray.get(i),
+                        leftItemTable));
                 storageTable.add(img);
             }
         }
@@ -89,8 +108,9 @@ public class Screen_Storage extends Screen_MacroUI {
         equipment = new VerticalGroup();
         glovesAndChest = new HorizontalGroup();
         //make equipped item buttons with generic textures
-        head = new ImageButton(new TextureRegionDrawable(new TextureRegion(
-                new Texture(Gdx.files.internal("equipHead.png")))));
+        /*head = new ImageButton(new TextureRegionDrawable(new TextureRegion(
+                new Texture(Gdx.files.internal("equipHead.png")))));*/
+        head = new Image(new Texture(Gdx.files.internal("equipHead.png")));
         chest = new ImageButton(new TextureRegionDrawable(new TextureRegion(
                 new Texture(Gdx.files.internal("equipChest.png")))));
         handLeft = new ImageButton(new TextureRegionDrawable(new TextureRegion(
@@ -103,7 +123,9 @@ public class Screen_Storage extends Screen_MacroUI {
                 new Texture(Gdx.files.internal("equipFeet.png")))));
 
         //scale each button by the height of the Game, and then divide it by 5 <-- shit implementation
-        scaleButton(head);
+        //scaleButton(head);
+        head.getDrawable().setMinWidth(Constants.GAMESCREEN_WIDTH / 5);
+        head.getDrawable().setMinHeight(Constants.GAMESCREEN_HEIGHT / 4);
         scaleButton(chest);
         scaleButton(handLeft);
         scaleButton(handRight);
@@ -123,8 +145,8 @@ public class Screen_Storage extends Screen_MacroUI {
         equipment.setFillParent(true);
         Syzygy.stage.addActor(rightEquipTable);
     }
-    private void scaleButton (ImageButton button) {
-        button.getStyle().imageUp.setMinWidth(Constants.GAMESCREEN_HEIGHT / 5);//button.getHeight() / 5);
+    private void scaleButton(ImageButton button) {
+        button.getStyle().imageUp.setMinWidth(Constants.GAMESCREEN_WIDTH / 7);//button.getHeight() / 5);
         button.getStyle().imageUp.setMinHeight(Constants.GAMESCREEN_HEIGHT / 4);//button.getHeight() / 5);
     }
     @Override
@@ -134,11 +156,28 @@ public class Screen_Storage extends Screen_MacroUI {
             game.getScreen().dispose();
             game.setScreen(new Screen_Menu(game));
         }
+        if (closeButt.isPressed()) {
+            itemInfo.clear();
+            itemInfo.remove();
+        }
+        if (equipButt.isPressed()) {
+            //equip item
+
+            currentOpenedItem.setEquipped(true);
+            //unequip previously equipped item
+            //NOTE: CURRENTOPENEDITEM GETS CLICKED MANY TIMES IF YOU ACCIDENTALLY HOLD
+            if(equippedHeadItem != null && equippedHeadItem != currentOpenedItem) {
+                equippedHeadItem.setEquipped(false);
+            }
+            head.setDrawable(new SpriteDrawable(new Sprite(currentOpenedItem.getItemImage())));
+            equippedHeadItem = currentOpenedItem;
+        }
     }
+
     @Override
     public void show() {
-
     }
+
     @Override
     public void dispose() {
         scrollPane.clear();
@@ -166,5 +205,48 @@ public class Screen_Storage extends Screen_MacroUI {
     @Override
     public void resume() {
 
+    }
+
+    private class ItemClickListener extends ClickListener {
+        Item item;
+        String atkString, defString, spdString, itemName;
+        Table table;
+        public ItemClickListener(Item item, Table table) {
+            this.item = item;
+            itemName = item.getName();
+            atkString = "Attack: " + item.getAtk();
+            defString = "Defense: " + item.getDef();
+            spdString = "Speed: " + item.getSpd();
+            this.table = table;
+        }
+        @Override
+        public boolean touchDown(InputEvent event, float x, float y, int pointer,
+                                 int button) {
+            //create new popup screen with item info
+
+            //if previous popup screen exists delete it
+            if (itemInfo != null) {
+                itemInfo.clear();
+                itemInfo.remove();
+            }
+            itemInfo = new Window(itemName, uiSkin);
+            Label atkLabel = new Label(atkString, uiSkin);
+            Label defLabel = new Label(defString, uiSkin);
+            Label spdLabel = new Label(spdString, uiSkin);
+            itemInfo.add(atkLabel);
+            itemInfo.row();
+            itemInfo.add(defLabel);
+            itemInfo.row();
+            itemInfo.add(spdLabel);
+            itemInfo.row();
+            itemInfo.add(equipButt);
+            itemInfo.row();
+            itemInfo.add(closeButt);
+            itemInfo.setPosition(Constants.GAMESCREEN_WIDTH / 4 - 10,
+                    Constants.GAMESCREEN_HEIGHT / 2 - 10);
+            table.add(itemInfo);
+            currentOpenedItem = item;
+            return false;
+        }
     }
 }

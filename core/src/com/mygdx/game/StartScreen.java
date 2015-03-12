@@ -35,6 +35,7 @@ public class StartScreen implements Screen {
 
         if (Gdx.input.isTouched()) {
             //initialize items in an xml file
+            ItemsXMLWriter.createItems();
             ItemsXMLReader.parseItems();
 
             //change screen

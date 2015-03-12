@@ -20,10 +20,16 @@ public class ItemsXMLReader {
         try {
             System.out.println(xmlReader.parse(itemFile));
             for (int i = 0; i < xmlReader.parse(itemFile).getChildCount(); i++) {
-                //create new item with xml attributes as paramters and add into itemArray
-                itemArray.add(new Item(i, i, xmlReader.parse(itemFile).getChild(i).get("type")
-                        ,"itemImages/helmets/" + xmlReader.parse(
-                        itemFile).getChild(i).get("name") + ".png"));
+                //create new item with xml attributes as parameters and add into itemArray
+                XmlReader.Element itemNode = xmlReader.parse(itemFile).getChild(i);
+                Item newItem = new Item(i);
+                newItem.setType(itemNode.get("type"));
+                newItem.setImageFromPath("itemImages/helmets/" + itemNode.get("imgName") + ".png");
+                newItem.setAtk(Integer.parseInt(itemNode.get("atk")));
+                newItem.setDef(Integer.parseInt(itemNode.get("def")));
+                newItem.setSpd(Integer.parseInt(itemNode.get("spd")));
+                newItem.setName(itemNode.get("name"));
+                itemArray.add(newItem);
             }
             System.out.println(itemArray);
         } catch (IOException e) {

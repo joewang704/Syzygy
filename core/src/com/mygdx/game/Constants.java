@@ -26,7 +26,7 @@ public class Constants {
     static float MAINMENU_X = GAMESCREEN_WIDTH / 2 - MAINMENU_WIDTH / 2;
     static float MAINMENU_Y = GAMESCREEN_HEIGHT / 2 - MAINMENU_HEIGHT / 2;
     static float MAINMENU_BUTTON_HEIGHT = GAMESCREEN_HEIGHT / 5;
-    static float MAINMENU_BUTTON_WIDTH = GAMESCREEN_WIDTH / 6;
+    static float MAINMENU_BUTTON_WIDTH = GAMESCREEN_WIDTH / 5;
 
     //lets not use stretch viewport because we don't really want aspect ratio being changed, maybe?
 }

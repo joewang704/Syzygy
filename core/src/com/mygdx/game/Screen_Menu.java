@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.mygdx.game.GestureRecognizer.GestureWriter;
 
 /**
  * Created by wojang on 2/17/15.
@@ -12,9 +13,12 @@ public class Screen_Menu extends Screen_MacroUI {
     //private TextButton equipButt;
     private TextButton storageButt;
     private TextButton addGesture;
+    private GestureWriter gestureWriter;
 
     public Screen_Menu(Syzygy game) {
         super(game);
+        gestureWriter = new GestureWriter();
+
         dungeonButt = new TextButton("Enter a dungeon", uiSkin);
         storageButt = new TextButton("Inventory", uiSkin);
         addGesture = new TextButton("Add Gesture", uiSkin);
@@ -30,9 +34,9 @@ public class Screen_Menu extends Screen_MacroUI {
         table.add(dungeonButt).minWidth(Constants.MAINMENU_BUTTON_WIDTH * 2).prefWidth(Constants.MAINMENU_BUTTON_WIDTH * 3)
                 .minHeight(Constants.MAINMENU_BUTTON_HEIGHT/2).prefHeight(Constants.MAINMENU_BUTTON_HEIGHT).pad(3f).row();
         table.add(storageButt).minWidth(Constants.MAINMENU_BUTTON_WIDTH * 2).prefWidth(Constants.MAINMENU_BUTTON_WIDTH * 3)
-                .minHeight(Constants.MAINMENU_BUTTON_HEIGHT/2).prefHeight(Constants.MAINMENU_BUTTON_HEIGHT).pad(3f).row();
+                .minHeight(Constants.MAINMENU_BUTTON_HEIGHT / 2).prefHeight(Constants.MAINMENU_BUTTON_HEIGHT).pad(3f).row();
         table.add(addGesture).minWidth(Constants.MAINMENU_BUTTON_WIDTH * 2).prefWidth(Constants.MAINMENU_BUTTON_WIDTH * 3)
-                .minHeight(Constants.MAINMENU_BUTTON_HEIGHT/2).prefHeight(Constants.MAINMENU_BUTTON_HEIGHT).pad(3f).row();
+                .minHeight(Constants.MAINMENU_BUTTON_HEIGHT / 2).prefHeight(Constants.MAINMENU_BUTTON_HEIGHT).pad(3f).row();
 
         Syzygy.stage.addActor(table);
     }
@@ -48,7 +52,11 @@ public class Screen_Menu extends Screen_MacroUI {
             game.getScreen().dispose();
             game.setScreen(new Screen_Storage(game));
         } else if (addGesture.isPressed()) {
-            //TODO gesture reader
+            if (!gestureWriter.currentlyAddingGesture()) {
+                gestureWriter.setCurrentlyAddingGesture(true);
+            } else {
+                gestureWriter.setCurrentlyAddingGesture(false);
+            }
         }
     }
 }

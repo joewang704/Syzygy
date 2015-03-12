@@ -14,7 +14,7 @@ public class Screen_MacroUI implements Screen {
 
     protected final Syzygy game;
     protected OrthographicCamera camera;
-    protected Skin uiSkin;
+    public static Skin uiSkin;
 
     public Screen_MacroUI(Syzygy game) {
         this.game = game;

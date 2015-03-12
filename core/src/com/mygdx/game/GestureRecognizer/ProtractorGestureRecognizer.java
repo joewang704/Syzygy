@@ -57,39 +57,38 @@ public class ProtractorGestureRecognizer {
             //PARSES THROUGH ALL POINTS OBJECTS
             String _name = ((JsonValue) obj.get("Name")).asString();
 
-            Array<ObjectMap<String, Float>> _points = new Array<ObjectMap<String, Float>>();
+            ArrayList<Vector2> _points = new ArrayList<Vector2>();
             JsonValue pointObjectLL = (JsonValue) obj.get("Points");
             pointObjectLL = pointObjectLL.child();
+
             //loop through each point object
             while (pointObjectLL != null) {
-                ObjectMap<String, Float> tempMap = new ObjectMap<String, Float>();
-                //add X and Y to their own maps
-                for (JsonValue jsnVal: pointObjectLL) {
-                    tempMap.put(jsnVal.name(), jsnVal.asFloat());
-                }
-                _points.add(tempMap);
+            //add X and Y to their own maps
+                _points.add(new Vector2(pointObjectLL.child().asFloat(),
+                        pointObjectLL.child().next().asFloat()));
                 pointObjectLL = pointObjectLL.next();
             }
 
-            //take primitive floats and wrap them
-            Array<Float> _vector = new Array<Float>();
-            for (float f: ((JsonValue) obj.get("Vector")).asFloatArray()) {
-                _vector.add(f);
-            }
+            //I BELIEVE THESE TWO BLOCKS DO THE SAME THING
+//            //Block A
+//            Array<Float> _vector = new Array<Float>();
+//            for (float f: ((JsonValue) obj.get("Vector")).asFloatArray()) {
+//                _vector.add(f);
+//            }
+//
+//            //Block B
+//            ArrayList<Vector2> _arrlist_vector = new ArrayList<Vector2>();
+//            for (int i = 0; i < _points.size; i++) {
+//                ObjectMap<String, Float> data = _points.get(i);
+//                float x = (float) data.get("X");
+//                float y = (float) data.get("Y");
+//                _arrlist_vector.add(new Vector2(x, y));
+//            }
+//            float[] _arr_vector = new float[_vector.size];
+//            for (int i = 0; i < _vector.size; i++)
+//                _arr_vector[i] = _vector.get(i);
 
-            ArrayList<Vector2> _arrlist_vector = new ArrayList<Vector2>();
-            for (int i = 0; i < _points.size; i++) {
-                ObjectMap<String, Float> data = _points.get(i);
-                float x = (float) data.get("X");
-                float y = (float) data.get("Y");
-                _arrlist_vector.add(new Vector2(x, y));
-            }
-
-            float[] _arr_vector = new float[_vector.size];
-            for (int i = 0; i < _vector.size; i++)
-                _arr_vector[i] = _vector.get(i);
-
-            addGesture(new TemplateGesture(_name, _arrlist_vector, _arr_vector));
+            addGesture(new TemplateGesture(_name, _points));
 
        		}
 	}

@@ -28,14 +28,6 @@ public class ProtractorGestureRecognizer {
 		registeredGestures.add(tg);
 	}
 
-    private class XYPoint {
-        private ObjectMap<String, Float> pointMap;
-    }
-
-    private class Data {
-        private Array<ObjectMap<String, Float>> dataArray;
-    }
-
 	@SuppressWarnings("unchecked")
 	public void addGestureFromFile(FileHandle handle) {
 		if (handle.isDirectory()) {
@@ -68,25 +60,6 @@ public class ProtractorGestureRecognizer {
                         pointObjectLL.child().next().asFloat()));
                 pointObjectLL = pointObjectLL.next();
             }
-
-            //I BELIEVE THESE TWO BLOCKS DO THE SAME THING
-//            //Block A
-//            Array<Float> _vector = new Array<Float>();
-//            for (float f: ((JsonValue) obj.get("Vector")).asFloatArray()) {
-//                _vector.add(f);
-//            }
-//
-//            //Block B
-//            ArrayList<Vector2> _arrlist_vector = new ArrayList<Vector2>();
-//            for (int i = 0; i < _points.size; i++) {
-//                ObjectMap<String, Float> data = _points.get(i);
-//                float x = (float) data.get("X");
-//                float y = (float) data.get("Y");
-//                _arrlist_vector.add(new Vector2(x, y));
-//            }
-//            float[] _arr_vector = new float[_vector.size];
-//            for (int i = 0; i < _vector.size; i++)
-//                _arr_vector[i] = _vector.get(i);
 
             addGesture(new TemplateGesture(_name, _points));
 

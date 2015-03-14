@@ -24,11 +24,8 @@ public class Syzygy extends Game {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Constants.GAMESCREEN_WIDTH, Constants.GAMESCREEN_HEIGHT);
 
-
         stage = new Stage(new StretchViewport(Constants.GAMESCREEN_WIDTH,
                 Constants.GAMESCREEN_HEIGHT, camera), new SpriteBatch());
-        //allow the stage to receive touch gestures
-        stage.addListener(new GestureWriter());
         Gdx.input.setInputProcessor(stage);
 
         //Use default arial font

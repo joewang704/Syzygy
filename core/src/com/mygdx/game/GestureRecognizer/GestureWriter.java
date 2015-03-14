@@ -10,8 +10,11 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.mygdx.game.Screen_MacroUI;
+import com.mygdx.game.Screen_Menu;
 import com.mygdx.game.Syzygy;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 
 /**
@@ -22,12 +25,10 @@ public class GestureWriter extends InputListener {
     private ArrayList<Vector2> originalPath;
     private ProtractorGestureRecognizer recognizer;
     private MatchingGesture matchingGesture;
-    private boolean currentlyAddingGesture;
 
     public GestureWriter() {
         originalPath = new ArrayList<Vector2>();
         recognizer = new ProtractorGestureRecognizer(Gdx.files.internal("gestures/"));
-        setCurrentlyAddingGesture(true);
     }
 
     @Override public boolean touchDown(InputEvent inputEvent, float x, float y, int pointer, int button) {
@@ -47,42 +48,42 @@ public class GestureWriter extends InputListener {
             originalPath.add(new Vector2(x, y));
             matchingGesture = recognizer.Recognize(originalPath);
 
-//            if (currentlyAddingGesture) {
-//                Json json = new Json();
-//                //create the gesture file
-//                FileHandle file = Gdx.files.local("Gesture" + originalPath.hashCode() + ".json");
-//                json.setWriter(file.writer(false));
-//
-//                try {
-//                    file.writjson.toJson()
-//
-//                    json.writeObjectStart();
-//                    json.writeValue("Gesture" + originalPath.hashCode(), "Name");
-//                    json.writeFields(originalPath);
-//                    json.writeField(DollarUnistrokeRecognizer.Vectorize(originalPath), "Vector");
-//                    json.writeObjectEnd();
-//                    /*jsonWriter.object("Gesture" + originalPath.hashCode()).array()
-//                            .object("Name").value("Gesture" + originalPath.hashCode())
-//                            .object("Points").value(json.toJson(originalPath, ArrayList.class, Vector2.class))
-//                            .object("Vectors").value(DollarUnistrokeRecognizer.Vectorize(originalPath))
-//                            .close();
-//                    */
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
+            Json json = new Json();
+            FileHandle file = Gdx.files.local("gestures/" + Screen_Menu.gestureName.getText() + ".json");
+            JsonWriter writer = new JsonWriter(file.writer(false));
+            writer.setOutputType(JsonWriter.OutputType.json);
+            try {
+                //writes the gestures
+                writer.object()
+                        .set("Name", Screen_Menu.gestureName.getText())
+                        .array("Points");
 
-                //json.toJson(originalPath, ArrayList.class, Vector2.class);
-//            }
-            Syzygy.stage.addActor(new TextButton(matchingGesture.getGesture().getName()
-                    + ": " + Float.toString(matchingGesture.getScore()), Screen_MacroUI.uiSkin));
+                for (Vector2 vec: originalPath) {
+                    writer.object()
+                            .set("X", vec.x)
+                            .set("Y", vec.y)
+                            .pop();
+                }
+                writer.pop().array("Vector");
+                for (double d: DollarUnistrokeRecognizer.Vectorize(originalPath)) {
+                    writer.value(d);
+                }
+                writer.pop().close();
+                //fixes text to pretty print
+                file.writeString(json.prettyPrint(file.readString()), false);
+
+            } catch (IOException e) {
+                System.out.print(e);
+            }
+
+            Screen_Menu.gestureName.setText("Enter Gest. Name");
+//            TextButton newTextButt = new TextButton(matchingGesture.getGesture().getName()
+//                    + ": " + Float.toString(matchingGesture.getScore()), Screen_MacroUI.uiSkin);
+//            newTextButt.right();
+//            Syzygy.stage.addActor(newTextButt);
         }
 
         originalPath.clear();
     }
-
-    public void setCurrentlyAddingGesture(boolean b) {currentlyAddingGesture = b;}
-    public boolean currentlyAddingGesture() {return currentlyAddingGesture;}
-
 
 }

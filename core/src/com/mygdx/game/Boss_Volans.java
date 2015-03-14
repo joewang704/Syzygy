@@ -67,12 +67,8 @@ public class Boss_Volans extends Enemy {
                         MathUtils.random(Constants.GAMESCREEN_HEIGHT - getHeight()),
                         MathUtils.random(1f, 2.5f)));
             } else {
-                int numOfBullets = MathUtils.random(2, 4);
-                for (int i = 0; i < numOfBullets; i++) {
-                    //add most recent volansBullet to stage
-                    attack();
-                    Syzygy.stage.addActor(bullets.get(bullets.size - 1));
-                }
+                int numOfBullets = MathUtils.random(3, 6);
+                attack(numOfBullets);
                 addAction(Actions.moveTo(MathUtils.random(Constants.GAMESCREEN_WIDTH - getWidth()),
                         MathUtils.random(Constants.GAMESCREEN_HEIGHT - getHeight()),
                         MathUtils.random(2f, 3.5f)));
@@ -85,18 +81,26 @@ public class Boss_Volans extends Enemy {
         checkBoundsCollision();
     }
 
-    public void attack() {
-        //random direction of bullet relative to user pos, with a range of 40 degrees
-        directionOfUser = (new Vector2(user.getX() - getX(), user.getY() - getY())).nor();
-        Bullet bullet = new Bullet(
-                directionOfUser.scl(50).setAngle(directionOfUser.angle() + MathUtils.random(-30, 30)),
-                10f, false,
-                this.getX() + this.getWidth()/2 - Constants.BULLET_WIDTH,
-                this.getY() + this.getHeight()/2 - Constants.BULLET_HEIGHT,
-                Constants.BULLET_WIDTH, Constants.BULLET_HEIGHT);
-        // + Constants.USER_WIDTH / 4
-        bullets.add(bullet);
-        lastShotTime = TimeUtils.nanoTime();
+    public void attack(int numOfBullets) {
+        float firingWidth = numOfBullets * 10;//spray width based on the 12-> completely arbitrary
+        float angleBetweenBullets = firingWidth / (numOfBullets - 1);
+        float adjustFiringAngle = firingWidth / 2;
+        for (int i = 0; i < numOfBullets ; i++) {
+            directionOfUser = (new Vector2(user.getX() - getX(), user.getY() - getY())).nor();
+            Bullet bullet = new Bullet(
+                    //sets the angle of the bullet relative to number of bullets being fired
+                    directionOfUser.scl(50).setAngle(
+                            directionOfUser.angle() - adjustFiringAngle + angleBetweenBullets * i ),
+                    10f, false,
+                    this.getX() + this.getWidth() / 2 - Constants.BULLET_WIDTH,
+                    this.getY() + this.getHeight() / 2 - Constants.BULLET_HEIGHT,
+                    Constants.BULLET_WIDTH, Constants.BULLET_HEIGHT);
+            // + Constants.USER_WIDTH / 4
+            bullets.add(bullet);
+            Syzygy.stage.addActor(bullet);
+            lastShotTime = TimeUtils.nanoTime();
+        }
+        directionOfUser.setAngle(directionOfUser.angle() - adjustFiringAngle);
     }
 
     @Override
